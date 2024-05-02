@@ -3,7 +3,7 @@ extends CharacterBody2D
 var car_heading
 var steer_angle = 15
 var acceleration = Vector2.ZERO
-var friction = -0.9
+var friction = -0.55
 var drag = -0.001
 var engine_power = 2000
 var wheel_base = 70
@@ -31,7 +31,7 @@ func _ready():
 func _physics_process(delta):
 	acceleration = Vector2.ZERO
 	get_input()
-	apply_friction()
+	apply_friction(delta)
 	steering(delta)
 	velocity += acceleration * delta
 	move_and_slide()
@@ -104,10 +104,10 @@ func steering(delta):
 
 	rotation = car_heading.angle()
 
-func apply_friction():
-	if velocity.length() < 5:
+func apply_friction(delta):
+	if acceleration == Vector2.ZERO and velocity.length() < 50:
 		velocity = Vector2.ZERO
 	
-	var friction_force = velocity * friction
+	var friction_force = velocity * friction * delta
 	var drag_force = velocity * velocity.length() * drag
 	acceleration += friction_force + drag_force
