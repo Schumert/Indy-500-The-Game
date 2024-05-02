@@ -1,0 +1,12 @@
+[gd_scene load_steps=2 format=3 uid="uid://bt1j304qy5pj5"]
+
+[ext_resource type="PackedScene" uid="uid://di0d4ko6gr7oj" path="res://car.tscn" id="1_g2ska"]
+
+[node name="main" type="Node2D"]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+ignore_rotation = false
+zoom = Vector2(0.5, 0.5)
+
+[node name="Car" parent="." instance=ExtResource("1_g2ska")]
+position = Vector2(-4, 0)
