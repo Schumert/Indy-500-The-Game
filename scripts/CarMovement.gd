@@ -54,7 +54,7 @@ func get_input(delta):
 	#handbrake but car's sliding rather than slowing, it is slowing but very little.
 	if Input.is_action_pressed("handbrake") and velocity.length() > handbrake_speed:
 		handbrake = true
-		#acceleration = transform.x * handbraking_fast
+		velocity = lerp(velocity, Vector2.ZERO, 0.02)
 	elif Input.is_action_pressed("handbrake"):
 		handbrake = true
 		#velocity = Vector2.ZERO
