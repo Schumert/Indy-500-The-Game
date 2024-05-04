@@ -1,15 +1,17 @@
 extends CharacterBody2D
 
 var car_heading
-var steer_angle = 12
+var steer_angle = 7
+var steer_angle_slow = 3
+var steer_angle_speed_bound = 2000 # type of: vel. length
 var acceleration = Vector2.ZERO
-var friction = -55
+var friction = -5
 var drag = -0.06
-var engine_power = 4000
+var engine_power = 2000 #max vel. length = 3400
 var wheel_base = 70
 var braking = -450
 var max_speed_reverse = 250
-var slip_speed = 400
+var slip_speed = 1000 #type of: vel. length
 var traction_fast = 5
 var traction_slow = 10
 var traction_handbrake = 0
@@ -37,16 +39,24 @@ func _physics_process(delta):
 	steering(delta)
 	velocity += acceleration * delta
 	move_and_slide()
-	print(velocity.length())
+
+	#print(velocity.length())
+	#print(engine_power)
+	print(steer_angle)
 	
 
 var old_engine_power = engine_power
+var old_steer_angle = steer_angle
 func get_input(delta):
 	var turn = Input.get_action_strength("steer_right") - Input.get_action_strength("steer_left")
-	
+
 	steer_direction = turn * deg_to_rad(steer_angle)
 	if Input.is_action_pressed("accelerate"):
+		engine_power = lerpf(engine_power, 12000, 0.001)
 		acceleration = transform.x * engine_power
+	else:
+		engine_power = lerpf(engine_power, old_engine_power, 0.005)
+
 	#only brake
 	if Input.is_action_pressed("brake"):
 		acceleration = transform.x * braking
@@ -57,18 +67,20 @@ func get_input(delta):
 	if Input.is_action_pressed("handbrake") and velocity.length() > handbrake_speed:
 		handbrake = true
 		is_sliding = true
+
 		velocity = lerp(velocity, Vector2.ZERO, 0.02)#Makes you stop faster than normal break if you handbrake without acceleration.
-		engine_power = lerpf(engine_power, 0, 0.005) #Prevents longer slidings
+		#engine_power = lerpf(engine_power, 0, 0.005) #Prevents longer slidings
+
 	elif Input.is_action_pressed("handbrake"):
 		handbrake = true
 		is_sliding = false
 		#velocity = Vector2.ZERO
 		velocity = lerp(velocity, Vector2.ZERO, 0.2) #And eventually, car stops.
-	else:
-		engine_power = old_engine_power
+
+	
 	
 	if Input.is_action_just_released("handbrake") and velocity.length() > 1000:
-		await get_tree().create_timer(0.5).timeout
+		#await get_tree().create_timer(0.5).timeout
 		is_sliding = false
 		handbrake = false
 	elif Input.is_action_just_released("handbrake"):
@@ -76,8 +88,12 @@ func get_input(delta):
 		handbrake = false
 
 
+func drifting():
+	if is_sliding:
+		pass
+
+
 func steering(delta):
-	
 	
 	var front_wheel = position + transform.x * wheel_base / 2
 	var back_wheel = position - transform.x * wheel_base / 2
@@ -93,16 +109,20 @@ func steering(delta):
 	#car_heading = (front_wheel - back_wheel).normalized()
 	car_heading = back_wheel.direction_to(front_wheel)
 
+	
+	
+	steer_angle = 7
+	if velocity.length() > steer_angle_speed_bound and not handbrake:
+		steer_angle = steer_angle_slow
+
 	#Lerping here make sure us that the transition between traction_slow and traction_handbrake is smooth.
 	traction = lerpf(traction, traction_slow, 0.1)
-	
-
-	steer_angle = 12
 	if velocity.length() > slip_speed and not is_sliding:
 		#traction = traction_fast
 		traction = lerpf(traction, traction_fast, 0.1)
+
 	if handbrake:
-		steer_angle = 20
+		steer_angle = lerpf(steer_angle, 12, 0.05)
 		traction = traction_handbrake
 	
 
