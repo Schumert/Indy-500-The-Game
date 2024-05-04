@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://bt1j304qy5pj5"]
+[gd_scene load_steps=11 format=3 uid="uid://bt1j304qy5pj5"]
 
 [ext_resource type="PackedScene" uid="uid://di0d4ko6gr7oj" path="res://car.tscn" id="1_g2ska"]
 [ext_resource type="Script" path="res://scripts/obstacle.gd" id="1_ryk0r"]
@@ -18,6 +18,9 @@ normal = Vector2(1, 0)
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_v5dax"]
 normal = Vector2(-1, 0)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_js8f4"]
+size = Vector2(127, 127)
 
 [node name="main" type="Node2D"]
 
@@ -65,3 +68,14 @@ shape = SubResource("WorldBoundaryShape2D_fqtsp")
 [node name="CollisionShape2D4" type="CollisionShape2D" parent="wall"]
 position = Vector2(1152, 424)
 shape = SubResource("WorldBoundaryShape2D_v5dax")
+
+[node name="Area2D" type="StaticBody2D" parent="."]
+position = Vector2(-1315, -21)
+
+[node name="Sprite2D" type="Sprite2D" parent="Area2D"]
+position = Vector2(-323, 12)
+texture = ExtResource("2_lcfit")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(-322.5, 11.5)
+shape = SubResource("RectangleShape2D_js8f4")
