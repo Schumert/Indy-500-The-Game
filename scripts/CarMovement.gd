@@ -45,24 +45,35 @@ func _physics_process(delta):
 		if collision.get_collider().name == "Area2D":
 			is_pushing_state = true
 			collision_info = collision.get_normal()
-	_pushed_off(collision_info)
-
-
+			var direction_to_collision = collision.get_position() - position
+			direction_to_collision = -direction_to_collision.normalized()
+			collision_info = direction_to_collision
 			
+			
+	_pushed_off(collision_info, delta)
+
+
+
 	
 	#print(velocity.length())
 	#print(steer_angle)
+	print(friction)
 	
 	
-func _pushed_off(opp:Vector2):
+	
+func _pushed_off(opp, delta):
 	if is_pushing_state:
-		acceleration = Vector2.ZERO
 
-		velocity += global_position.direction_to(opp) * 1000
-		await get_tree().create_timer(0.5).timeout
-		engine_power = 0
+			velocity += opp * 250000 * delta
+			engine_power = 0
+			is_pushing_state = false
+			var temp_friction = friction
+			friction = 55
+			await get_tree().create_timer(1).timeout
+			friction = temp_friction
 
-		is_pushing_state = false
+		#is_pushing_state = false
+		
 func get_input():
 	var turn = Input.get_action_strength("steer_right") - Input.get_action_strength("steer_left")
 
