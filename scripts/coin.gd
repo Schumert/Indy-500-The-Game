@@ -7,7 +7,7 @@ func _ready():
 
 
 func _on_body_entered(body:Node2D):
-	if body.collision_layer == 2:
+	if body.collision_layer & (1 << 1) != 0:
 		spawn_new_one()
 
 func spawn_new_one():
