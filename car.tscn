@@ -18,3 +18,7 @@ shape = SubResource("RectangleShape2D_hpj8k")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 zoom = Vector2(0.3, 0.3)
+
+[node name="RayCast2D" type="RayCast2D" parent="."]
+position = Vector2(65, 62)
+target_position = Vector2(149, -120)

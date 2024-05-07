@@ -23,12 +23,15 @@ var is_pushing_state:=false
 # var handbrake_speed = 100
 # var handbrake:=false
 
-
+var raycast
 
 
 var steer_direction
 
 # Called when the node enters the scene tree for the first time.
+func _ready():
+	raycast = $RayCast2D
+	raycast.enabled = true
 
 
 var collision_info = Vector2.ZERO
@@ -42,7 +45,7 @@ func _physics_process(delta):
 	move_and_slide()
 	for i in get_slide_collision_count():
 		var collision = get_slide_collision(i)
-		if collision.get_collider().name == "Area2D":
+		if collision.get_collider().name == "Area2D" and raycast.is_colliding():
 			is_pushing_state = true
 			collision_info = collision.get_normal()
 			var direction_to_collision = collision.get_position() - position
@@ -56,28 +59,29 @@ func _physics_process(delta):
 
 	
 	#print(velocity.length())
-	#print(steer_angle)
 	print(friction)
+	#print(steer_angle)
 	
 	
-	
+var temp_friction = friction
 func _pushed_off(opp, delta):
 	if is_pushing_state:
-
-			velocity += opp * 250000 * delta
-			engine_power = 0
-			is_pushing_state = false
-			var temp_friction = friction
-			friction = 55
-			await get_tree().create_timer(1).timeout
 			friction = temp_friction
+			var push_strength = 250000
+			velocity += opp * push_strength * delta
+			engine_power = 0
+			friction = 1000
+			await get_tree().create_timer(0.5).timeout
+			is_pushing_state = false
+			friction = lerpf(friction, temp_friction, 0.1)
 
 		#is_pushing_state = false
 		
 func get_input():
 	var turn = Input.get_action_strength("steer_right") - Input.get_action_strength("steer_left")
 
-	steer_direction = turn * deg_to_rad(steer_angle)
+	if not is_pushing_state:
+		steer_direction = turn * deg_to_rad(steer_angle)
 	
 	acceleration = transform.x * engine_power
 	if Input.is_action_pressed("accelerate"):
