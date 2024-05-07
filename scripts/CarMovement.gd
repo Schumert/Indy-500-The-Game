@@ -67,7 +67,7 @@ var temp_friction = friction
 func _pushed_off(opp, delta):
 	if is_pushing_state:
 			friction = temp_friction
-			var push_strength = 250000
+			var push_strength = 50000
 			velocity += opp * push_strength * delta
 			engine_power = 0
 			friction = 1000
@@ -103,7 +103,8 @@ func steering(delta):
 	var back_wheel = position - transform.x * wheel_base / 2
 
 	back_wheel += velocity * delta
-	front_wheel += velocity.rotated(steer_direction) * delta
+	if  not is_pushing_state:
+		front_wheel += velocity.rotated(steer_direction) * delta
 
 	#print("buu")
 	#print( (Vector2(2,5) - Vector2(1,1)).normalized())
