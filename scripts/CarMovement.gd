@@ -47,10 +47,16 @@ func _physics_process(delta):
 		var collision = get_slide_collision(i)
 		if collision.get_collider().is_in_group("player") and raycast.is_colliding():
 			is_pushing_state = true
-			collision_info = collision.get_normal()
 			var direction_to_collision = collision.get_position() - position
 			direction_to_collision = -direction_to_collision.normalized()
 			collision_info = direction_to_collision
+
+	
+	# var collision = move_and_collide(velocity * delta)
+	# if collision:
+	# 		var reflect = collision.get_remainder().bounce(collision.get_normal())
+	# 		velocity = velocity.bounce(collision.get_normal())
+	# 		move_and_collide(reflect * 5)
 			
 			
 	_pushed_off(collision_info, delta)
@@ -73,15 +79,17 @@ func _pushed_off(opp, delta):
 			friction = 1000
 			await get_tree().create_timer(0.5).timeout
 			is_pushing_state = false
-			friction = lerpf(friction, temp_friction, 0.1)
+			friction = temp_friction
 
 		#is_pushing_state = false
 		
 func get_input():
 	var turn = Input.get_action_strength("steer_right") - Input.get_action_strength("steer_left")
 
-	if not is_pushing_state:
-		steer_direction = turn * deg_to_rad(steer_angle)
+	if is_pushing_state:
+		turn = 0
+
+	steer_direction = turn * deg_to_rad(steer_angle)
 	
 	acceleration = transform.x * engine_power
 	if Input.is_action_pressed("accelerate"):
@@ -103,8 +111,8 @@ func steering(delta):
 	var back_wheel = position - transform.x * wheel_base / 2
 
 	back_wheel += velocity * delta
-	if  not is_pushing_state:
-		front_wheel += velocity.rotated(steer_direction) * delta
+	front_wheel += velocity.rotated(steer_direction) * delta
+
 
 	#print("buu")
 	#print( (Vector2(2,5) - Vector2(1,1)).normalized())
@@ -126,9 +134,6 @@ func steering(delta):
 		steer_angle = old_steer_angle
 
 	
-		
-
-	
 	var d = car_heading.dot(velocity.normalized())
 	if d > 0:	
 		velocity = lerp(velocity, car_heading * velocity.length(), traction * delta)
@@ -144,3 +149,5 @@ func apply_friction(delta):
 	var friction_force = velocity * friction * delta
 	var drag_force = velocity * velocity.length() * drag * delta
 	acceleration += friction_force + drag_force
+	
+	

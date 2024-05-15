@@ -1,12 +1,12 @@
 [gd_scene load_steps=6 format=3 uid="uid://bt1j304qy5pj5"]
 
 [ext_resource type="Script" path="res://scripts/game_world.gd" id="1_syn2n"]
+[ext_resource type="Texture2D" uid="uid://det01epi5bvul" path="res://icon.svg" id="2_lcfit"]
 [ext_resource type="PackedScene" uid="uid://beboy5mio57ds" path="res://test_map.tscn" id="2_o6yq4"]
-[ext_resource type="Texture2D" uid="uid://det01epi5bvul" path="res://icon.svg" id="3_3nsrd"]
 [ext_resource type="Script" path="res://scripts/gui.gd" id="3_fxbec"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_0sgce"]
-size = Vector2(662, 151)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1w64o"]
+size = Vector2(1503, 334)
 
 [node name="main" type="Node2D"]
 
@@ -16,17 +16,18 @@ script = ExtResource("1_syn2n")
 [node name="TestMap" parent="World" instance=ExtResource("2_o6yq4")]
 
 [node name="NextLevel" type="Area2D" parent="World"]
-position = Vector2(-152, -1390)
+position = Vector2(0, -1935)
+scale = Vector2(0.996988, 1)
 collision_mask = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="World/NextLevel"]
-position = Vector2(162, 40.5)
-shape = SubResource("RectangleShape2D_0sgce")
+position = Vector2(-7.5, 157)
+shape = SubResource("RectangleShape2D_1w64o")
 
-[node name="Sprite2D" type="Sprite2D" parent="World/NextLevel"]
-position = Vector2(164.5, 39)
-scale = Vector2(5.32031, 1.21875)
-texture = ExtResource("3_3nsrd")
+[node name="Sprite2D" type="Sprite2D" parent="World/NextLevel/CollisionShape2D"]
+position = Vector2(7.5, 7)
+scale = Vector2(11.76, 2.28)
+texture = ExtResource("2_lcfit")
 
 [node name="GUI" type="Control" parent="."]
 layout_mode = 3
