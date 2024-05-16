@@ -5,15 +5,17 @@ var steer_angle = 15
 var steer_angle_fast = 12
 var steer_angle_very_fast = 8
 var acceleration = Vector2.ZERO
-var friction = -55
+var game_world_ref
 var drag = -0.06
-var engine_power = 0
+var rpm = 0
+var engine_power = 10000
 var wheel_base = 70
 var braking = -450
 var max_speed_reverse = 750
 var slip_speed = 1500 #type of: vel. length
 var traction_fast = 3
 var traction_slow = 8
+
 
 var is_pushing_state:=false
 
@@ -30,6 +32,7 @@ var steer_direction
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	game_world_ref = get_parent()
 	raycast = $RayCast2D
 	raycast.enabled = true
 
@@ -45,7 +48,7 @@ func _physics_process(delta):
 	move_and_slide()
 	for i in get_slide_collision_count():
 		var collision = get_slide_collision(i)
-		if collision.get_collider().is_in_group("player") and raycast.is_colliding():
+		if collision.get_collider().is_in_group("wall") and raycast.is_colliding():
 			is_pushing_state = true
 			var direction_to_collision = collision.get_position() - position
 			direction_to_collision = -direction_to_collision.normalized()
@@ -65,21 +68,21 @@ func _physics_process(delta):
 
 	
 	#print(velocity.length())
-	print(friction)
+	print(game_world_ref.friction)
 	#print(steer_angle)
 	
 	
-var temp_friction = friction
+
 func _pushed_off(opp, delta):
 	if is_pushing_state:
-			friction = temp_friction
+			game_world_ref.friction = game_world_ref.temp_friction
 			var push_strength = 50000
 			velocity += opp * push_strength * delta
-			engine_power = 0
-			friction = 1000
+			rpm = 0
+			game_world_ref.friction = 1000
 			await get_tree().create_timer(0.5).timeout
 			is_pushing_state = false
-			friction = temp_friction
+			game_world_ref.friction = game_world_ref.temp_friction
 
 		#is_pushing_state = false
 		
@@ -91,17 +94,17 @@ func get_input():
 
 	steer_direction = turn * deg_to_rad(steer_angle)
 	
-	acceleration = transform.x * engine_power
+	acceleration = transform.x * rpm
 	if Input.is_action_pressed("accelerate"):
-		engine_power = lerpf(engine_power, 7500, 0.005)
+		rpm = lerpf(rpm, engine_power, 0.005)
 		
 	else:
-		engine_power = lerpf(engine_power, 0, 0.01)
+		rpm = lerpf(rpm, 0, 0.05)
 
 	
 	
 	if Input.is_action_pressed("brake"):
-		engine_power = lerpf(engine_power, 0, 0.1)
+		rpm = lerpf(rpm, 0, 0.1)
 		acceleration = transform.x * braking
 
 var old_steer_angle = steer_angle
@@ -146,8 +149,15 @@ func apply_friction(delta):
 	if  acceleration == Vector2.ZERO and velocity.length() < 50:
 		velocity = Vector2.ZERO
 	
-	var friction_force = velocity * friction * delta
+	var friction_force = velocity * game_world_ref.friction * delta
 	var drag_force = velocity * velocity.length() * drag * delta
 	acceleration += friction_force + drag_force
+
+	if game_world_ref.friction  < -300:
+		engine_power = 2000
+	else:
+		engine_power = 15000
+
+
 	
 	

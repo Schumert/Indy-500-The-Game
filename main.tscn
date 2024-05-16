@@ -1,9 +1,9 @@
 [gd_scene load_steps=6 format=3 uid="uid://bt1j304qy5pj5"]
 
 [ext_resource type="Script" path="res://scripts/game_world.gd" id="1_syn2n"]
-[ext_resource type="PackedScene" uid="uid://beboy5mio57ds" path="res://test_map.tscn" id="2_o6yq4"]
 [ext_resource type="Texture2D" uid="uid://det01epi5bvul" path="res://icon.svg" id="3_3nsrd"]
 [ext_resource type="Script" path="res://scripts/gui.gd" id="3_fxbec"]
+[ext_resource type="PackedScene" uid="uid://b60l60ii2s0og" path="res://map1.tscn" id="3_hmj5u"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_0sgce"]
 size = Vector2(662, 151)
@@ -12,11 +12,10 @@ size = Vector2(662, 151)
 
 [node name="World" type="Node2D" parent="."]
 script = ExtResource("1_syn2n")
-
-[node name="TestMap" parent="World" instance=ExtResource("2_o6yq4")]
+map = ExtResource("3_hmj5u")
 
 [node name="NextLevel" type="Area2D" parent="World"]
-position = Vector2(-152, -1390)
+position = Vector2(4737, -1390)
 collision_mask = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="World/NextLevel"]
@@ -28,6 +27,11 @@ position = Vector2(164.5, 39)
 scale = Vector2(5.32031, 1.21875)
 texture = ExtResource("3_3nsrd")
 
+[node name="StartPoint" type="Node2D" parent="World"]
+position = Vector2(-3, 720)
+
+[node name="map1" parent="World" instance=ExtResource("3_hmj5u")]
+
 [node name="GUI" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 0
@@ -38,5 +42,3 @@ script = ExtResource("3_fxbec")
 [node name="CanvasLayer" type="CanvasLayer" parent="GUI"]
 
 [connection signal="body_entered" from="World/NextLevel" to="World" method="next_level"]
-
-[editable path="World/TestMap"]
