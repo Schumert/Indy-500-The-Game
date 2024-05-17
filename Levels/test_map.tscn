@@ -1,9 +1,9 @@
 [gd_scene load_steps=11 format=3 uid="uid://beboy5mio57ds"]
 
-[ext_resource type="PackedScene" uid="uid://b2tkelxw6q7v0" path="res://tile_map.tscn" id="1_g76uj"]
-[ext_resource type="Texture2D" uid="uid://det01epi5bvul" path="res://icon.svg" id="2_n73ee"]
-[ext_resource type="PackedScene" uid="uid://6srebw0k0ou0" path="res://coin.tscn" id="3_ipr2e"]
-[ext_resource type="Script" path="res://scripts/obstacle.gd" id="4_87wqt"]
+[ext_resource type="PackedScene" uid="uid://b2tkelxw6q7v0" path="res://tile_map.tscn" id="1_ssbkh"]
+[ext_resource type="Texture2D" uid="uid://det01epi5bvul" path="res://icon.svg" id="2_xm5tj"]
+[ext_resource type="PackedScene" uid="uid://6srebw0k0ou0" path="res://coin.tscn" id="3_1xct3"]
+[ext_resource type="Script" path="res://scripts/obstacle.gd" id="4_0qrfn"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_js8f4"]
 size = Vector2(127, 127)
@@ -24,7 +24,7 @@ size = Vector2(127.5, 127)
 
 [node name="TestMap" type="Node2D"]
 
-[node name="TileMap" parent="." instance=ExtResource("1_g76uj")]
+[node name="TileMap" parent="." instance=ExtResource("1_ssbkh")]
 
 [node name="Area2D" type="StaticBody2D" parent="." groups=["wall"]]
 position = Vector2(-1638, -9)
@@ -36,7 +36,7 @@ shape = SubResource("RectangleShape2D_js8f4")
 
 [node name="Sprite2D" type="Sprite2D" parent="Area2D"]
 position = Vector2(0, -5)
-texture = ExtResource("2_n73ee")
+texture = ExtResource("2_xm5tj")
 
 [node name="wall" type="StaticBody2D" parent="."]
 position = Vector2(0, -428)
@@ -61,16 +61,16 @@ position = Vector2(1152, 424)
 shape = SubResource("WorldBoundaryShape2D_v5dax")
 disabled = true
 
-[node name="coin" parent="." instance=ExtResource("3_ipr2e")]
+[node name="coin" parent="." instance=ExtResource("3_1xct3")]
 
 [node name="obstacle" type="Area2D" parent="."]
 position = Vector2(71, -3)
 collision_layer = 2
 collision_mask = 2
-script = ExtResource("4_87wqt")
+script = ExtResource("4_0qrfn")
 
 [node name="Sprite2D" type="Sprite2D" parent="obstacle"]
-texture = ExtResource("2_n73ee")
+texture = ExtResource("2_xm5tj")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="obstacle"]
 position = Vector2(0.25, 0)

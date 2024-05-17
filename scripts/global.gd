@@ -7,6 +7,8 @@ var current_state = GameState.START
 enum GameModes { RACE, TAG, COLLECT, WAR}
 var current_mode = GameModes.RACE
 
+var player
+
 
 
 func change_state(new_state):

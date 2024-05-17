@@ -1,7 +1,7 @@
 [gd_scene load_steps=12 format=3 uid="uid://b60l60ii2s0og"]
 
-[ext_resource type="Script" path="res://scripts/grass.gd" id="1_e2scc"]
-[ext_resource type="Texture2D" uid="uid://3ueveoaf4we2" path="res://whiteonetoone.png" id="2_yof5o"]
+[ext_resource type="Script" path="res://scripts/grass.gd" id="1_0wcqe"]
+[ext_resource type="Texture2D" uid="uid://3ueveoaf4we2" path="res://whiteonetoone.png" id="2_0ta1t"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_d0drd"]
 size = Vector2(1706.86, 544.573)
@@ -33,17 +33,17 @@ size = Vector2(601.714, 21.7857)
 [node name="map1" type="Node2D"]
 scale = Vector2(7, 7)
 
-[node name="BackgroundGrass" type="Area2D" parent="."]
+[node name="BackgroundGrass" type="Area2D" parent="." groups=["grass"]]
 position = Vector2(-2.71429, -229.714)
 rotation = -3.14159
-collision_mask = 2
-script = ExtResource("1_e2scc")
+collision_mask = 10
+script = ExtResource("1_0wcqe")
 
 [node name="Sprite2D" type="Sprite2D" parent="BackgroundGrass"]
 modulate = Color(0.184314, 0.623529, 0, 1)
 position = Vector2(-2.86102e-05, -226.714)
 scale = Vector2(5034.31, 4358.86)
-texture = ExtResource("2_yof5o")
+texture = ExtResource("2_0ta1t")
 
 [node name="CollisionShape2D4" type="CollisionShape2D" parent="BackgroundGrass"]
 position = Vector2(574.286, -206.143)
@@ -65,7 +65,6 @@ shape = SubResource("RectangleShape2D_bcb66")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="BackgroundGrass"]
 position = Vector2(-3.85703, 308.857)
-scale = Vector2(1, 1)
 shape = SubResource("RectangleShape2D_05qkh")
 
 [node name="Road" type="Node2D" parent="."]
@@ -75,14 +74,21 @@ scale = Vector2(100, 100)
 modulate = Color(0.215686, 0.207843, 0.192157, 1)
 position = Vector2(5.96046e-08, 0)
 scale = Vector2(6, 4)
-texture = ExtResource("2_yof5o")
+texture = ExtResource("2_0ta1t")
 
-[node name="Grass" type="Area2D" parent="."]
+[node name="PenaltyRequirement" type="Timer" parent="."]
+one_shot = true
+
+[node name="PenaltyTime" type="Timer" parent="."]
+wait_time = 4.0
+one_shot = true
+
+[node name="Grass" type="Area2D" parent="." groups=["grass"]]
 position = Vector2(4.76837e-07, -1.90735e-06)
 rotation = 3.14159
 scale = Vector2(150, 70)
-collision_mask = 2
-script = ExtResource("1_e2scc")
+collision_mask = 10
+script = ExtResource("1_0wcqe")
 
 [node name="MidLeft" type="CollisionShape2D" parent="Grass"]
 position = Vector2(0.66, 0.00714281)
@@ -95,7 +101,7 @@ modulate = Color(0.184314, 0.623529, 0, 1)
 position = Vector2(2.28882e-05, 0.499987)
 rotation = -3.14159
 scale = Vector2(48.75, 115.5)
-texture = ExtResource("2_yof5o")
+texture = ExtResource("2_0ta1t")
 
 [node name="MidRight" type="CollisionShape2D" parent="Grass"]
 position = Vector2(-0.66, 0.00714302)
@@ -108,7 +114,7 @@ modulate = Color(0.184314, 0.623529, 0, 1)
 position = Vector2(-4.57764e-05, 0.499997)
 rotation = -3.14159
 scale = Vector2(48.75, 115.5)
-texture = ExtResource("2_yof5o")
+texture = ExtResource("2_0ta1t")
 
 [node name="Mid" type="CollisionShape2D" parent="Grass"]
 position = Vector2(3.17891e-09, -3.66959e-08)
@@ -121,12 +127,12 @@ modulate = Color(0.184314, 0.623529, 0, 1)
 position = Vector2(-8.71931e-06, -2.60277e-06)
 rotation = -3.14159
 scale = Vector2(150, 70)
-texture = ExtResource("2_yof5o")
+texture = ExtResource("2_0ta1t")
 
 [node name="Bottom" type="CollisionShape2D" parent="Grass"]
-position = Vector2(-0.00666666, -2.43878)
+position = Vector2(-0.000949383, -2.44286)
 rotation = 3.14159
-scale = Vector2(0.00133333, 0.0119374)
+scale = Vector2(0.00227504, 0.0119373)
 shape = SubResource("RectangleShape2D_bag1x")
 
 [node name="Sprite2D" type="Sprite2D" parent="Grass/Bottom"]
@@ -134,12 +140,12 @@ modulate = Color(0.184314, 0.623529, 0, 1)
 position = Vector2(-8.71931e-06, -2.60277e-06)
 rotation = -3.14159
 scale = Vector2(150, 69.8527)
-texture = ExtResource("2_yof5o")
+texture = ExtResource("2_0ta1t")
 
 [node name="Up" type="CollisionShape2D" parent="Grass"]
 position = Vector2(-0.000953197, 2.44286)
 rotation = 3.14159
-scale = Vector2(0.00133333, 0.0119374)
+scale = Vector2(0.00220952, 0.0119374)
 shape = SubResource("RectangleShape2D_bag1x")
 
 [node name="Sprite2D" type="Sprite2D" parent="Grass/Up"]
@@ -147,20 +153,18 @@ modulate = Color(0.184314, 0.623529, 0, 1)
 position = Vector2(-8.71931e-06, -2.60277e-06)
 rotation = -3.14159
 scale = Vector2(150, 69.8527)
-texture = ExtResource("2_yof5o")
+texture = ExtResource("2_0ta1t")
 
 [node name="Walls" type="StaticBody2D" parent="." groups=["wall"]]
 collision_mask = 2
 
 [node name="wall2" type="CollisionShape2D" parent="Walls"]
-position = Vector2(0, -300)
-scale = Vector2(1, 1)
+position = Vector2(0, -228.143)
 shape = SubResource("RectangleShape2D_gco36")
 
 [node name="wall3" type="CollisionShape2D" parent="Walls"]
 position = Vector2(-360, 0)
 rotation = 1.5708
-scale = Vector2(1, 1)
 shape = SubResource("RectangleShape2D_gco36")
 
 [node name="wall4" type="CollisionShape2D" parent="Walls"]
@@ -170,11 +174,12 @@ scale = Vector2(0.999999, 0.999999)
 shape = SubResource("RectangleShape2D_gco36")
 
 [node name="wall1" type="CollisionShape2D" parent="Walls"]
-position = Vector2(0, 300)
-scale = Vector2(1, 1)
+position = Vector2(0, 226.429)
 shape = SubResource("RectangleShape2D_gco36")
 
 [connection signal="body_entered" from="BackgroundGrass" to="BackgroundGrass" method="on_offroad_enter"]
 [connection signal="body_exited" from="BackgroundGrass" to="BackgroundGrass" method="on_offrad_exit"]
+[connection signal="timeout" from="PenaltyRequirement" to="Grass" method="on_time_out_penalty_on"]
+[connection signal="timeout" from="PenaltyTime" to="Grass" method="on_time_out_get_normal"]
 [connection signal="body_entered" from="Grass" to="Grass" method="on_offroad_enter"]
 [connection signal="body_exited" from="Grass" to="Grass" method="on_offrad_exit"]

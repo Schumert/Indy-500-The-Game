@@ -12,6 +12,20 @@ size = Vector2(662, 151)
 
 [node name="World" type="Node2D" parent="."]
 script = ExtResource("1_syn2n")
+map = ExtResource("3_hmj5u")
+
+[node name="NextLevel" type="Area2D" parent="World"]
+position = Vector2(4737, -1390)
+collision_mask = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="World/NextLevel"]
+position = Vector2(162, 40.5)
+shape = SubResource("RectangleShape2D_0sgce")
+
+[node name="Sprite2D" type="Sprite2D" parent="World/NextLevel"]
+position = Vector2(164.5, 39)
+scale = Vector2(5.32031, 1.21875)
+texture = ExtResource("3_3nsrd")
 
 [node name="StartPoint" type="Node2D" parent="World"]
 position = Vector2(-3, 720)
@@ -30,17 +44,4 @@ script = ExtResource("3_fxbec")
 [node name="Camera2D" type="Camera2D" parent="."]
 zoom = Vector2(0.215, 0.215)
 
-[node name="NextLevel" type="Area2D" parent="."]
-position = Vector2(2296, -1039)
-collision_mask = 3
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="NextLevel"]
-position = Vector2(162, 40.5)
-shape = SubResource("RectangleShape2D_0sgce")
-
-[node name="Sprite2D" type="Sprite2D" parent="NextLevel"]
-position = Vector2(164.5, 39)
-scale = Vector2(5.32031, 1.21875)
-texture = ExtResource("3_3nsrd")
-
-[connection signal="body_entered" from="NextLevel" to="World" method="next_level"]
+[connection signal="body_entered" from="World/NextLevel" to="World" method="next_level"]

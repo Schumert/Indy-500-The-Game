@@ -18,7 +18,7 @@ var traction_slow = 8
 
 
 var is_pushing_state:=false
-
+var is_penalty_on:= false
 # var traction_handbrake = 0
 
 # var handbraking_fast = -50
@@ -35,6 +35,8 @@ func _ready():
 	game_world_ref = get_parent()
 	raycast = $RayCast2D
 	raycast.enabled = true
+
+	Global.player = self
 
 
 var collision_info = Vector2.ZERO
@@ -54,6 +56,9 @@ func _physics_process(delta):
 			direction_to_collision = -direction_to_collision.normalized()
 			collision_info = direction_to_collision
 
+	if is_penalty_on:
+		grass_penalty()
+
 	
 	# var collision = move_and_collide(velocity * delta)
 	# if collision:
@@ -68,8 +73,9 @@ func _physics_process(delta):
 
 	
 	#print(velocity.length())
-	print(game_world_ref.friction)
+	#print(game_world_ref.friction)
 	#print(steer_angle)
+	#print(rpm)
 	
 	
 
@@ -153,10 +159,11 @@ func apply_friction(delta):
 	var drag_force = velocity * velocity.length() * drag * delta
 	acceleration += friction_force + drag_force
 
-	if game_world_ref.friction  < -300:
-		engine_power = 2000
-	else:
-		engine_power = 15000
+func grass_penalty():
+	if rpm > 500:
+		rpm = 500
+
+	
 
 
 	
