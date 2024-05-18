@@ -27,7 +27,15 @@ theme_override_constants/margin_right = 20
 [node name="GridContainer" type="GridContainer" parent="PanelContainer/MarginContainer"]
 layout_mode = 2
 
+[node name="INFO" type="Label" parent="PanelContainer/MarginContainer/GridContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.360784, 0, 0, 1)
+theme_override_font_sizes/font_size = 30
+text = "RACE"
+horizontal_alignment = 1
+
 [node name="VelocityLength" type="Label" parent="PanelContainer/MarginContainer/GridContainer"]
+visible = false
 layout_mode = 2
 text = "VelocityLength: 0"
 

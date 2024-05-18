@@ -17,7 +17,8 @@ func _ready():
 	coin = preload("res://coin.tscn")
 
 	Global.change_state(Global.GameState.PLAYING)
-	Global.set_mode(Global.GameModes.RACE)
+	Global.set_mode(Global.GameModes.COLLECT)
+	Global.gui.update_players_info()
 
 	load_level("map1")
 	

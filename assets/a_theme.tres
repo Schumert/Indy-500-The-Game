@@ -1,7 +1,22 @@
-[gd_resource type="Theme" load_steps=2 format=3 uid="uid://dqf6yc3ol1pwb"]
+[gd_resource type="Theme" load_steps=4 format=3 uid="uid://dqf6yc3ol1pwb"]
 
 [ext_resource type="FontFile" uid="uid://bqdyi6cp0g816" path="res://assets/Pandry Demo.ttf" id="1_ug6mc"]
+[ext_resource type="Texture2D" uid="uid://bhkc66ue3hsah" path="res://assets/Item_Frame_Kit/Item_Frame_Kit/6.png" id="2_84f4w"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_quvvh"]
+texture = ExtResource("2_84f4w")
+texture_margin_left = 24.0
+texture_margin_top = 24.0
+texture_margin_right = 24.0
+texture_margin_bottom = 24.0
+expand_margin_left = 50.0
+expand_margin_top = 50.0
+expand_margin_right = 50.0
+expand_margin_bottom = 50.0
+modulate_color = Color(1, 1, 1, 0.411765)
 
 [resource]
-Label/font_sizes/font_size = 32
+Label/colors/font_color = Color(0, 0, 0, 1)
+Label/font_sizes/font_size = 20
 Label/fonts/font = ExtResource("1_ug6mc")
+PanelContainer/styles/panel = SubResource("StyleBoxTexture_quvvh")
