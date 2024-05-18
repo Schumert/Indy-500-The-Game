@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://du361yftux08x"]
+
+[node name="Camera2D" type="Camera2D"]
+position = Vector2(966, 533)
+rotation_smoothing_enabled = true

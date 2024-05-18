@@ -1,8 +1,8 @@
 [gd_scene load_steps=6 format=3 uid="uid://bt1j304qy5pj5"]
 
+[ext_resource type="PackedScene" uid="uid://blwr34e3hi8g6" path="res://gui.tscn" id="1_pgw7q"]
 [ext_resource type="Script" path="res://scripts/game_world.gd" id="1_syn2n"]
 [ext_resource type="Texture2D" uid="uid://det01epi5bvul" path="res://icon.svg" id="3_3nsrd"]
-[ext_resource type="Script" path="res://scripts/gui.gd" id="3_fxbec"]
 [ext_resource type="PackedScene" uid="uid://b60l60ii2s0og" path="res://Levels/map1.tscn" id="3_hmj5u"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_0sgce"]
@@ -10,21 +10,9 @@ size = Vector2(662, 151)
 
 [node name="main" type="Node2D"]
 
-[node name="GUI" type="Control" parent="."]
-layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
-script = ExtResource("3_fxbec")
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="CanvasLayer" type="CanvasLayer" parent="GUI"]
-
-[node name="VelocityLength" type="Label" parent="GUI/CanvasLayer"]
-offset_left = 321.0
-offset_top = 83.0
-offset_right = 440.0
-offset_bottom = 109.0
-text = "VelocityLength: 0"
+[node name="GUI" parent="CanvasLayer" instance=ExtResource("1_pgw7q")]
 
 [node name="World" type="Node2D" parent="."]
 script = ExtResource("1_syn2n")

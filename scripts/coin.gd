@@ -20,9 +20,9 @@ func _on_body_entered(body:Node2D):
 
 func set_its_location():
 	var rng = RandomNumberGenerator.new()
-	x_pos = rng.randi_range(-2000, 2000)
-	y_pos = rng.randi_range(-1300, 1300)
-	position = Vector2(x_pos, -y_pos)
+	x_pos = rng.randi_range(300, 1660) #300, 1660 / 600, 1300 - left is normal, right is test
+	y_pos = rng.randi_range(100, 1000) #100, 1000 / 400, 600 - left is normal, right is test
+	position = Vector2(x_pos, y_pos)
 
 	await get_tree().create_timer(0.05).timeout
 	overlapping_areas = get_overlapping_areas()

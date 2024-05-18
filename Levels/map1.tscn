@@ -1,9 +1,9 @@
 [gd_scene load_steps=20 format=3 uid="uid://b60l60ii2s0og"]
 
 [ext_resource type="Script" path="res://scripts/grass.gd" id="1_0wcqe"]
-[ext_resource type="Texture2D" uid="uid://3ueveoaf4we2" path="res://whiteonetoone.png" id="2_0ta1t"]
 [ext_resource type="Script" path="res://scripts/RaceManager.gd" id="3_m8sbt"]
 [ext_resource type="Script" path="res://scripts/checkpoint.gd" id="3_s6rui"]
+[ext_resource type="Texture2D" uid="uid://3ueveoaf4we2" path="res://assets/whiteonetoone.png" id="4_aasoq"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_d0drd"]
 size = Vector2(1706.86, 544.573)
@@ -30,7 +30,7 @@ size = Vector2(150, 70)
 size = Vector2(150, 70)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_gco36"]
-size = Vector2(601.714, 21.7857)
+size = Vector2(804.742, 21.7857)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_bxss8"]
 size = Vector2(201, 20)
@@ -80,46 +80,38 @@ script = ExtResource("1_0wcqe")
 modulate = Color(0.184314, 0.623529, 0, 1)
 position = Vector2(-2.86102e-05, -226.714)
 scale = Vector2(5034.31, 4358.86)
-texture = ExtResource("2_0ta1t")
+texture = ExtResource("4_aasoq")
 
 [node name="CollisionShape2D4" type="CollisionShape2D" parent="BackgroundGrass"]
-position = Vector2(574.286, -206.143)
+position = Vector2(655.43, -187.654)
 rotation = 1.5708
 scale = Vector2(0.999997, 0.999997)
 shape = SubResource("RectangleShape2D_d0drd")
 
 [node name="CollisionShape2D3" type="CollisionShape2D" parent="BackgroundGrass"]
-position = Vector2(47.2857, -744.143)
+position = Vector2(47.5932, -738.58)
 rotation = -3.14159
 scale = Vector2(0.999999, 0.999999)
 shape = SubResource("RectangleShape2D_kmsvd")
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="BackgroundGrass"]
-position = Vector2(-581.357, -232.5)
+position = Vector2(-650.962, -237.135)
 rotation = 1.5708
 scale = Vector2(0.999999, 0.999999)
 shape = SubResource("RectangleShape2D_bcb66")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="BackgroundGrass"]
-position = Vector2(-3.85703, 308.857)
+position = Vector2(-9.72376, 319.152)
 shape = SubResource("RectangleShape2D_05qkh")
 
 [node name="Road" type="Node2D" parent="."]
-scale = Vector2(100, 100)
+position = Vector2(-3.05176e-05, 0)
 
 [node name="Sprite2D" type="Sprite2D" parent="Road"]
 modulate = Color(0.215686, 0.207843, 0.192157, 1)
-position = Vector2(5.96046e-08, 0)
-scale = Vector2(6, 4)
-texture = ExtResource("2_0ta1t")
-
-[node name="PenaltyRequirement" type="Timer" parent="."]
-wait_time = 0.5
-one_shot = true
-
-[node name="PenaltyTime" type="Timer" parent="."]
-wait_time = 4.0
-one_shot = true
+position = Vector2(-9.07217, -7.01031)
+scale = Vector2(750, 400)
+texture = ExtResource("4_aasoq")
 
 [node name="Grass" type="Area2D" parent="." groups=["grass"]]
 position = Vector2(4.76837e-07, -1.90735e-06)
@@ -129,7 +121,7 @@ collision_mask = 10
 script = ExtResource("1_0wcqe")
 
 [node name="MidLeft" type="CollisionShape2D" parent="Grass"]
-position = Vector2(0.66, 0.00714281)
+position = Vector2(0.882477, 0.00714111)
 rotation = 3.14159
 scale = Vector2(0.00666667, 0.0142857)
 shape = SubResource("RectangleShape2D_2fqpw")
@@ -139,33 +131,30 @@ modulate = Color(0.184314, 0.623529, 0, 1)
 position = Vector2(2.28882e-05, 0.499987)
 rotation = -3.14159
 scale = Vector2(48.75, 115.5)
-texture = ExtResource("2_0ta1t")
+texture = ExtResource("4_aasoq")
+
+[node name="Sprite2D2" type="Sprite2D" parent="Grass"]
+modulate = Color(0.184314, 0.623529, 0, 1)
+position = Vector2(-0.885223, -1.43051e-06)
+scale = Vector2(0.325, 1.65)
+texture = ExtResource("4_aasoq")
 
 [node name="MidRight" type="CollisionShape2D" parent="Grass"]
-position = Vector2(-0.66, 0.00714302)
+position = Vector2(-0.885223, 0.00714111)
 rotation = 3.14159
 scale = Vector2(0.00666667, 0.0142857)
 shape = SubResource("RectangleShape2D_w2mix")
 
-[node name="Sprite2D2" type="Sprite2D" parent="Grass/MidRight"]
-modulate = Color(0.184314, 0.623529, 0, 1)
-position = Vector2(-4.57764e-05, 0.499997)
-rotation = -3.14159
-scale = Vector2(48.75, 115.5)
-texture = ExtResource("2_0ta1t")
-
 [node name="Mid" type="CollisionShape2D" parent="Grass"]
-position = Vector2(3.17891e-09, -3.66959e-08)
 rotation = 3.14159
-scale = Vector2(0.00666667, 0.0142857)
+scale = Vector2(0.00963574, 0.0142857)
 shape = SubResource("RectangleShape2D_etxl2")
 
-[node name="Sprite2D" type="Sprite2D" parent="Grass/Mid"]
+[node name="Sprite2D" type="Sprite2D" parent="Grass"]
 modulate = Color(0.184314, 0.623529, 0, 1)
-position = Vector2(-8.71931e-06, -2.60277e-06)
-rotation = -3.14159
-scale = Vector2(150, 70)
-texture = ExtResource("2_0ta1t")
+position = Vector2(-0.00274897, 0)
+scale = Vector2(1.5, 1)
+texture = ExtResource("4_aasoq")
 
 [node name="Bottom" type="CollisionShape2D" parent="Grass"]
 position = Vector2(-0.000949383, -2.44286)
@@ -178,10 +167,10 @@ modulate = Color(0.184314, 0.623529, 0, 1)
 position = Vector2(-8.71931e-06, -2.60277e-06)
 rotation = -3.14159
 scale = Vector2(150, 69.8527)
-texture = ExtResource("2_0ta1t")
+texture = ExtResource("4_aasoq")
 
 [node name="Up" type="CollisionShape2D" parent="Grass"]
-position = Vector2(-0.000953197, 2.44286)
+position = Vector2(0, 2.60972)
 rotation = 3.14159
 scale = Vector2(0.00220952, 0.0119374)
 shape = SubResource("RectangleShape2D_bag1x")
@@ -191,36 +180,36 @@ modulate = Color(0.184314, 0.623529, 0, 1)
 position = Vector2(-8.71931e-06, -2.60277e-06)
 rotation = -3.14159
 scale = Vector2(150, 69.8527)
-texture = ExtResource("2_0ta1t")
+texture = ExtResource("4_aasoq")
 
 [node name="Walls" type="StaticBody2D" parent="." groups=["wall"]]
 collision_mask = 2
 
 [node name="wall2" type="CollisionShape2D" parent="Walls"]
-position = Vector2(0, -228.143)
+position = Vector2(-5.77322, -240.412)
 shape = SubResource("RectangleShape2D_gco36")
 
 [node name="wall3" type="CollisionShape2D" parent="Walls"]
-position = Vector2(-360, 0)
+position = Vector2(-424.33, -4.12372)
 rotation = 1.5708
 shape = SubResource("RectangleShape2D_gco36")
 
 [node name="wall4" type="CollisionShape2D" parent="Walls"]
-position = Vector2(360, 0)
+position = Vector2(411.546, -1.23712)
 rotation = 1.5708
 scale = Vector2(0.999999, 0.999999)
 shape = SubResource("RectangleShape2D_gco36")
 
 [node name="wall1" type="CollisionShape2D" parent="Walls"]
-position = Vector2(0, 226.429)
+position = Vector2(-9.89694, 230.928)
 shape = SubResource("RectangleShape2D_gco36")
 
 [node name="RaceManager" type="Node2D" parent="."]
 script = ExtResource("3_m8sbt")
 
 [node name="Checkpoint1" type="Area2D" parent="RaceManager"]
-position = Vector2(219.143, -0.142857)
-scale = Vector2(1, 1)
+position = Vector2(244.948, -0.824742)
+scale = Vector2(1.47835, 1)
 script = ExtResource("3_s6rui")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="RaceManager/Checkpoint1"]
@@ -229,8 +218,8 @@ scale = Vector2(1, 1)
 shape = SubResource("RectangleShape2D_bxss8")
 
 [node name="Checkpoint3" type="Area2D" parent="RaceManager"]
-position = Vector2(-220.857, 0)
-scale = Vector2(1, 1)
+position = Vector2(-267.217, 0)
+scale = Vector2(1.46185, 1)
 script = ExtResource("3_s6rui")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="RaceManager/Checkpoint3"]
@@ -264,8 +253,6 @@ shape = SubResource("RectangleShape2D_7m3qr")
 
 [connection signal="body_entered" from="BackgroundGrass" to="BackgroundGrass" method="on_offroad_enter"]
 [connection signal="body_exited" from="BackgroundGrass" to="BackgroundGrass" method="on_offrad_exit"]
-[connection signal="timeout" from="PenaltyRequirement" to="Grass" method="on_time_out_penalty_on"]
-[connection signal="timeout" from="PenaltyTime" to="Grass" method="on_time_out_get_normal"]
 [connection signal="body_entered" from="Grass" to="Grass" method="on_offroad_enter"]
 [connection signal="body_exited" from="Grass" to="Grass" method="on_offrad_exit"]
 [connection signal="body_entered" from="RaceManager/Checkpoint1" to="RaceManager/Checkpoint1" method="_on_body_entered"]

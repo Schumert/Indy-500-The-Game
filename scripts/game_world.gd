@@ -2,8 +2,7 @@ extends Node
 
 var player
 var player_instance
-var friction = -10
-var temp_friction = friction
+
 var level_instance
 var coin
 var coin_instance
@@ -25,6 +24,9 @@ func _ready():
 	rng = RandomNumberGenerator.new()
 
 	if Global.current_mode == Global.GameModes.COLLECT:
+		coin_instance = coin.instantiate()
+		add_child(coin_instance)
+		coin_instance.position = Vector2(1500, 500)
 		$CoinTimer.start()
 
 
@@ -51,7 +53,6 @@ func _process(delta):
 			if not coin_instance:
 				coin_instance = coin.instantiate()
 				add_child(coin_instance)
-
 			var car1_coins = Global.collected_coins["car1"]
 			var car2_coins = Global.collected_coins["car2"]
 			#print("Car 1 Coins: %d" % car1_coins)

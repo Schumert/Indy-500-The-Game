@@ -1,26 +1,26 @@
 extends CharacterBody2D
 
 
-var steer_angle = 8
-var steer_angle_fast = 10
-var steer_angle_very_fast = 12
+var steer_angle = 4
+var angle_speed = 800
+var friction = -55
+var temp_friction = friction
 var acceleration = Vector2.ZERO
 var game_world_ref
 var drag = -0.06
 var rpm = 0
-var engine_power = 7500
+var engine_power = 20000
 var temp_engine_power = engine_power
 var wheel_base = 70
-var braking = -450
-var max_speed_reverse = 750
+var braking = -1000
+var max_speed_reverse = 2000
 var slip_speed = 500
 var traction_fast = 3
-var traction_slow = 8
+var traction_slow = 7
 @export var car_id : String
 
 
 var is_pushing_state:=false
-var is_penalty_on:= false
 # var traction_handbrake = 0
 
 # var handbraking_fast = -50
@@ -37,10 +37,13 @@ func _ready():
 	game_world_ref = get_parent()
 	raycast = $RayCast2D
 	raycast.enabled = true
-
+	# camera_instance = camera.instantiate()
+	# add_sibling(camera_instance)
 	Global.player = self
 	Global.collected_coins[car_id] = 0
 	Global.finished_laps[car_id] = 0
+
+	position = Global.start_pos
 
 
 var collision_info = Vector2.ZERO
@@ -59,9 +62,6 @@ func _physics_process(delta):
 			var direction_to_collision = collision.get_position() - position
 			direction_to_collision = -direction_to_collision.normalized()
 			collision_info = direction_to_collision
-
-	if is_penalty_on:
-		grass_penalty()
 
 	
 	# var collision = move_and_collide(velocity * delta)
@@ -85,25 +85,26 @@ func _physics_process(delta):
 func collect_coin():
 	if car_id == "car1":
 		Global.collected_coins["car1"] += 1
+		Global.gui.update_players_info()
 	elif car_id == "car2":
 		Global.collected_coins["car2"] += 1
+		Global.gui.update_players_info()
 
 func finish_lap():
 	if car_id == "car1":
 		Global.finished_laps["car1"] += 1
+		Global.gui.update_players_info()
 	elif car_id == "car2":
 		Global.finished_laps["car2"] += 1
+		Global.gui.update_players_info()
 
 func _pushed_off(opp, delta):
 	if is_pushing_state:
-			game_world_ref.friction = game_world_ref.temp_friction
-			var push_strength = 50000
+			var push_strength = 3000
 			velocity += opp * push_strength * delta
 			rpm = 0
-			game_world_ref.friction = 1000
 			await get_tree().create_timer(0.5).timeout
 			is_pushing_state = false
-			game_world_ref.friction = game_world_ref.temp_friction
 
 		#is_pushing_state = false
 		
@@ -128,7 +129,7 @@ func get_input():
 		rpm = lerpf(rpm, 0, 0.1)
 		acceleration = transform.x * braking
 
-var old_steer_angle = steer_angle
+
 func steering(delta):
 	
 	var front_wheel = position + transform.x * wheel_base / 2
@@ -146,17 +147,16 @@ func steering(delta):
 	#car_heading = (front_wheel - back_wheel).normalized()
 	var car_heading = back_wheel.direction_to(front_wheel)
 
-	var steer_angle_speed_bound = 900 # type of: vel. length
 	var traction = traction_slow
-	if velocity.length() > steer_angle_speed_bound + 500:
-		steer_angle = steer_angle_very_fast
-	elif velocity.length() > steer_angle_speed_bound:
-		steer_angle = steer_angle_fast
-	else:
-		steer_angle = old_steer_angle
-
 	if velocity.length() > slip_speed:
 		traction = traction_fast
+	elif velocity.length() > slip_speed * 2:
+		traction = traction_fast - 2
+
+	if velocity.length() < angle_speed:
+		steer_angle = 4
+	else:
+		steer_angle = 3
 
 	
 	var d = car_heading.dot(velocity.normalized())
@@ -171,13 +171,9 @@ func apply_friction(delta):
 	if  acceleration == Vector2.ZERO and velocity.length() < 50:
 		velocity = Vector2.ZERO
 	
-	var friction_force = velocity * game_world_ref.friction * delta
+	var friction_force = velocity * friction * delta
 	var drag_force = velocity * velocity.length() * drag * delta
 	acceleration += friction_force + drag_force
-
-func grass_penalty():
-	if rpm > 500:
-		rpm = 500
 
 	
 

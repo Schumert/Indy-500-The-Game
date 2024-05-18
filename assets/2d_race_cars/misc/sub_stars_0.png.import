@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://3ueveoaf4we2"
-path="res://.godot/imported/whiteonetoone.png-430a728e0ccc448b704391ed4f06835c.ctex"
+uid="uid://dlp56sy36rrm8"
+path="res://.godot/imported/sub_stars_0.png-097085f9f36e829eef09964b77c12b80.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://whiteonetoone.png"
-dest_files=["res://.godot/imported/whiteonetoone.png-430a728e0ccc448b704391ed4f06835c.ctex"]
+source_file="res://assets/2d_race_cars/misc/sub_stars_0.png"
+dest_files=["res://.godot/imported/sub_stars_0.png-097085f9f36e829eef09964b77c12b80.ctex"]
 
 [params]
 

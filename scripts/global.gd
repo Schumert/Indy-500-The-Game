@@ -5,9 +5,11 @@ enum GameState { START, PLAYING, PAUSED, GAMEOVER }
 var current_state = GameState.START
 
 enum GameModes { RACE, TAG, COLLECT, WAR}
-var current_mode = GameModes.RACE
+var current_mode
 
 var player
+var gui
+var start_pos = Vector2(976, 702)
 
 
 var collected_coins = {"car1" : 0, "car2": 0}

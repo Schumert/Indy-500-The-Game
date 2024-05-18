@@ -1,0 +1,44 @@
+[gd_scene load_steps=3 format=3 uid="uid://blwr34e3hi8g6"]
+
+[ext_resource type="Script" path="res://scripts/gui.gd" id="1_ron8l"]
+[ext_resource type="Theme" uid="uid://dqf6yc3ol1pwb" path="res://assets/a_theme.tres" id="2_4apxx"]
+
+[node name="GUI" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_ron8l")
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+layout_mode = 0
+offset_left = 27.0
+offset_top = 30.0
+offset_right = 159.0
+offset_bottom = 146.0
+theme = ExtResource("2_4apxx")
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 20
+
+[node name="GridContainer" type="GridContainer" parent="PanelContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="VelocityLength" type="Label" parent="PanelContainer/MarginContainer/GridContainer"]
+layout_mode = 2
+text = "VelocityLength: 0"
+
+[node name="Player1" type="Label" parent="PanelContainer/MarginContainer/GridContainer"]
+layout_mode = 2
+text = "Player 1: 0"
+
+[node name="Player2" type="Label" parent="PanelContainer/MarginContainer/GridContainer"]
+layout_mode = 2
+text = "Player 2: 0"
+
+[node name="Timer" type="Label" parent="PanelContainer/MarginContainer/GridContainer"]
+layout_mode = 2
+text = "Time: 120"

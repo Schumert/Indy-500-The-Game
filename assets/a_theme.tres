@@ -1,0 +1,7 @@
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://dqf6yc3ol1pwb"]
+
+[ext_resource type="FontFile" uid="uid://bqdyi6cp0g816" path="res://assets/Pandry Demo.ttf" id="1_ug6mc"]
+
+[resource]
+Label/font_sizes/font_size = 32
+Label/fonts/font = ExtResource("1_ug6mc")
