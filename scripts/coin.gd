@@ -10,22 +10,18 @@ func _ready():
  
 
 func _on_body_entered(body:Node2D):
-	#if body.collision_layer & (1 << 1) != 0:
-	#	set_its_location()
+	if body.collision_layer & (1 << 1) != 0:
+		body.collect_coin()
+	
 	queue_free()
 	
-
-func _on_area_entered(area:Node2D):
-	if area.collision_layer == 1:
-		#queue_free()
-		pass
 
 
 
 func set_its_location():
 	var rng = RandomNumberGenerator.new()
-	x_pos = rng.randi_range(-500, 500)
-	y_pos = rng.randi_range(-500, 500)
+	x_pos = rng.randi_range(-2000, 2000)
+	y_pos = rng.randi_range(-1300, 1300)
 	position = Vector2(x_pos, -y_pos)
 
 	await get_tree().create_timer(0.05).timeout

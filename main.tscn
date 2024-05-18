@@ -10,14 +10,6 @@ size = Vector2(662, 151)
 
 [node name="main" type="Node2D"]
 
-[node name="World" type="Node2D" parent="."]
-script = ExtResource("1_syn2n")
-
-[node name="StartPoint" type="Node2D" parent="World"]
-position = Vector2(-3, 720)
-
-[node name="map1" parent="World" instance=ExtResource("3_hmj5u")]
-
 [node name="GUI" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 0
@@ -27,8 +19,16 @@ script = ExtResource("3_fxbec")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="GUI"]
 
-[node name="Camera2D" type="Camera2D" parent="."]
-zoom = Vector2(0.215, 0.215)
+[node name="World" type="Node2D" parent="."]
+script = ExtResource("1_syn2n")
+
+[node name="CoinTimer" type="Timer" parent="World"]
+wait_time = 2.0
+
+[node name="StartPoint" type="Node2D" parent="World"]
+position = Vector2(-3, 720)
+
+[node name="map1" parent="World" instance=ExtResource("3_hmj5u")]
 
 [node name="NextLevel" type="Area2D" parent="."]
 position = Vector2(2296, -1039)
@@ -43,4 +43,8 @@ position = Vector2(164.5, 39)
 scale = Vector2(5.32031, 1.21875)
 texture = ExtResource("3_3nsrd")
 
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(0.3, 0.3)
+
+[connection signal="timeout" from="World/CoinTimer" to="World" method="_on_timer_finished_spawn_coin"]
 [connection signal="body_entered" from="NextLevel" to="World" method="next_level"]

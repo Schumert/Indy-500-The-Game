@@ -12,6 +12,7 @@ top_level = true
 collision_layer = 3
 collision_mask = 31
 script = ExtResource("2_cacyf")
+car_id = "car1"
 
 [node name="car" type="Sprite2D" parent="."]
 rotation = 1.5708

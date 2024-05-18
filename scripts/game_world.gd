@@ -8,6 +8,8 @@ var level_instance
 var coin
 var coin_instance
 
+var rng
+var coin_delay
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -19,6 +21,11 @@ func _ready():
 	Global.set_mode(Global.GameModes.COLLECT)
 
 	load_level("map1")
+	
+	rng = RandomNumberGenerator.new()
+
+	if Global.current_mode == Global.GameModes.COLLECT:
+		$CoinTimer.start()
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -35,13 +42,20 @@ func _process(delta):
 	
 	match Global.current_mode:
 		Global.GameModes.RACE:
-			pass
+			var car1_laps = Global.finished_laps["car1"]
+			var car2_laps = Global.finished_laps["car2"]
+			print("Car 1 finished %d laps." % car1_laps)
 		Global.GameModes.TAG:
 			pass
 		Global.GameModes.COLLECT:
 			if not coin_instance:
 				coin_instance = coin.instantiate()
 				add_child(coin_instance)
+
+			var car1_coins = Global.collected_coins["car1"]
+			var car2_coins = Global.collected_coins["car2"]
+			print("Car 1 Coins: %d" % car1_coins)
+			#print("Car 2 Coins: %d" % car2_coins)
 		Global.GameModes.WAR:
 			pass
 func  unload_level():
@@ -73,6 +87,13 @@ func load_level(level_name : String):
 	if player_instance:
 		player_instance.position = $StartPoint.position
 
+
+func _on_timer_finished_spawn_coin():
+	coin_instance = coin.instantiate()
+	add_child(coin_instance)
+
+	#coin_delay = get_tree().create_timer(2)
+	$CoinTimer.wait_time = rng.randf_range(2, 10)
 
 func next_level(body):
 	if body.name == "Car":

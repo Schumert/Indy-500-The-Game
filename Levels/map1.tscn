@@ -1,7 +1,9 @@
-[gd_scene load_steps=12 format=3 uid="uid://b60l60ii2s0og"]
+[gd_scene load_steps=20 format=3 uid="uid://b60l60ii2s0og"]
 
 [ext_resource type="Script" path="res://scripts/grass.gd" id="1_0wcqe"]
 [ext_resource type="Texture2D" uid="uid://3ueveoaf4we2" path="res://whiteonetoone.png" id="2_0ta1t"]
+[ext_resource type="Script" path="res://scripts/RaceManager.gd" id="3_m8sbt"]
+[ext_resource type="Script" path="res://scripts/checkpoint.gd" id="3_s6rui"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_d0drd"]
 size = Vector2(1706.86, 544.573)
@@ -29,6 +31,40 @@ size = Vector2(150, 70)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_gco36"]
 size = Vector2(601.714, 21.7857)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bxss8"]
+size = Vector2(201, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3rdvc"]
+size = Vector2(201.286, 21.1428)
+
+[sub_resource type="GDScript" id="GDScript_spv4q"]
+script/source = "extends Node
+
+signal player_entered
+
+
+func _on_body_entered(body):
+	if body.collision_layer & (1 << 1) != 0:
+		player_entered.emit()
+		"
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_34sg2"]
+size = Vector2(267.881, 21.1428)
+
+[sub_resource type="GDScript" id="GDScript_y7xfc"]
+script/source = "extends Node
+
+signal player_entered
+
+
+func _on_body_entered(body):
+	if body.collision_layer & (1 << 1) != 0:
+		player_entered.emit()
+		"
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7m3qr"]
+size = Vector2(201.584, 21.1428)
 
 [node name="map1" type="Node2D"]
 scale = Vector2(7, 7)
@@ -77,6 +113,7 @@ scale = Vector2(6, 4)
 texture = ExtResource("2_0ta1t")
 
 [node name="PenaltyRequirement" type="Timer" parent="."]
+wait_time = 0.5
 one_shot = true
 
 [node name="PenaltyTime" type="Timer" parent="."]
@@ -177,9 +214,60 @@ shape = SubResource("RectangleShape2D_gco36")
 position = Vector2(0, 226.429)
 shape = SubResource("RectangleShape2D_gco36")
 
+[node name="RaceManager" type="Node2D" parent="."]
+script = ExtResource("3_m8sbt")
+
+[node name="Checkpoint1" type="Area2D" parent="RaceManager"]
+position = Vector2(219.143, -0.142857)
+scale = Vector2(1, 1)
+script = ExtResource("3_s6rui")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RaceManager/Checkpoint1"]
+position = Vector2(-19.6429, 0)
+scale = Vector2(1, 1)
+shape = SubResource("RectangleShape2D_bxss8")
+
+[node name="Checkpoint3" type="Area2D" parent="RaceManager"]
+position = Vector2(-220.857, 0)
+scale = Vector2(1, 1)
+script = ExtResource("3_s6rui")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RaceManager/Checkpoint3"]
+position = Vector2(21.2143, 0)
+scale = Vector2(1, 1)
+shape = SubResource("RectangleShape2D_3rdvc")
+
+[node name="Checkpoint2" type="Area2D" parent="RaceManager"]
+position = Vector2(-0.142853, -131.714)
+rotation = 1.5708
+scale = Vector2(0.811429, 1)
+script = SubResource("GDScript_spv4q")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RaceManager/Checkpoint2"]
+position = Vector2(-15.6308, 0.285735)
+rotation = -3.14159
+scale = Vector2(1, 1)
+shape = SubResource("RectangleShape2D_34sg2")
+
+[node name="FinishLine" type="Area2D" parent="RaceManager"]
+position = Vector2(-0.14286, 91.5714)
+rotation = 1.5708
+scale = Vector2(0.811429, 1)
+script = SubResource("GDScript_y7xfc")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RaceManager/FinishLine"]
+position = Vector2(31.6021, 0.285722)
+rotation = -3.14159
+scale = Vector2(1, 1)
+shape = SubResource("RectangleShape2D_7m3qr")
+
 [connection signal="body_entered" from="BackgroundGrass" to="BackgroundGrass" method="on_offroad_enter"]
 [connection signal="body_exited" from="BackgroundGrass" to="BackgroundGrass" method="on_offrad_exit"]
 [connection signal="timeout" from="PenaltyRequirement" to="Grass" method="on_time_out_penalty_on"]
 [connection signal="timeout" from="PenaltyTime" to="Grass" method="on_time_out_get_normal"]
 [connection signal="body_entered" from="Grass" to="Grass" method="on_offroad_enter"]
 [connection signal="body_exited" from="Grass" to="Grass" method="on_offrad_exit"]
+[connection signal="body_entered" from="RaceManager/Checkpoint1" to="RaceManager/Checkpoint1" method="_on_body_entered"]
+[connection signal="body_entered" from="RaceManager/Checkpoint3" to="RaceManager/Checkpoint3" method="_on_body_entered"]
+[connection signal="body_entered" from="RaceManager/Checkpoint2" to="RaceManager/Checkpoint2" method="_on_body_entered"]
+[connection signal="body_entered" from="RaceManager/FinishLine" to="RaceManager/FinishLine" method="_on_body_entered"]

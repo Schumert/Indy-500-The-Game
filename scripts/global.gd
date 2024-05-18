@@ -10,6 +10,8 @@ var current_mode = GameModes.RACE
 var player
 
 
+var collected_coins = {"car1" : 0, "car2": 0}
+var finished_laps = {"car1" : 0, "car2": 0}
 
 func change_state(new_state):
 	current_state = new_state

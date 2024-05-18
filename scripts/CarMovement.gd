@@ -15,6 +15,7 @@ var max_speed_reverse = 750
 var slip_speed = 1500 #type of: vel. length
 var traction_fast = 3
 var traction_slow = 8
+@export var car_id : String
 
 
 var is_pushing_state:=false
@@ -37,6 +38,8 @@ func _ready():
 	raycast.enabled = true
 
 	Global.player = self
+	Global.collected_coins[car_id] = 0
+	Global.finished_laps[car_id] = 0
 
 
 var collision_info = Vector2.ZERO
@@ -77,7 +80,18 @@ func _physics_process(delta):
 	#print(steer_angle)
 	#print(rpm)
 	
-	
+
+func collect_coin():
+	if car_id == "car1":
+		Global.collected_coins["car1"] += 1
+	elif car_id == "car2":
+		Global.collected_coins["car2"] += 1
+
+func finish_lap():
+	if car_id == "car1":
+		Global.finished_laps["car1"] += 1
+	elif car_id == "car2":
+		Global.finished_laps["car2"] += 1
 
 func _pushed_off(opp, delta):
 	if is_pushing_state:
