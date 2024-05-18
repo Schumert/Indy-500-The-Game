@@ -1,18 +1,19 @@
 extends CharacterBody2D
 
 
-var steer_angle = 15
-var steer_angle_fast = 12
-var steer_angle_very_fast = 8
+var steer_angle = 8
+var steer_angle_fast = 10
+var steer_angle_very_fast = 12
 var acceleration = Vector2.ZERO
 var game_world_ref
 var drag = -0.06
 var rpm = 0
-var engine_power = 10000
+var engine_power = 7500
+var temp_engine_power = engine_power
 var wheel_base = 70
 var braking = -450
 var max_speed_reverse = 750
-var slip_speed = 1500 #type of: vel. length
+var slip_speed = 500
 var traction_fast = 3
 var traction_slow = 8
 @export var car_id : String
@@ -145,16 +146,17 @@ func steering(delta):
 	#car_heading = (front_wheel - back_wheel).normalized()
 	var car_heading = back_wheel.direction_to(front_wheel)
 
-	var steer_angle_speed_bound = 1500 # type of: vel. length
+	var steer_angle_speed_bound = 900 # type of: vel. length
 	var traction = traction_slow
 	if velocity.length() > steer_angle_speed_bound + 500:
 		steer_angle = steer_angle_very_fast
-		traction = traction_fast - 2
 	elif velocity.length() > steer_angle_speed_bound:
 		steer_angle = steer_angle_fast
-		traction = traction_fast
 	else:
 		steer_angle = old_steer_angle
+
+	if velocity.length() > slip_speed:
+		traction = traction_fast
 
 	
 	var d = car_heading.dot(velocity.normalized())

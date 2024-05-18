@@ -18,7 +18,7 @@ func _ready():
 	coin = preload("res://coin.tscn")
 
 	Global.change_state(Global.GameState.PLAYING)
-	Global.set_mode(Global.GameModes.COLLECT)
+	Global.set_mode(Global.GameModes.RACE)
 
 	load_level("map1")
 	
@@ -44,7 +44,7 @@ func _process(delta):
 		Global.GameModes.RACE:
 			var car1_laps = Global.finished_laps["car1"]
 			var car2_laps = Global.finished_laps["car2"]
-			print("Car 1 finished %d laps." % car1_laps)
+			#print("Car 1 finished %d laps." % car1_laps)
 		Global.GameModes.TAG:
 			pass
 		Global.GameModes.COLLECT:
@@ -54,7 +54,7 @@ func _process(delta):
 
 			var car1_coins = Global.collected_coins["car1"]
 			var car2_coins = Global.collected_coins["car2"]
-			print("Car 1 Coins: %d" % car1_coins)
+			#print("Car 1 Coins: %d" % car1_coins)
 			#print("Car 2 Coins: %d" % car2_coins)
 		Global.GameModes.WAR:
 			pass
@@ -76,14 +76,14 @@ func load_level(level_name : String):
 		call_deferred("add_child", player_instance)
 		
 	
-		if level_name == "test_map":
-			if(is_instance_valid(player_instance)):
-				player_instance.get_node("Camera2D").enabled = true
-				get_parent().get_node("Camera2D").enabled = false
-		else:
-			if(is_instance_valid(player_instance)):
-				player_instance.get_node("Camera2D").enabled = false
-				get_parent().get_node("Camera2D").enabled = true
+		# if level_name == "test_map":
+		# 	if(is_instance_valid(player_instance)):
+		# 		player_instance.get_node("Camera2D").enabled = true
+		# 		get_parent().get_node("Camera2D").enabled = false
+		# else:
+		# 	if(is_instance_valid(player_instance)):
+		# 		player_instance.get_node("Camera2D").enabled = false
+		# 		get_parent().get_node("Camera2D").enabled = true
 	if player_instance:
 		player_instance.position = $StartPoint.position
 

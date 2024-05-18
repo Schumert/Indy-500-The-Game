@@ -19,6 +19,13 @@ script = ExtResource("3_fxbec")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="GUI"]
 
+[node name="VelocityLength" type="Label" parent="GUI/CanvasLayer"]
+offset_left = 321.0
+offset_top = 83.0
+offset_right = 440.0
+offset_bottom = 109.0
+text = "VelocityLength: 0"
+
 [node name="World" type="Node2D" parent="."]
 script = ExtResource("1_syn2n")
 
@@ -26,7 +33,7 @@ script = ExtResource("1_syn2n")
 wait_time = 2.0
 
 [node name="StartPoint" type="Node2D" parent="World"]
-position = Vector2(-3, 720)
+position = Vector2(976, 706)
 
 [node name="map1" parent="World" instance=ExtResource("3_hmj5u")]
 
@@ -42,9 +49,6 @@ shape = SubResource("RectangleShape2D_0sgce")
 position = Vector2(164.5, 39)
 scale = Vector2(5.32031, 1.21875)
 texture = ExtResource("3_3nsrd")
-
-[node name="Camera2D" type="Camera2D" parent="."]
-zoom = Vector2(0.3, 0.3)
 
 [connection signal="timeout" from="World/CoinTimer" to="World" method="_on_timer_finished_spawn_coin"]
 [connection signal="body_entered" from="NextLevel" to="World" method="next_level"]

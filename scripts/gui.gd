@@ -8,4 +8,7 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	pass
+	$CanvasLayer/VelocityLength.text = "Velocity Length: %4.1f" % Global.player.velocity.length()
+
+
+

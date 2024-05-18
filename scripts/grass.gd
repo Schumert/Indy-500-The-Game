@@ -1,6 +1,7 @@
 extends Node
 
 var game_world_ref
+var temp_engine_power
 # var will_penalty_be_on := false
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -18,7 +19,7 @@ func on_offroad_enter(body):
 func on_offrad_exit(body):
 	if body is CharacterBody2D:
 		game_world_ref.friction = game_world_ref.temp_friction
-		Global.player.engine_power = 15000
+		Global.player.engine_power = Global.player.temp_engine_power
 		# get_parent().get_node("PenaltyRequirement").stop()
 		
 	# if will_penalty_be_on:

@@ -67,7 +67,8 @@ func _on_body_entered(body):
 size = Vector2(201.584, 21.1428)
 
 [node name="map1" type="Node2D"]
-scale = Vector2(7, 7)
+position = Vector2(986, 547)
+scale = Vector2(2.425, 2.425)
 
 [node name="BackgroundGrass" type="Area2D" parent="." groups=["grass"]]
 position = Vector2(-2.71429, -229.714)
