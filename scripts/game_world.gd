@@ -12,7 +12,7 @@ var coin_delay
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	call_deferred("remove_child", get_child(get_child_count() - 1))
+	#call_deferred("remove_child", get_child(get_child_count() - 1))
 	player = preload("res://car.tscn")
 	coin = preload("res://coin.tscn")
 	Global.game_world = self
@@ -21,7 +21,7 @@ func _ready():
 	#Global.set_mode(Global.GameModes.COLLECT)
 	Global.gui.update_players_info()
 
-	Global.load_level(Global.active_map)
+	load_level(Global.active_map)
 	
 	rng = RandomNumberGenerator.new()
 
@@ -61,24 +61,24 @@ func _process(delta):
 			#print("Car 2 Coins: %d" % car2_coins)
 		Global.GameModes.WAR:
 			pass
-# func  unload_level():
-# 	if(is_instance_valid(level_instance)):
-# 		level_instance.queue_free()
-# 	level_instance = null
+func  unload_level():
+	if(is_instance_valid(level_instance)):
+		level_instance.queue_free()
+	level_instance = null
 
-# func load_level(level_name : String):
-# 	unload_level()
-# 	var level_path = "res://Levels/%s.tscn" % level_name
-# 	var level_resource = load(level_path)
-# 	if(level_resource):
-# 		level_instance = level_resource.instantiate()
-# 		call_deferred("add_child", level_instance)
-# 		if player_instance:
-# 			remove_child(player_instance)
-# 		player_instance = player.instantiate()
-# 		call_deferred("add_child", player_instance)
-# 		if player_instance:
-# 			player_instance.position = $StartPoint.position
+func load_level(level_name : String):
+	unload_level()
+	var level_path = "res://Levels/%s.tscn" % level_name
+	var level_resource = load(level_path)
+	if(level_resource):
+		level_instance = level_resource.instantiate()
+		call_deferred("add_child", level_instance)
+		if player_instance:
+			remove_child(player_instance)
+		player_instance = player.instantiate()
+		call_deferred("add_child", player_instance)
+		if player_instance:
+			player_instance.position = $StartPoint.position
 	
 
 
