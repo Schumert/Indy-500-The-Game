@@ -42,7 +42,7 @@ func _ready():
 	Global.player = self
 	Global.collected_coins[car_id] = 0
 	Global.finished_laps[car_id] = 0
-
+	Global.gui.update_players_info()
 	position = Global.start_pos
 
 
