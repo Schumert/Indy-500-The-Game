@@ -1,10 +1,5 @@
 extends Node
 
-var game_world_ref
-var temp_engine_power
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	game_world_ref = get_parent().get_parent()
 
 
 func on_offroad_enter(body):

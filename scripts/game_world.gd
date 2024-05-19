@@ -17,7 +17,7 @@ func _ready():
 	coin = preload("res://coin.tscn")
 
 	Global.change_state(Global.GameState.PLAYING)
-	Global.set_mode(Global.GameModes.COLLECT)
+	Global.set_mode(Global.GameModes.RACE)
 	Global.gui.update_players_info()
 
 	load_level("map1")
@@ -76,7 +76,8 @@ func load_level(level_name : String):
 			remove_child(player_instance)
 		player_instance = player.instantiate()
 		call_deferred("add_child", player_instance)
-		
+		if player_instance:
+			player_instance.position = $StartPoint.position
 	
 		# if level_name == "test_map":
 		# 	if(is_instance_valid(player_instance)):
@@ -86,8 +87,7 @@ func load_level(level_name : String):
 		# 	if(is_instance_valid(player_instance)):
 		# 		player_instance.get_node("Camera2D").enabled = false
 		# 		get_parent().get_node("Camera2D").enabled = true
-	if player_instance:
-		player_instance.position = $StartPoint.position
+	
 
 
 func _on_timer_finished_spawn_coin():

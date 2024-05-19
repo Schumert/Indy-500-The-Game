@@ -74,6 +74,8 @@ handbrake={
 2d_physics/layer_3="obstacles"
 2d_physics/layer_4="coins"
 2d_physics/layer_5="player2"
+2d_physics/layer_6="checkpoint"
+2d_physics/layer_7="slow"
 
 [rendering]
 

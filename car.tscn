@@ -10,8 +10,8 @@ size = Vector2(505, 215)
 show_behind_parent = true
 top_level = true
 scale = Vector2(0.2, 0.2)
-collision_layer = 3
-collision_mask = 31
+collision_layer = 2
+collision_mask = 63
 script = ExtResource("2_cacyf")
 car_id = "car1"
 
@@ -22,7 +22,6 @@ texture = ExtResource("2_0ka84")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(12.5, 2.49999)
-scale = Vector2(1, 1)
 shape = SubResource("RectangleShape2D_hpj8k")
 
 [node name="RayCast2D" type="RayCast2D" parent="."]
