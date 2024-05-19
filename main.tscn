@@ -1,12 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://bt1j304qy5pj5"]
+[gd_scene load_steps=3 format=3 uid="uid://bt1j304qy5pj5"]
 
 [ext_resource type="PackedScene" uid="uid://blwr34e3hi8g6" path="res://gui.tscn" id="1_pgw7q"]
 [ext_resource type="Script" path="res://scripts/game_world.gd" id="1_syn2n"]
-[ext_resource type="Texture2D" uid="uid://det01epi5bvul" path="res://icon.svg" id="3_3nsrd"]
-[ext_resource type="PackedScene" uid="uid://b60l60ii2s0og" path="res://Levels/map1.tscn" id="3_hmj5u"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_0sgce"]
-size = Vector2(662, 151)
 
 [node name="main" type="Node2D"]
 
@@ -23,20 +18,4 @@ wait_time = 2.0
 [node name="StartPoint" type="Node2D" parent="World"]
 position = Vector2(976, 706)
 
-[node name="map1" parent="World" instance=ExtResource("3_hmj5u")]
-
-[node name="NextLevel" type="Area2D" parent="."]
-position = Vector2(2296, -1039)
-collision_mask = 3
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="NextLevel"]
-position = Vector2(162, 40.5)
-shape = SubResource("RectangleShape2D_0sgce")
-
-[node name="Sprite2D" type="Sprite2D" parent="NextLevel"]
-position = Vector2(164.5, 39)
-scale = Vector2(5.32031, 1.21875)
-texture = ExtResource("3_3nsrd")
-
 [connection signal="timeout" from="World/CoinTimer" to="World" method="_on_timer_finished_spawn_coin"]
-[connection signal="body_entered" from="NextLevel" to="World" method="next_level"]

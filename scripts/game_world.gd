@@ -15,12 +15,13 @@ func _ready():
 	call_deferred("remove_child", get_child(get_child_count() - 1))
 	player = preload("res://car.tscn")
 	coin = preload("res://coin.tscn")
+	Global.game_world = self
 
 	Global.change_state(Global.GameState.PLAYING)
-	Global.set_mode(Global.GameModes.RACE)
+	#Global.set_mode(Global.GameModes.COLLECT)
 	Global.gui.update_players_info()
 
-	load_level("map1")
+	Global.load_level(Global.active_map)
 	
 	rng = RandomNumberGenerator.new()
 
@@ -60,33 +61,24 @@ func _process(delta):
 			#print("Car 2 Coins: %d" % car2_coins)
 		Global.GameModes.WAR:
 			pass
-func  unload_level():
-	if(is_instance_valid(level_instance)):
-		level_instance.queue_free()
-	level_instance = null
+# func  unload_level():
+# 	if(is_instance_valid(level_instance)):
+# 		level_instance.queue_free()
+# 	level_instance = null
 
-func load_level(level_name : String):
-	unload_level()
-	var level_path = "res://Levels/%s.tscn" % level_name
-	var level_resource = load(level_path)
-	if(level_resource):
-		level_instance = level_resource.instantiate()
-		call_deferred("add_child", level_instance)
-		if player_instance:
-			remove_child(player_instance)
-		player_instance = player.instantiate()
-		call_deferred("add_child", player_instance)
-		if player_instance:
-			player_instance.position = $StartPoint.position
-	
-		# if level_name == "test_map":
-		# 	if(is_instance_valid(player_instance)):
-		# 		player_instance.get_node("Camera2D").enabled = true
-		# 		get_parent().get_node("Camera2D").enabled = false
-		# else:
-		# 	if(is_instance_valid(player_instance)):
-		# 		player_instance.get_node("Camera2D").enabled = false
-		# 		get_parent().get_node("Camera2D").enabled = true
+# func load_level(level_name : String):
+# 	unload_level()
+# 	var level_path = "res://Levels/%s.tscn" % level_name
+# 	var level_resource = load(level_path)
+# 	if(level_resource):
+# 		level_instance = level_resource.instantiate()
+# 		call_deferred("add_child", level_instance)
+# 		if player_instance:
+# 			remove_child(player_instance)
+# 		player_instance = player.instantiate()
+# 		call_deferred("add_child", player_instance)
+# 		if player_instance:
+# 			player_instance.position = $StartPoint.position
 	
 
 
@@ -97,9 +89,7 @@ func _on_timer_finished_spawn_coin():
 	#coin_delay = get_tree().create_timer(2)
 	$CoinTimer.wait_time = rng.randf_range(2, 10)
 
-func next_level(body):
-	if body.name == "Car":
-		load_level("map1")
+
 
 
 

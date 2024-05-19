@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://b60l60ii2s0og"]
+[gd_scene load_steps=30 format=3 uid="uid://b60l60ii2s0og"]
 
 [ext_resource type="Script" path="res://scripts/grass.gd" id="1_0wcqe"]
 [ext_resource type="Script" path="res://scripts/RaceManager.gd" id="3_m8sbt"]
@@ -6,7 +6,9 @@
 [ext_resource type="Texture2D" uid="uid://3ueveoaf4we2" path="res://assets/whiteonetoone.png" id="4_aasoq"]
 [ext_resource type="Texture2D" uid="uid://daebdicdu3gwh" path="res://assets/RacingTilemap.png" id="4_j6o2p"]
 [ext_resource type="Texture2D" uid="uid://msgb7aphy5qp" path="res://assets/Grass Tiles/Grass 001.png" id="5_eg2w6"]
+[ext_resource type="Texture2D" uid="uid://cmk4ivcdif437" path="res://assets/Decor/Start.png" id="5_yf6y5"]
 [ext_resource type="Texture2D" uid="uid://ku21ovv8li2b" path="res://assets/Grass Tiles/Plants 002.png" id="7_u7qsw"]
+[ext_resource type="Texture2D" uid="uid://cnk3fp7w6xlo7" path="res://assets/Decor/Pavilion_01.png" id="9_b6n08"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_d0drd"]
 size = Vector2(1706.86, 544.573)
@@ -345,11 +347,17 @@ shape = SubResource("RectangleShape2D_7m3qr")
 [node name="Road" type="Node2D" parent="."]
 position = Vector2(-3.05176e-05, -10.3092)
 
-[node name="Sprite2D" type="Sprite2D" parent="Road"]
+[node name="asphalt" type="Sprite2D" parent="Road"]
 modulate = Color(0.4, 0.392157, 0.364706, 1)
 position = Vector2(-13.6082, 3.29893)
 scale = Vector2(743.093, 399.175)
 texture = ExtResource("4_aasoq")
+
+[node name="start" type="Sprite2D" parent="Road"]
+position = Vector2(-3.7113, 90.7217)
+rotation = 1.5708
+scale = Vector2(0.05, 0.05)
+texture = ExtResource("5_yf6y5")
 
 [node name="TileMap" type="TileMap" parent="."]
 position = Vector2(-14.0206, 8.24745)
@@ -361,7 +369,7 @@ layer_0/tile_data = PackedInt32Array(327684, 786432, 5, 327685, 851968, 5, 32768
 rotation = 3.14159
 scale = Vector2(150, 70)
 collision_layer = 64
-collision_mask = 18
+collision_mask = 26
 script = ExtResource("1_0wcqe")
 
 [node name="TileMap" type="TileMap" parent="Grass"]
@@ -422,6 +430,17 @@ shape = SubResource("RectangleShape2D_gco36")
 [node name="wall1" type="CollisionShape2D" parent="Walls"]
 position = Vector2(-9.89694, 230.928)
 shape = SubResource("RectangleShape2D_gco36")
+
+[node name="decor" type="Node2D" parent="."]
+position = Vector2(-3.71133, 80.4125)
+rotation = 1.5708
+scale = Vector2(0.05, 0.05)
+
+[node name="pavilion1" type="Sprite2D" parent="decor"]
+position = Vector2(-5468.04, 131.958)
+rotation = 4.71239
+scale = Vector2(2, 2)
+texture = ExtResource("9_b6n08")
 
 [connection signal="body_entered" from="BackgroundGrass" to="BackgroundGrass" method="on_offroad_enter"]
 [connection signal="body_exited" from="BackgroundGrass" to="BackgroundGrass" method="on_offrad_exit"]

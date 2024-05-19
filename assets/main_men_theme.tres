@@ -1,0 +1,37 @@
+[gd_resource type="Theme" load_steps=8 format=3 uid="uid://wd8u5alu5158"]
+
+[ext_resource type="Texture2D" uid="uid://b6w3eiureiwn6" path="res://assets/UI-Pack-0.0.1/button1.png" id="1_bxame"]
+[ext_resource type="Texture2D" uid="uid://ct1agig0dnw8l" path="res://assets/UI-Pack-0.0.1/buttonHover1.png" id="2_c8crw"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_w1if2"]
+texture = ExtResource("1_bxame")
+modulate_color = Color(0.223529, 0.215686, 0.196078, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_jiimg"]
+texture = ExtResource("2_c8crw")
+modulate_color = Color(0.313726, 0, 0, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_byjth"]
+texture = ExtResource("1_bxame")
+texture_margin_left = 20.0
+texture_margin_right = 20.0
+modulate_color = Color(0.584314, 0, 0, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_k863g"]
+texture = ExtResource("1_bxame")
+modulate_color = Color(0.180392, 0, 0, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_3nkfl"]
+texture = ExtResource("1_bxame")
+modulate_color = Color(0.313726, 0, 0, 1)
+
+[resource]
+Button/constants/h_separation = 500
+Button/font_sizes/font_size = 40
+Button/styles/disabled = SubResource("StyleBoxTexture_w1if2")
+Button/styles/hover = SubResource("StyleBoxTexture_jiimg")
+Button/styles/normal = SubResource("StyleBoxTexture_byjth")
+Button/styles/pressed = SubResource("StyleBoxTexture_k863g")
+CheckBox/constants/h_separation = 150
+CheckBox/styles/hover_pressed = SubResource("StyleBoxTexture_3nkfl")
+OptionButton/constants/arrow_margin = 18

@@ -63,6 +63,9 @@ func _physics_process(delta):
 			direction_to_collision = -direction_to_collision.normalized()
 			collision_info = direction_to_collision
 
+	if Input.is_action_just_pressed("main_menu"):
+		#Global.change_state(Global.GameState.GAMEOVER)
+		get_tree().change_scene_to_file("res://menu.tscn")
 	
 	# var collision = move_and_collide(velocity * delta)
 	# if collision:

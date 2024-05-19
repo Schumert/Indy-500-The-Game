@@ -1,0 +1,4 @@
+[gd_scene format=3 uid="uid://brhkted2kjrw8"]
+
+[node name="Map" type="Button"]
+text = "MAP 1"
