@@ -4,15 +4,16 @@ extends Node
 enum GameState { START, PLAYING, PAUSED, GAMEOVER }
 var current_state = GameState.START
 
-enum GameModes { RACE, TAG, COLLECT, WAR}
+enum GameModes { RACE, COLLECT, TAG, WAR}
 var current_mode
 
-@onready var maps = { GameModes.RACE : ["map1"], GameModes.COLLECT: ["map1", "test_map"], GameModes.TAG: ["map1"]}
+@onready var maps = { GameModes.RACE : ["map1"], GameModes.COLLECT: ["map1", "map2"], GameModes.TAG: []}
 
 
 var player = preload("res://car.tscn")
 var gui
-var start_pos = Vector2(976, 702)
+var start_pos:Vector2
+var start_pos2:Vector2
 var game_world
 var active_map = "map1"
 

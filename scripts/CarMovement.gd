@@ -43,7 +43,10 @@ func _ready():
 	Global.collected_coins[car_id] = 0
 	Global.finished_laps[car_id] = 0
 	Global.gui.update_players_info()
-	position = Global.start_pos
+	if car_id == "car1":
+		position = Global.start_pos
+	elif car_id =="car2":
+		position = Global.start_pos2
 
 
 var collision_info = Vector2.ZERO

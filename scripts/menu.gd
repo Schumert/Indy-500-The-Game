@@ -12,15 +12,13 @@ var game_select_instance
 func _ready():
 	play_button.button_down.connect(on_play_pressed)
 	quit_button.button_down.connect(on_quit_pressed)
-	Global.set_mode(Global.GameModes.COLLECT)
+	Global.set_mode(Global.GameModes.RACE)
 	#Global.change_state(Global.GameState.PAUSED)
 
 	
 
 
 func on_play_pressed() -> void:
-	# game_select_instance = game_select.instantiate()
-	# get_tree().current_scene.add_child(game_select_instance)
 	get_tree().change_scene_to_file("res://mode_map_select.tscn")
 func on_quit_pressed() -> void:
 	get_tree().quit()
