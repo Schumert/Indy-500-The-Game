@@ -3,6 +3,9 @@ extends Node
 var player
 var player_instance
 
+var player2
+var player2_instance
+
 var level_instance
 var coin
 var coin_instance
@@ -14,11 +17,14 @@ var coin_delay
 func _ready():
 	#call_deferred("remove_child", get_child(get_child_count() - 1))
 	player = preload("res://car.tscn")
+	player2 = preload("res://car2.tscn")
+	
 	coin = preload("res://coin.tscn")
 	Global.game_world = self
 
 	Global.change_state(Global.GameState.PLAYING)
 	#Global.set_mode(Global.GameModes.COLLECT)
+	Global.set_opponent(Global.GameOpponents.ALONE)
 	Global.gui.update_players_info()
 
 	load_level(Global.active_map)
@@ -61,6 +67,9 @@ func _process(delta):
 			#print("Car 2 Coins: %d" % car2_coins)
 		Global.GameModes.WAR:
 			pass
+
+	
+
 func  unload_level():
 	if(is_instance_valid(level_instance)):
 		level_instance.queue_free()
@@ -77,8 +86,16 @@ func load_level(level_name : String):
 			remove_child(player_instance)
 		player_instance = player.instantiate()
 		call_deferred("add_child", player_instance)
-		if player_instance:
-			player_instance.position = $StartPoint.position
+
+		if Global.current_opponent == Global.GameOpponents.TWO_PLAYER:
+			if player2_instance:
+				remove_child(player2_instance)
+			player2_instance = player2.instantiate()
+			call_deferred("add_child", player2_instance)
+		elif Global.current_opponent == Global.GameOpponents.AI:
+			pass
+		
+		
 	
 
 

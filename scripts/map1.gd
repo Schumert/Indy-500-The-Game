@@ -5,6 +5,7 @@ extends Node
 func _ready():
 	Global.start_pos = $StartPos.global_position
 	Global.start_pos2 = $StartPos2.global_position
+	Global.start_rot2 = $StartPos2.rotation
 
 	
 

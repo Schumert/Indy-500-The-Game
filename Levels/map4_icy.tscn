@@ -449,6 +449,7 @@ position = Vector2(-305.155, 118.763)
 
 [node name="StartPos2" type="Node2D" parent="."]
 position = Vector2(275.052, -141.443)
+rotation = 3.14159
 
 [connection signal="body_entered" from="BackgroundGrass" to="BackgroundGrass" method="on_offroad_enter"]
 [connection signal="body_exited" from="BackgroundGrass" to="BackgroundGrass" method="on_offrad_exit"]

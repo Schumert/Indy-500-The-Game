@@ -38,6 +38,7 @@ func _ready():
 	raycast.enabled = true
 	# camera_instance = camera.instantiate()
 	# add_sibling(camera_instance)
+
 	Global.player = self
 	Global.collected_coins[car_id] = 0
 	Global.finished_laps[car_id] = 0
@@ -46,6 +47,7 @@ func _ready():
 		position = Global.start_pos
 	elif car_id =="car2":
 		position = Global.start_pos2
+		rotation = Global.start_rot2
 
 	
 	if Global.active_map.contains("icy"):
@@ -60,7 +62,10 @@ var collision_info = Vector2.ZERO
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta):
 	acceleration = Vector2.ZERO
-	get_input()
+	if car_id == "car1":
+		get_input()
+	elif car_id == "car2":
+		get_input2()
 	apply_friction(delta)
 	steering(delta)
 	velocity += acceleration * delta
@@ -136,6 +141,28 @@ func get_input():
 
 
 	if Input.is_action_pressed("brake"):
+		rpm = lerpf(rpm, 0, 0.1)
+		acceleration = transform.x * braking
+
+		increase_steer_angle(2)
+
+func get_input2():
+	var turn = Input.get_action_strength("steer_right2") - Input.get_action_strength("steer_left2")
+
+	if is_pushing_state:
+		turn = 0
+
+	steer_direction = turn * deg_to_rad(steer_angle)
+	
+	acceleration = transform.x * rpm
+	if Input.is_action_pressed("accelerate2"):
+		rpm = lerpf(rpm, engine_power, 0.005)
+		to_old_s_angle()
+	else:
+		rpm = lerpf(rpm, 0, 0.05)
+
+
+	if Input.is_action_pressed("brake2"):
 		rpm = lerpf(rpm, 0, 0.1)
 		acceleration = transform.x * braking
 

@@ -35,6 +35,7 @@ text = "RACE"
 horizontal_alignment = 1
 
 [node name="VelocityLength" type="Label" parent="PanelContainer/MarginContainer/GridContainer"]
+visible = false
 layout_mode = 2
 text = "VelocityLength: 0"
 
@@ -44,7 +45,6 @@ text = "Player 1: 0"
 
 [node name="Player2" type="Label" parent="PanelContainer/MarginContainer/GridContainer"]
 layout_mode = 2
-text = "Player 2: 0"
 
 [node name="Timer" type="Label" parent="PanelContainer/MarginContainer/GridContainer"]
 layout_mode = 2

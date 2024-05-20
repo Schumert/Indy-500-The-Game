@@ -29,5 +29,5 @@ func _on_checkpoint_entered(checkpoint):
 
 func _on_finish_line_entered():
 	if is_checkpoints_finished:
-		Global.player.finish_lap()
+		Global.player_cross_checkpoint.finish_lap()
 		is_checkpoints_finished = false
