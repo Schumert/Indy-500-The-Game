@@ -35,7 +35,6 @@ text = "RACE"
 horizontal_alignment = 1
 
 [node name="VelocityLength" type="Label" parent="PanelContainer/MarginContainer/GridContainer"]
-visible = false
 layout_mode = 2
 text = "VelocityLength: 0"
 

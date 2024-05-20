@@ -7,7 +7,7 @@ var current_state = GameState.START
 enum GameModes { RACE, COLLECT, TAG, WAR}
 var current_mode
 
-@onready var maps = { GameModes.RACE : ["map1"], GameModes.COLLECT: ["map1", "map2"], GameModes.TAG: []}
+@onready var maps = { GameModes.RACE : ["map1", "map3","map1_icy", "map3_icy"], GameModes.COLLECT: ["map2","map5", "map4","empty_icy", "map4_icy"], GameModes.TAG: []}
 
 
 var player = preload("res://car.tscn")

@@ -1,8 +1,7 @@
 extends CharacterBody2D
 
 
-var steer_angle = 4
-var angle_speed = 800
+var steer_angle = 3
 var friction = -55
 var temp_friction = friction
 var acceleration = Vector2.ZERO
@@ -48,6 +47,14 @@ func _ready():
 	elif car_id =="car2":
 		position = Global.start_pos2
 
+	
+	if Global.active_map.contains("icy"):
+		friction = -20
+		temp_friction = friction
+		traction_slow = 1
+		traction_fast = 1
+
+
 
 var collision_info = Vector2.ZERO
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -70,24 +77,22 @@ func _physics_process(delta):
 		#Global.change_state(Global.GameState.GAMEOVER)
 		get_tree().change_scene_to_file("res://menu.tscn")
 	
-	# var collision = move_and_collide(velocity * delta)
-	# if collision:
-	# 		var reflect = collision.get_remainder().bounce(collision.get_normal())
-	# 		velocity = velocity.bounce(collision.get_normal())
-	# 		move_and_collide(reflect * 5)
+	
 			
 			
 	_pushed_off(collision_info, delta)
-
-
 
 	
 	#print(velocity.length())
 	#print(game_world_ref.friction)
 	#print(steer_angle)
 	#print(rpm)
-	
-
+var old_s_angle = steer_angle
+func increase_steer_angle(value):
+	steer_angle = old_s_angle + value
+func to_old_s_angle():
+	if steer_angle != old_s_angle:
+		steer_angle = old_s_angle
 func collect_coin():
 	if car_id == "car1":
 		Global.collected_coins["car1"] += 1
@@ -125,15 +130,16 @@ func get_input():
 	acceleration = transform.x * rpm
 	if Input.is_action_pressed("accelerate"):
 		rpm = lerpf(rpm, engine_power, 0.005)
-		
+		to_old_s_angle()
 	else:
 		rpm = lerpf(rpm, 0, 0.05)
 
-	
-	
+
 	if Input.is_action_pressed("brake"):
 		rpm = lerpf(rpm, 0, 0.1)
 		acceleration = transform.x * braking
+
+		increase_steer_angle(2)
 
 
 func steering(delta):
@@ -158,11 +164,6 @@ func steering(delta):
 		traction = traction_fast
 	elif velocity.length() > slip_speed * 2:
 		traction = traction_fast - 2
-
-	if velocity.length() < angle_speed:
-		steer_angle = 4
-	else:
-		steer_angle = 3
 
 	
 	var d = car_heading.dot(velocity.normalized())
