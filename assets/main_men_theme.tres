@@ -1,5 +1,6 @@
-[gd_resource type="Theme" load_steps=8 format=3 uid="uid://wd8u5alu5158"]
+[gd_resource type="Theme" load_steps=9 format=3 uid="uid://wd8u5alu5158"]
 
+[ext_resource type="FontFile" uid="uid://bqdyi6cp0g816" path="res://assets/Pandry Demo.ttf" id="1_4ta84"]
 [ext_resource type="Texture2D" uid="uid://b6w3eiureiwn6" path="res://assets/UI-Pack-0.0.1/button1.png" id="1_bxame"]
 [ext_resource type="Texture2D" uid="uid://ct1agig0dnw8l" path="res://assets/UI-Pack-0.0.1/buttonHover1.png" id="2_c8crw"]
 
@@ -27,7 +28,8 @@ modulate_color = Color(0.313726, 0, 0, 1)
 
 [resource]
 Button/constants/h_separation = 500
-Button/font_sizes/font_size = 40
+Button/font_sizes/font_size = 50
+Button/fonts/font = ExtResource("1_4ta84")
 Button/styles/disabled = SubResource("StyleBoxTexture_w1if2")
 Button/styles/hover = SubResource("StyleBoxTexture_jiimg")
 Button/styles/normal = SubResource("StyleBoxTexture_byjth")

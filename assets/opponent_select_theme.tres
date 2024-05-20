@@ -1,0 +1,8 @@
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://bdv0de8d46cgr"]
+
+[ext_resource type="FontFile" uid="uid://bqdyi6cp0g816" path="res://assets/Pandry Demo.ttf" id="1_q54fu"]
+
+[resource]
+Button/constants/icon_max_width = 50
+Button/font_sizes/font_size = 50
+Button/fonts/font = ExtResource("1_q54fu")

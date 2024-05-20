@@ -78,7 +78,7 @@ func _on_back_button_down():
 
 func _on_continue_button_down():
 	#Global.change_state(Global.GameState.PLAYING)
-	get_tree().change_scene_to_file("res://main.tscn")
+	get_tree().change_scene_to_file("res://opponent_select.tscn")
 	
 	
 

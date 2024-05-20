@@ -24,7 +24,7 @@ func _ready():
 
 	Global.change_state(Global.GameState.PLAYING)
 	#Global.set_mode(Global.GameModes.COLLECT)
-	Global.set_opponent(Global.GameOpponents.ALONE)
+	#Global.set_opponent(Global.GameOpponents.ALONE)
 	Global.gui.update_players_info()
 
 	load_level(Global.active_map)
