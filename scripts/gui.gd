@@ -5,12 +5,12 @@ extends Node
 func _ready():
 	Global.gui = self
 	update_players_info()
+	$PanelContainer/MarginContainer/GridContainer/Timer.text = "Time: %d" % Global.timer_wait_time
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	pass
-	#$PanelContainer/MarginContainer/GridContainer/VelocityLength.text = "Velocity Length: %4.1f" % Global.player.velocity.length()
 	
 
 

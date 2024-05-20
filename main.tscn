@@ -12,6 +12,9 @@
 [node name="World" type="Node2D" parent="."]
 script = ExtResource("1_syn2n")
 
+[node name="Timer" type="Timer" parent="World"]
+wait_time = 60.0
+
 [node name="CoinTimer" type="Timer" parent="World"]
 wait_time = 2.0
 

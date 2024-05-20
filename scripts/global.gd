@@ -21,6 +21,7 @@ var start_pos2:Vector2
 var start_rot2
 var game_world
 var active_map = "map1"
+var timer_wait_time:int
 
 var player_cross_checkpoint
 

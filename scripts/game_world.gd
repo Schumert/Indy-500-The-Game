@@ -21,6 +21,7 @@ func _ready():
 	
 	coin = preload("res://coin.tscn")
 	Global.game_world = self
+	$Timer.wait_time = Global.timer_wait_time
 
 	Global.change_state(Global.GameState.PLAYING)
 	#Global.set_mode(Global.GameModes.COLLECT)

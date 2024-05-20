@@ -82,3 +82,7 @@ func _on_continue_button_down():
 	
 	
 
+
+
+func _on_option_button_item_selected(index):
+	Global.timer_wait_time = $OptionButton.get_item_text(index).to_int()

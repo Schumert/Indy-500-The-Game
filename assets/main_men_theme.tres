@@ -27,7 +27,7 @@ texture = ExtResource("1_bxame")
 modulate_color = Color(0.313726, 0, 0, 1)
 
 [resource]
-Button/constants/h_separation = 500
+Button/constants/h_separation = 200
 Button/font_sizes/font_size = 50
 Button/fonts/font = ExtResource("1_4ta84")
 Button/styles/disabled = SubResource("StyleBoxTexture_w1if2")
@@ -36,4 +36,5 @@ Button/styles/normal = SubResource("StyleBoxTexture_byjth")
 Button/styles/pressed = SubResource("StyleBoxTexture_k863g")
 CheckBox/constants/h_separation = 150
 CheckBox/styles/hover_pressed = SubResource("StyleBoxTexture_3nkfl")
-OptionButton/constants/arrow_margin = 18
+OptionButton/constants/arrow_margin = 20
+OptionButton/constants/h_separation = 250
