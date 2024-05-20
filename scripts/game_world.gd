@@ -21,7 +21,10 @@ func _ready():
 	
 	coin = preload("res://coin.tscn")
 	Global.game_world = self
+
 	$Timer.wait_time = Global.timer_wait_time
+	Global.timer_node = $Timer
+	
 
 	Global.change_state(Global.GameState.PLAYING)
 	#Global.set_mode(Global.GameModes.COLLECT)
@@ -37,6 +40,11 @@ func _ready():
 		add_child(coin_instance)
 		coin_instance.position = Vector2(1500, 500)
 		$CoinTimer.start()
+	
+	if Global.current_mode == Global.GameModes.RACE:
+		pass
+	else:
+		$Timer.start() #game life-time
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -95,6 +103,8 @@ func load_level(level_name : String):
 			call_deferred("add_child", player2_instance)
 		elif Global.current_opponent == Global.GameOpponents.AI:
 			pass
+		
+		
 		
 		
 	

@@ -12,10 +12,10 @@ script = ExtResource("1_ron8l")
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 layout_mode = 0
-offset_left = 27.0
-offset_top = 30.0
-offset_right = 159.0
-offset_bottom = 146.0
+offset_left = 93.0
+offset_top = 64.0
+offset_right = 255.0
+offset_bottom = 229.0
 theme = ExtResource("2_4apxx")
 
 [node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]

@@ -58,6 +58,12 @@ func _on_map_button_pressed(map_name):
 
 func _on_mode_button_pressed(button_name):
 	Global.set_mode(button_name)
+	if Global.current_mode == Global.GameModes.RACE:
+		$TimeOption.visible = false
+		$LapOption.visible = true
+	else:
+		$TimeOption.visible = true
+		$LapOption.visible = false
 	update_map_buttons()
 
 func clear_children(container):
@@ -85,4 +91,10 @@ func _on_continue_button_down():
 
 
 func _on_option_button_item_selected(index):
-	Global.timer_wait_time = $OptionButton.get_item_text(index).to_int()
+	Global.timer_wait_time = $TimeOption.get_item_text(index).to_int()
+	print("Timer set to: %s" % $TimeOption.get_item_text(index))
+
+
+func _on_lap_option_item_selected(index):
+	Global.max_lap = $LapOption.get_item_text(index).to_int()
+	print("Max lap set to: %s" % $LapOption.get_item_text(index))
