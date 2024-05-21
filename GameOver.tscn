@@ -1,0 +1,108 @@
+[gd_scene load_steps=7 format=3 uid="uid://ccgmu0qqemiin"]
+
+[ext_resource type="Script" path="res://scripts/game_over_sceen.gd" id="1_4ak1l"]
+[ext_resource type="FontFile" uid="uid://bqdyi6cp0g816" path="res://assets/Pandry Demo.ttf" id="1_sblfs"]
+[ext_resource type="Texture2D" uid="uid://c1kkmnlbxa42b" path="res://assets/Item_Frame_Kit/Item_Frame_Kit/7.png" id="2_7b5uj"]
+[ext_resource type="Theme" uid="uid://wd8u5alu5158" path="res://assets/main_men_theme.tres" id="3_evia4"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_k4tkx"]
+texture = ExtResource("2_7b5uj")
+texture_margin_left = 100.0
+texture_margin_top = 100.0
+texture_margin_right = 100.0
+texture_margin_bottom = 100.0
+
+[sub_resource type="Theme" id="Theme_fjn8e"]
+Label/colors/font_color = Color(0, 0, 0, 1)
+Label/font_sizes/font_size = 35
+Label/fonts/font = ExtResource("1_sblfs")
+PanelContainer/styles/panel = SubResource("StyleBoxTexture_k4tkx")
+
+[node name="GameOver" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_4ak1l")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.662745)
+
+[node name="Panel" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -394.0
+offset_top = -331.0
+offset_right = 394.0
+offset_bottom = 331.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_fjn8e")
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="Panel"]
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 8
+
+[node name="Player1" type="Label" parent="Panel/HBoxContainer2/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = " Player 1:"
+
+[node name="Player2" type="Label" parent="Panel/HBoxContainer2/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = " Player 2:"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="Panel/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 25
+
+[node name="seperator" type="Control" parent="Panel/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+
+[node name="WhoWon" type="Label" parent="Panel/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+theme = ExtResource("3_evia4")
+alignment = 1
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="Panel/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+
+[node name="Menu" type="Button" parent="Panel/VBoxContainer/HBoxContainer3"]
+layout_mode = 2
+text = "MENU"
+
+[node name="Restart" type="Button" parent="Panel/VBoxContainer/HBoxContainer3"]
+layout_mode = 2
+text = "PLAY AGAIN"
+
+[connection signal="button_down" from="Panel/VBoxContainer/HBoxContainer3/Menu" to="." method="_on_menu_button_down"]
+[connection signal="button_down" from="Panel/VBoxContainer/HBoxContainer3/Restart" to="." method="_on_restart_button_down"]

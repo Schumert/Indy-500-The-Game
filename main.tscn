@@ -1,11 +1,15 @@
-[gd_scene load_steps=3 format=3 uid="uid://bt1j304qy5pj5"]
+[gd_scene load_steps=4 format=3 uid="uid://bt1j304qy5pj5"]
 
+[ext_resource type="PackedScene" uid="uid://ccgmu0qqemiin" path="res://GameOver.tscn" id="1_mmfmb"]
 [ext_resource type="PackedScene" uid="uid://blwr34e3hi8g6" path="res://gui.tscn" id="1_pgw7q"]
 [ext_resource type="Script" path="res://scripts/game_world.gd" id="1_syn2n"]
 
 [node name="main" type="Node2D"]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="GameOver" parent="CanvasLayer" instance=ExtResource("1_mmfmb")]
+visible = false
 
 [node name="GUI" parent="CanvasLayer" instance=ExtResource("1_pgw7q")]
 
@@ -14,6 +18,7 @@ script = ExtResource("1_syn2n")
 
 [node name="Timer" type="Timer" parent="World"]
 wait_time = 60.0
+one_shot = true
 
 [node name="CoinTimer" type="Timer" parent="World"]
 wait_time = 2.0
@@ -21,4 +26,5 @@ wait_time = 2.0
 [node name="StartPoint" type="Node2D" parent="World"]
 position = Vector2(976, 706)
 
+[connection signal="timeout" from="World/Timer" to="World" method="_on_timer_timeout"]
 [connection signal="timeout" from="World/CoinTimer" to="World" method="_on_timer_finished_spawn_coin"]

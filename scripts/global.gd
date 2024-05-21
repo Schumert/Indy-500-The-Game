@@ -24,6 +24,7 @@ var active_map = "map1"
 var timer_wait_time:=60
 var max_lap:=20
 var timer_node:Timer
+var game_over_screen:Control
 
 var player_cross_checkpoint
 

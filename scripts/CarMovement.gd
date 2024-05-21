@@ -62,9 +62,9 @@ var collision_info = Vector2.ZERO
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta):
 	acceleration = Vector2.ZERO
-	if car_id == "car1":
+	if car_id == "car1" and Global.current_state == Global.GameState.PLAYING:
 		get_input()
-	elif car_id == "car2":
+	elif car_id == "car2" and Global.current_state == Global.GameState.PLAYING:
 		get_input2()
 	apply_friction(delta)
 	steering(delta)
@@ -111,7 +111,7 @@ func finish_lap():
 		Global.finished_laps["car1"] += 1
 		Global.gui.update_players_info()
 	elif car_id == "car2":
-		Global.finished_laps["car2"] += 1
+		Global.finished_laps["car2"] += 5
 		Global.gui.update_players_info()
 
 func _pushed_off(opp, delta):

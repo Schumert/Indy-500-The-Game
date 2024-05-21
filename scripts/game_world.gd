@@ -13,6 +13,8 @@ var coin_instance
 var rng
 var coin_delay
 
+signal game_over 
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	#call_deferred("remove_child", get_child(get_child_count() - 1))
@@ -46,6 +48,8 @@ func _ready():
 	else:
 		$Timer.start() #game life-time
 
+	self.connect("game_over", _on_game_over)
+
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -61,19 +65,17 @@ func _process(delta):
 	
 	match Global.current_mode:
 		Global.GameModes.RACE:
-			var car1_laps = Global.finished_laps["car1"]
-			var car2_laps = Global.finished_laps["car2"]
-			#print("Car 1 finished %d laps." % car1_laps)
+			if Global.finished_laps["car1"] or Global.finished_laps["car2"] >= Global.max_lap:
+				if Global.current_state != Global.GameState.GAMEOVER:
+					Global.change_state(Global.GameState.GAMEOVER)
+					game_over.emit()
 		Global.GameModes.TAG:
 			pass
 		Global.GameModes.COLLECT:
 			if not coin_instance:
 				coin_instance = coin.instantiate()
 				add_child(coin_instance)
-			var car1_coins = Global.collected_coins["car1"]
-			var car2_coins = Global.collected_coins["car2"]
-			#print("Car 1 Coins: %d" % car1_coins)
-			#print("Car 2 Coins: %d" % car2_coins)
+			
 		Global.GameModes.WAR:
 			pass
 
@@ -118,6 +120,10 @@ func _on_timer_finished_spawn_coin():
 	$CoinTimer.wait_time = rng.randf_range(2, 10)
 
 
+func _on_timer_timeout(): #when the game time is over
+	Global.change_state(Global.GameState.GAMEOVER)
+	game_over.emit()
 
 
-
+func _on_game_over():
+	get_parent().get_node("CanvasLayer/GameOver").visible = true
