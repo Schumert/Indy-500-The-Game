@@ -65,7 +65,7 @@ func _process(delta):
 	
 	match Global.current_mode:
 		Global.GameModes.RACE:
-			if Global.finished_laps["car1"] or Global.finished_laps["car2"] >= Global.max_lap:
+			if Global.finished_laps["car1"] >= Global.max_lap or Global.finished_laps["car2"] >= Global.max_lap:
 				if Global.current_state != Global.GameState.GAMEOVER:
 					Global.change_state(Global.GameState.GAMEOVER)
 					game_over.emit()

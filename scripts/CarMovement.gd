@@ -111,7 +111,7 @@ func finish_lap():
 		Global.finished_laps["car1"] += 1
 		Global.gui.update_players_info()
 	elif car_id == "car2":
-		Global.finished_laps["car2"] += 5
+		Global.finished_laps["car2"] += 1
 		Global.gui.update_players_info()
 
 func _pushed_off(opp, delta):
