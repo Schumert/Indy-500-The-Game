@@ -26,10 +26,13 @@ var max_lap:=20
 var timer_node:Timer
 var game_over_screen:Control
 
-var player_cross_checkpoint
+var player1
+var player2
+var who_cross_checkpoint
 
 var collected_coins = {"car1" : 0, "car2": 0}
 var finished_laps = {"car1" : 0, "car2": 0}
+var player_checkpoints = {"car1" : [], "car2": []}
 
 func change_state(new_state):
 	current_state = new_state
@@ -70,6 +73,20 @@ func set_opponent(opponent):
 			print("Current opponent is a real person.")
 		GameOpponents.AI:
 			print("Current opponent is an AI.")
+
+
+func add_checkpoint(player, checkpoint_id):
+	if player_checkpoints.has(player):
+		player_checkpoints[player].append(checkpoint_id)
+
+func has_passed_all_checkpoints(player, total_checkpoints):
+	if player_checkpoints.has(player):
+		return player_checkpoints[player].size() == total_checkpoints
+	return false
+
+func is_checkpoint_in_order(player, checkpoint_id):
+	var last_checkpoint = player_checkpoints[player].size()
+	return checkpoint_id == last_checkpoint + 1
 
 
 

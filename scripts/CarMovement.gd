@@ -19,6 +19,8 @@ var traction_slow = 7
 @export var car_id : String
 
 
+
+
 var is_pushing_state:=false
 # var traction_handbrake = 0
 
@@ -40,14 +42,19 @@ func _ready():
 	# add_sibling(camera_instance)
 
 	Global.player = self
+	
+	
 	Global.collected_coins[car_id] = 0
 	Global.finished_laps[car_id] = 0
 	Global.gui.update_players_info()
 	if car_id == "car1":
+		Global.player1 = self
 		position = Global.start_pos
 	elif car_id =="car2":
 		position = Global.start_pos2
 		rotation = Global.start_rot2
+		Global.player2 = self
+
 
 	
 	if Global.active_map.contains("icy"):
@@ -106,7 +113,7 @@ func collect_coin():
 		Global.collected_coins["car2"] += 1
 		Global.gui.update_players_info()
 
-func finish_lap():
+func finish_lap(car_id):
 	if car_id == "car1":
 		Global.finished_laps["car1"] += 1
 		Global.gui.update_players_info()

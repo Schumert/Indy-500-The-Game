@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=3 uid="uid://b60l60ii2s0og"]
+[gd_scene load_steps=30 format=3 uid="uid://b60l60ii2s0og"]
 
 [ext_resource type="Script" path="res://scripts/grass.gd" id="1_0wcqe"]
 [ext_resource type="Script" path="res://scripts/map1.gd" id="1_tt7ib"]
@@ -10,6 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://cmk4ivcdif437" path="res://assets/Decor/Start.png" id="5_yf6y5"]
 [ext_resource type="Texture2D" uid="uid://ku21ovv8li2b" path="res://assets/Grass Tiles/Plants 002.png" id="7_u7qsw"]
 [ext_resource type="Texture2D" uid="uid://cnk3fp7w6xlo7" path="res://assets/Decor/Pavilion_01.png" id="9_b6n08"]
+[ext_resource type="Script" path="res://scripts/finish.gd" id="11_hiech"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_d0drd"]
 size = Vector2(1706.86, 544.573)
@@ -22,40 +23,6 @@ size = Vector2(1662.71, 555.286)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_05qkh"]
 size = Vector2(1706.86, 680.857)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_bxss8"]
-size = Vector2(201, 20)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_3rdvc"]
-size = Vector2(201.286, 21.1428)
-
-[sub_resource type="GDScript" id="GDScript_spv4q"]
-script/source = "extends Node
-
-signal player_entered
-
-
-func _on_body_entered(body):
-	if body.collision_layer & (1 << 1) != 0:
-		player_entered.emit()
-		"
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_34sg2"]
-size = Vector2(267.881, 21.1428)
-
-[sub_resource type="GDScript" id="GDScript_y7xfc"]
-script/source = "extends Node
-
-signal player_entered
-
-
-func _on_body_entered(body):
-	if body.collision_layer & (1 << 1) != 0:
-		player_entered.emit()
-		"
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_7m3qr"]
-size = Vector2(201.584, 21.1428)
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_dh0oq"]
 texture = ExtResource("4_j6o2p")
@@ -255,6 +222,18 @@ size = Vector2(183.676, 83.548)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_gco36"]
 size = Vector2(804.742, 21.7857)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bxss8"]
+size = Vector2(201, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_34sg2"]
+size = Vector2(267.881, 21.1428)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3rdvc"]
+size = Vector2(201.286, 21.1428)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7m3qr"]
+size = Vector2(201.584, 21.1428)
+
 [node name="map1" type="Node2D"]
 position = Vector2(986, 547)
 scale = Vector2(2.425, 2.425)
@@ -294,57 +273,6 @@ modulate = Color(0.184314, 0.623529, 0, 1)
 position = Vector2(0, -226.714)
 scale = Vector2(5034.31, 4358.86)
 texture = ExtResource("4_aasoq")
-
-[node name="RaceManager" type="Node2D" parent="."]
-script = ExtResource("3_m8sbt")
-
-[node name="Checkpoint1" type="Area2D" parent="RaceManager"]
-position = Vector2(244.948, -0.824742)
-scale = Vector2(1.47835, 1)
-collision_layer = 32
-collision_mask = 18
-script = ExtResource("3_s6rui")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="RaceManager/Checkpoint1"]
-position = Vector2(-19.6429, 0)
-shape = SubResource("RectangleShape2D_bxss8")
-
-[node name="Checkpoint3" type="Area2D" parent="RaceManager"]
-position = Vector2(-267.217, 0)
-scale = Vector2(1.46185, 1)
-collision_layer = 32
-collision_mask = 18
-script = ExtResource("3_s6rui")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="RaceManager/Checkpoint3"]
-position = Vector2(21.2143, 0)
-shape = SubResource("RectangleShape2D_3rdvc")
-
-[node name="Checkpoint2" type="Area2D" parent="RaceManager"]
-position = Vector2(-0.142853, -131.714)
-rotation = 1.5708
-scale = Vector2(0.811429, 1)
-collision_layer = 32
-collision_mask = 18
-script = SubResource("GDScript_spv4q")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="RaceManager/Checkpoint2"]
-position = Vector2(-15.6308, 0.285735)
-rotation = -3.14159
-shape = SubResource("RectangleShape2D_34sg2")
-
-[node name="FinishLine" type="Area2D" parent="RaceManager"]
-position = Vector2(-0.14286, 91.5714)
-rotation = 1.5708
-scale = Vector2(0.811429, 1)
-collision_layer = 32
-collision_mask = 18
-script = SubResource("GDScript_y7xfc")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="RaceManager/FinishLine"]
-position = Vector2(31.6021, 0.285722)
-rotation = -3.14159
-shape = SubResource("RectangleShape2D_7m3qr")
 
 [node name="Road" type="Node2D" parent="."]
 position = Vector2(-3.05176e-05, -10.3092)
@@ -453,11 +381,65 @@ position = Vector2(-4.12372, 63.0928)
 [node name="StartPos2" type="Node2D" parent="."]
 position = Vector2(-3.29898, 101.031)
 
+[node name="RaceManager" type="Node2D" parent="."]
+script = ExtResource("3_m8sbt")
+
+[node name="Checkpoint1" type="Area2D" parent="RaceManager"]
+position = Vector2(244.948, -0.824742)
+scale = Vector2(1.52941, 1.26281)
+collision_layer = 32
+collision_mask = 18
+script = ExtResource("3_s6rui")
+checkpoint_id = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RaceManager/Checkpoint1"]
+position = Vector2(-19.6429, 0)
+shape = SubResource("RectangleShape2D_bxss8")
+
+[node name="Checkpoint2" type="Area2D" parent="RaceManager"]
+position = Vector2(-0.142853, -131.714)
+rotation = 1.5708
+scale = Vector2(0.811429, 1)
+collision_layer = 32
+collision_mask = 18
+script = ExtResource("3_s6rui")
+checkpoint_id = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RaceManager/Checkpoint2"]
+position = Vector2(-15.6308, 0.285735)
+rotation = -3.14159
+shape = SubResource("RectangleShape2D_34sg2")
+
+[node name="Checkpoint3" type="Area2D" parent="RaceManager"]
+position = Vector2(-267.217, 0)
+scale = Vector2(1.46185, 1)
+collision_layer = 32
+collision_mask = 18
+script = ExtResource("3_s6rui")
+checkpoint_id = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RaceManager/Checkpoint3"]
+position = Vector2(21.2143, 0)
+shape = SubResource("RectangleShape2D_3rdvc")
+
+[node name="FinishLine" type="Area2D" parent="RaceManager"]
+position = Vector2(-0.14286, 91.5714)
+rotation = 1.5708
+scale = Vector2(0.811429, 1)
+collision_layer = 32
+collision_mask = 18
+script = ExtResource("11_hiech")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RaceManager/FinishLine"]
+position = Vector2(31.6021, 0.285722)
+rotation = -3.14159
+shape = SubResource("RectangleShape2D_7m3qr")
+
 [connection signal="body_entered" from="BackgroundGrass" to="BackgroundGrass" method="on_offroad_enter"]
 [connection signal="body_exited" from="BackgroundGrass" to="BackgroundGrass" method="on_offrad_exit"]
-[connection signal="body_entered" from="RaceManager/Checkpoint1" to="RaceManager/Checkpoint1" method="_on_body_entered"]
-[connection signal="body_entered" from="RaceManager/Checkpoint3" to="RaceManager/Checkpoint3" method="_on_body_entered"]
-[connection signal="body_entered" from="RaceManager/Checkpoint2" to="RaceManager/Checkpoint2" method="_on_body_entered"]
-[connection signal="body_entered" from="RaceManager/FinishLine" to="RaceManager/FinishLine" method="_on_body_entered"]
 [connection signal="body_entered" from="Grass" to="Grass" method="on_offroad_enter"]
 [connection signal="body_exited" from="Grass" to="Grass" method="on_offrad_exit"]
+[connection signal="body_entered" from="RaceManager/Checkpoint1" to="RaceManager/Checkpoint1" method="_on_body_entered"]
+[connection signal="body_entered" from="RaceManager/Checkpoint2" to="RaceManager/Checkpoint2" method="_on_body_entered"]
+[connection signal="body_entered" from="RaceManager/Checkpoint3" to="RaceManager/Checkpoint3" method="_on_body_entered"]
+[connection signal="body_entered" from="RaceManager/FinishLine" to="RaceManager/FinishLine" method="_on_body_entered"]
