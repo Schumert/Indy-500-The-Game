@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://upb8gjaij3h0"]
+[gd_scene load_steps=25 format=3 uid="uid://upb8gjaij3h0"]
 
 [ext_resource type="Script" path="res://scripts/map1.gd" id="1_7o651"]
 [ext_resource type="Script" path="res://scripts/grass.gd" id="2_cikoq"]
@@ -6,6 +6,7 @@
 [ext_resource type="Script" path="res://scripts/RaceManager.gd" id="4_n48c1"]
 [ext_resource type="Script" path="res://scripts/checkpoint.gd" id="5_jvvjv"]
 [ext_resource type="Texture2D" uid="uid://daebdicdu3gwh" path="res://assets/RacingTilemap.png" id="6_3euiq"]
+[ext_resource type="Script" path="res://scripts/finish.gd" id="6_3qcw6"]
 [ext_resource type="Texture2D" uid="uid://msgb7aphy5qp" path="res://assets/Grass Tiles/Grass 001.png" id="7_ah88f"]
 [ext_resource type="Texture2D" uid="uid://ku21ovv8li2b" path="res://assets/Grass Tiles/Plants 002.png" id="8_rvnty"]
 
@@ -27,30 +28,8 @@ size = Vector2(201, 20)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3rdvc"]
 size = Vector2(201.286, 21.1428)
 
-[sub_resource type="GDScript" id="GDScript_spv4q"]
-script/source = "extends Node
-
-signal player_entered
-
-
-func _on_body_entered(body):
-	if body.collision_layer & (1 << 1) != 0:
-		player_entered.emit()
-		"
-
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_34sg2"]
 size = Vector2(267.881, 21.1428)
-
-[sub_resource type="GDScript" id="GDScript_y7xfc"]
-script/source = "extends Node
-
-signal player_entered
-
-
-func _on_body_entered(body):
-	if body.collision_layer & (1 << 1) != 0:
-		player_entered.emit()
-		"
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7m3qr"]
 size = Vector2(201.584, 21.1428)
@@ -315,7 +294,7 @@ rotation = 1.5708
 scale = Vector2(0.811429, 1)
 collision_layer = 32
 collision_mask = 18
-script = SubResource("GDScript_spv4q")
+script = ExtResource("5_jvvjv")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="RaceManager/Checkpoint2"]
 position = Vector2(-15.6308, 0.285735)
@@ -328,7 +307,7 @@ rotation = 1.5708
 scale = Vector2(0.811429, 1)
 collision_layer = 32
 collision_mask = 18
-script = SubResource("GDScript_y7xfc")
+script = ExtResource("6_3qcw6")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="RaceManager/FinishLine"]
 position = Vector2(31.6021, 0.285722)
