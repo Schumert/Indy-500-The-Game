@@ -34,6 +34,11 @@ var collected_coins = {"car1" : 0, "car2": 0}
 var finished_laps = {"car1" : 0, "car2": 0}
 var player_checkpoints = {"car1" : [], "car2": []}
 
+var coins := []
+
+
+
+
 func change_state(new_state):
 	current_state = new_state
 	match current_state:

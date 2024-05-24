@@ -43,11 +43,18 @@ func _ready():
 	if Global.active_map.contains("icy"):
 		max_speed = 300
 		steer_force /= 2
+
+	if Global.get_mode() == Global.GameModes.COLLECT:
+		look_ahead = 350
+		max_speed = 600
+		steer_force = 0.01
+		position = Vector2(229, 197)
 	
 	max_speed_start = max_speed + 100
 	min_speed = max_speed
 
-
+	
+		
 	
 	max_speed -= 300
 	await get_tree().create_timer(2).timeout
@@ -56,8 +63,6 @@ func _ready():
 	max_speed += 100
 	await get_tree().create_timer(1).timeout
 	max_speed += 100
-
-	
 	
 
 
@@ -85,9 +90,9 @@ func choose_direction():
 
 
 func set_interest():
-	if get_parent() and get_parent().has_method("get_path_direction"):
-		
-		var path_direction = get_parent().get_path_direction(position)
+	if get_parent() and get_parent().has_method("get_closest_coin_direction") and Global.get_mode() == Global.GameModes.COLLECT:
+		var path_direction = get_parent().get_closest_coin_direction(position)
+		path_direction = transform.x if null else path_direction
 		for i in num_rays:
 			var d = ray_directions[i].rotated(rotation).dot(path_direction)
 			interest[i] = max(0, d)
@@ -128,4 +133,9 @@ func finish_lap():
 			max_speed = min_speed
 	
 	print("Botun hızı: %d" % max_speed)
+
+func collect_coin():
+	Global.collected_coins["car2"] += 1
+	Global.gui.update_players_info()
+
 

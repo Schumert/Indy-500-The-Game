@@ -72,10 +72,10 @@ func _process(delta):
 			if not coin_instance:
 				coin_instance = coin.instantiate()
 				add_child(coin_instance)
+				Global.coins.append(coin_instance)
 			
 		Global.GameModes.WAR:
 			pass
-
 	
 
 func  unload_level():
@@ -104,6 +104,7 @@ func _on_timer_finished_spawn_coin():
 
 	#coin_delay = get_tree().create_timer(2)
 	$CoinTimer.wait_time = rng.randf_range(2, 10)
+	Global.coins.append(coin_instance)
 
 
 func _on_timer_timeout(): #when the game time is over

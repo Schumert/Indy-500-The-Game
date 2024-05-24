@@ -45,6 +45,35 @@ func _ready():
 	
 # 	return path_follow.transform.x
 
+func get_closest_coin_direction(pos: Vector2):
+	if Global.coins.is_empty():
+		return Vector2.ZERO
+
+	var closest_coin
+	var closest_distance
+
+	for coin in Global.coins:
+		if coin != null:
+			var coin_position = coin.position
+			var distance := pos.distance_to(coin_position)
+
+			if closest_distance != null:
+				if distance < closest_distance:
+					closest_distance = distance
+					closest_coin = coin
+			else:
+				closest_distance = distance
+				closest_coin = coin
+	if closest_coin != null:
+		var direction = (closest_coin.position - pos).normalized()
+		return direction
+	else:
+		return Vector2.ZERO
+		
+
+
+
+
 
 
 

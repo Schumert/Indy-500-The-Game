@@ -10,7 +10,7 @@ func _ready():
 	ai_button.connect("button_down", _on_opponent_button_down.bind(Global.GameOpponents.AI))
 
 	if Global.current_mode == Global.GameModes.COLLECT:
-		ai_button.disabled = true
+		#ai_button.disabled = true
 		Global.set_opponent(Global.GameOpponents.ALONE)
 	if Global.current_mode == Global.GameModes.RACE:
 		alone_button.disabled = true

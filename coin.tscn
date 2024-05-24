@@ -11,7 +11,7 @@ top_level = true
 position = Vector2(0, -330)
 scale = Vector2(0.3, 0.3)
 collision_layer = 8
-collision_mask = 83
+collision_mask = 211
 script = ExtResource("1_t5pgg")
 
 [node name="Node2D" type="Sprite2D" parent="."]

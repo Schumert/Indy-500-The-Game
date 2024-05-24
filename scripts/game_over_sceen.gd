@@ -34,12 +34,22 @@ func _process(delta):
 					else:
 						who_wins = "TIE"
 						is_tie = true
-					$Panel/HBoxContainer2/VBoxContainer/Player1.text = "Player 1: %d coins" % Global.collected_coins["car1"]
-					$Panel/HBoxContainer2/VBoxContainer/Player2.text = "Player 2: %d coins" % Global.collected_coins["car2"]
+					$Panel/HBoxContainer2/VBoxContainer/Player1.text = "Player 1: %d godots" % Global.collected_coins["car1"]
+					$Panel/HBoxContainer2/VBoxContainer/Player2.text = "Player 2: %d godots" % Global.collected_coins["car2"]
 				elif Global.current_opponent == Global.GameOpponents.ALONE:
-					$Panel/HBoxContainer/VBoxContainer2/WhoWon.text = "You collected \n%d coins \nin %d seconds" % [Global.collected_coins["car1"], Global.timer_wait_time]
+					$Panel/HBoxContainer/VBoxContainer2/WhoWon.text = "You collected \n%d godots \nin %d seconds" % [Global.collected_coins["car1"], Global.timer_wait_time]
 					$Panel/HBoxContainer2/VBoxContainer/Player1.text = ""
 					$Panel/HBoxContainer2/VBoxContainer/Player2.text = ""
+				elif Global.current_opponent == Global.GameOpponents.AI:
+					if Global.collected_coins["car1"] > Global.collected_coins["car2"]:
+						who_wins = "Player 1"
+					elif Global.collected_coins["car1"] < Global.collected_coins["car2"]:
+						who_wins = "AI"
+					else:
+						who_wins = "TIE"
+						is_tie = true
+					$Panel/HBoxContainer2/VBoxContainer/Player1.text = "Player 1: %d godots" % Global.collected_coins["car1"]
+					$Panel/HBoxContainer2/VBoxContainer/Player2.text = "AI         : %d godots" % Global.collected_coins["car2"]
 			if not is_tie and not Global.current_opponent == Global.GameOpponents.ALONE:
 				$Panel/HBoxContainer/VBoxContainer2/WhoWon.text = "%s wins!!" % who_wins
 			elif is_tie and not Global.current_opponent == Global.GameOpponents.ALONE:
