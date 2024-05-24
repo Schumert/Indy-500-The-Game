@@ -1,10 +1,8 @@
 extends Node
 
-var player
-var player_instance
 
-var player2
-var player2_instance
+
+
 
 var level_instance
 var coin
@@ -18,8 +16,6 @@ signal game_over
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	#call_deferred("remove_child", get_child(get_child_count() - 1))
-	player = preload("res://car.tscn")
-	player2 = preload("res://car2.tscn")
 	
 	coin = preload("res://coin.tscn")
 	Global.game_world = self
@@ -28,7 +24,7 @@ func _ready():
 	Global.timer_node = $Timer
 	
 
-	Global.change_state(Global.GameState.PLAYING)
+	Global.change_state(Global.GameState.START)
 	#Global.set_mode(Global.GameModes.COLLECT)
 	#Global.set_opponent(Global.GameOpponents.ALONE)
 	Global.gui.update_players_info()
@@ -43,14 +39,15 @@ func _ready():
 		coin_instance.position = Vector2(1500, 500)
 		$CoinTimer.start()
 	
-	if Global.current_mode == Global.GameModes.RACE:
+	if Global.get_mode() == Global.GameModes.RACE:
 		pass
 	else:
 		$Timer.start() #game life-time
 
 	self.connect("game_over", _on_game_over)
 
-
+	await get_tree().create_timer(1).timeout
+	Global.change_state(Global.GameState.PLAYING)
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	match Global.current_state:
@@ -93,18 +90,7 @@ func load_level(level_name : String):
 	if(level_resource):
 		level_instance = level_resource.instantiate()
 		call_deferred("add_child", level_instance)
-		if player_instance:
-			remove_child(player_instance)
-		player_instance = player.instantiate()
-		call_deferred("add_child", player_instance)
 
-		if Global.current_opponent == Global.GameOpponents.TWO_PLAYER:
-			if player2_instance:
-				remove_child(player2_instance)
-			player2_instance = player2.instantiate()
-			call_deferred("add_child", player2_instance)
-		elif Global.current_opponent == Global.GameOpponents.AI:
-			pass
 		
 		
 		

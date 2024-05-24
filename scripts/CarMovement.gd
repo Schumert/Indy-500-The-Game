@@ -5,9 +5,8 @@ var steer_angle = 3
 var friction = -55
 var temp_friction = friction
 var acceleration = Vector2.ZERO
-var game_world_ref
 var drag = -0.06
-var rpm = 0
+var power = 0
 var engine_power = 20000
 var temp_engine_power = engine_power
 var wheel_base = 70
@@ -35,7 +34,6 @@ var steer_direction
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	game_world_ref = get_parent()
 	raycast = $RayCast2D
 	raycast.enabled = true
 	# camera_instance = camera.instantiate()
@@ -46,6 +44,7 @@ func _ready():
 	
 	Global.collected_coins[car_id] = 0
 	Global.finished_laps[car_id] = 0
+	Global.player_checkpoints[car_id] = []
 	Global.gui.update_players_info()
 	if car_id == "car1":
 		Global.player1 = self
@@ -68,15 +67,18 @@ func _ready():
 var collision_info = Vector2.ZERO
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta):
-	acceleration = Vector2.ZERO
-	if car_id == "car1" and Global.current_state == Global.GameState.PLAYING:
-		get_input()
-	elif car_id == "car2" and Global.current_state == Global.GameState.PLAYING:
-		get_input2()
-	apply_friction(delta)
-	steering(delta)
-	velocity += acceleration * delta
-	move_and_slide()
+	if Global.current_state == Global.GameState.PLAYING:
+		acceleration = Vector2.ZERO
+		if car_id == "car1":
+			get_input()
+		elif car_id == "car2":
+			get_input2()
+
+
+		apply_friction(delta)
+		steering(delta)
+		velocity += acceleration * delta
+		move_and_slide()
 	for i in get_slide_collision_count():
 		var collision = get_slide_collision(i)
 		if collision.get_collider().is_in_group("wall") and raycast.is_colliding():
@@ -98,7 +100,7 @@ func _physics_process(delta):
 	#print(velocity.length())
 	#print(game_world_ref.friction)
 	#print(steer_angle)
-	#print(rpm)
+	#print(power)
 var old_s_angle = steer_angle
 func increase_steer_angle(value):
 	steer_angle = old_s_angle + value
@@ -125,7 +127,7 @@ func _pushed_off(opp, delta):
 	if is_pushing_state:
 			var push_strength = 3000
 			velocity += opp * push_strength * delta
-			rpm = 0
+			power = 0
 			await get_tree().create_timer(0.5).timeout
 			is_pushing_state = false
 
@@ -139,16 +141,16 @@ func get_input():
 
 	steer_direction = turn * deg_to_rad(steer_angle)
 	
-	acceleration = transform.x * rpm
+	acceleration = transform.x * power
 	if Input.is_action_pressed("accelerate"):
-		rpm = lerpf(rpm, engine_power, 0.005)
+		power = lerpf(power, engine_power, 0.005)
 		to_old_s_angle()
 	else:
-		rpm = lerpf(rpm, 0, 0.05)
+		power = lerpf(power, 0, 0.05)
 
 
 	if Input.is_action_pressed("brake"):
-		rpm = lerpf(rpm, 0, 0.1)
+		power = lerpf(power, 0, 0.1)
 		acceleration = transform.x * braking
 
 		increase_steer_angle(2)
@@ -161,16 +163,16 @@ func get_input2():
 
 	steer_direction = turn * deg_to_rad(steer_angle)
 	
-	acceleration = transform.x * rpm
+	acceleration = transform.x * power
 	if Input.is_action_pressed("accelerate2"):
-		rpm = lerpf(rpm, engine_power, 0.005)
+		power = lerpf(power, engine_power, 0.005)
 		to_old_s_angle()
 	else:
-		rpm = lerpf(rpm, 0, 0.05)
+		power = lerpf(power, 0, 0.05)
 
 
 	if Input.is_action_pressed("brake2"):
-		rpm = lerpf(rpm, 0, 0.1)
+		power = lerpf(power, 0, 0.1)
 		acceleration = transform.x * braking
 
 		increase_steer_angle(2)

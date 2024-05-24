@@ -14,6 +14,7 @@ var current_opponent
 
 
 var player
+var player_ai
 
 var gui
 var start_pos:Vector2
@@ -28,7 +29,6 @@ var game_over_screen:Control
 
 var player1
 var player2
-var who_cross_checkpoint
 
 var collected_coins = {"car1" : 0, "car2": 0}
 var finished_laps = {"car1" : 0, "car2": 0}

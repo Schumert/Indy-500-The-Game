@@ -10,7 +10,7 @@ func _ready():
  
 
 func _on_body_entered(body:Node2D):
-	if body.collision_layer & (1 << 1) != 0:
+	if body.collision_layer & (1 << 1) != 0 or body.collision_layer & (1<<4) != 0:
 		body.collect_coin()
 	
 	queue_free()

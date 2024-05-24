@@ -42,7 +42,7 @@ func update_map_buttons():
 		counter+=1
 	if maps.size() == 0:
 		continue_button.disabled = true
-		$PanelContainer/GameMode.text = "GAME MODE: %s\n IS WORK IN PROGRESS!" % Global.GameModes.keys()[Global.current_mode]
+		$PanelContainer/GameMode.text = "GAME MODE: %s\nIS WORK IN PROGRESS!" % Global.GameModes.keys()[Global.current_mode]
 	else:
 		continue_button.disabled = false
 		$PanelContainer/GameMode.text = "GAME MODE: %s" % Global.GameModes.keys()[Global.current_mode]

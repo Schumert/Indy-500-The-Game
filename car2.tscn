@@ -6,7 +6,7 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hpj8k"]
 size = Vector2(505, 215)
 
-[node name="Car" type="CharacterBody2D"]
+[node name="Car2" type="CharacterBody2D"]
 show_behind_parent = true
 top_level = true
 scale = Vector2(0.2, 0.2)

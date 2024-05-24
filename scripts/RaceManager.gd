@@ -1,9 +1,7 @@
 extends Node
 
 var checkpoints = []
-var finish_line
 
-var is_checkpoints_finished = {"car1": false, "car2": false}
 var total_checkpoints:= 3
 
 
@@ -13,6 +11,10 @@ func check_lap_completion(player):
 		Global.player.finish_lap(player)
 		Global.player_checkpoints[player] = []
 
+func check_lap_completion_ai():
+	if Global.has_passed_all_checkpoints("car2", total_checkpoints):
+		Global.player_ai.finish_lap()
+		Global.player_checkpoints["car2"] = []
 	
 	
 

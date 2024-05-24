@@ -90,6 +90,8 @@ brake2={
 2d_physics/layer_5="player2"
 2d_physics/layer_6="checkpoint"
 2d_physics/layer_7="slow"
+2d_physics/layer_8="AI"
+2d_physics/layer_9="ObstacleForAI"
 
 [rendering]
 

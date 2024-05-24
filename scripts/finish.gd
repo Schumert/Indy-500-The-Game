@@ -9,10 +9,13 @@ func _ready():
 
 
 func _on_body_entered(body):
-	if body.collision_layer & (1 << 1) != 0:
-		player = "car1"
-	
-	if body.collision_layer & (1 << 4) != 0:
-		player = "car2"
-	
-	race_manager.check_lap_completion(player)
+	if body.collision_layer & (1 << 7) == 0:
+		if body.collision_layer & (1 << 1) != 0:
+			player = "car1"
+		
+		if body.collision_layer & (1 << 4) != 0:
+			player = "car2"
+		
+		race_manager.check_lap_completion(player)
+	elif body.collision_layer & (1 << 7) != 0:
+		race_manager.check_lap_completion_ai()

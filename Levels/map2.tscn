@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://4e8doy5vlbh6"]
+[gd_scene load_steps=29 format=3 uid="uid://4e8doy5vlbh6"]
 
 [ext_resource type="Script" path="res://scripts/map1.gd" id="1_0y6ap"]
 [ext_resource type="Script" path="res://scripts/grass.gd" id="1_boud5"]
@@ -227,6 +227,12 @@ size = Vector2(13.1959, 175.258)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_gco36"]
 size = Vector2(804.742, 21.7857)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_a7tso"]
+size = Vector2(40.6323, 48.0438)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dv4ks"]
+size = Vector2(27.2165, 190.516)
+
 [node name="map2" type="Node2D"]
 position = Vector2(986, 547)
 scale = Vector2(2.425, 2.425)
@@ -400,6 +406,25 @@ position = Vector2(-305.155, 118.763)
 [node name="StartPos2" type="Node2D" parent="."]
 position = Vector2(275.052, -141.443)
 rotation = 3.14159
+
+[node name="ObstacleForAI" type="Node2D" parent="."]
+
+[node name="StaticBody2D" type="StaticBody2D" parent="ObstacleForAI"]
+collision_layer = 256
+collision_mask = 128
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ObstacleForAI/StaticBody2D"]
+position = Vector2(0.824738, -10.5155)
+scale = Vector2(1.38024, -0.746742)
+shape = SubResource("RectangleShape2D_a7tso")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="ObstacleForAI/StaticBody2D"]
+position = Vector2(-209.072, -4.53607)
+shape = SubResource("RectangleShape2D_dv4ks")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="ObstacleForAI/StaticBody2D"]
+position = Vector2(180.619, -5.36079)
+shape = SubResource("RectangleShape2D_dv4ks")
 
 [connection signal="body_entered" from="BackgroundGrass" to="BackgroundGrass" method="on_offroad_enter"]
 [connection signal="body_exited" from="BackgroundGrass" to="BackgroundGrass" method="on_offrad_exit"]
