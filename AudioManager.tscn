@@ -1,0 +1,22 @@
+[gd_scene load_steps=3 format=3 uid="uid://cbwian2rsj4vp"]
+
+[ext_resource type="Script" path="res://scripts/AudioManager.gd" id="1_6j3r7"]
+[ext_resource type="AudioStream" uid="uid://dcu7dq1hrfabm" path="res://audio/hitHurt.wav" id="2_h5nuy"]
+
+[node name="AudioManager" type="Node"]
+script = ExtResource("1_6j3r7")
+
+[node name="Music" type="AudioStreamPlayer" parent="."]
+bus = &"Music"
+
+[node name="Crash" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_h5nuy")
+bus = &"FX"
+
+[node name="Click" type="AudioStreamPlayer" parent="."]
+bus = &"FX"
+
+[node name="Score" type="AudioStreamPlayer" parent="."]
+bus = &"FX"
+
+[node name="Start" type="AudioStreamPlayer" parent="."]

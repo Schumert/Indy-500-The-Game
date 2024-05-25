@@ -228,7 +228,7 @@ size = Vector2(201.286, 21.1428)
 size = Vector2(201.584, 21.1428)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jeupi"]
-size = Vector2(195.876, 20.2062)
+size = Vector2(160.876, 7.01029)
 
 [node name="map3" type="Node2D"]
 position = Vector2(986, 547)
@@ -413,11 +413,11 @@ collision_layer = 256
 collision_mask = 128
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="ObstacleForAI/StaticBody2D"]
-position = Vector2(-292.165, -17.9381)
+position = Vector2(-299.742, -18.3505)
 shape = SubResource("RectangleShape2D_jeupi")
 
 [node name="CollisionShape2D3" type="CollisionShape2D" parent="ObstacleForAI/StaticBody2D"]
-position = Vector2(263.918, 42.8866)
+position = Vector2(273.84, 41.8557)
 shape = SubResource("RectangleShape2D_jeupi")
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="ObstacleForAI/StaticBody2D"]

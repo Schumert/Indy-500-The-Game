@@ -36,8 +36,22 @@ var player_checkpoints = {"car1" : [], "car2": []}
 
 var coins := []
 
+#time vars for counting time when the player is alone
+var start_time
+var elapsed_time = 0
+var timer
 
+var is_muted := false
 
+func _input(event):
+	if event.is_action_pressed("mute"):
+		if not is_muted:
+			AudioServer.set_bus_volume_db(0, -80)
+			is_muted = true
+		else:
+			AudioServer.set_bus_volume_db(0, 0)
+			is_muted = false
+	
 
 func change_state(new_state):
 	current_state = new_state
@@ -46,6 +60,8 @@ func change_state(new_state):
 			print("Game State: START")
 		GameState.PLAYING:
 			print("Game State: PLAYING")
+			if Global.get_mode() != Global.GameModes.RACE:
+				timer.start()
 		GameState.PAUSED:
 			print("Game State: PAUSED")
 		GameState.GAMEOVER:

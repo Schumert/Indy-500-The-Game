@@ -1,8 +1,13 @@
-[gd_scene load_steps=4 format=3 uid="uid://bt1j304qy5pj5"]
+[gd_scene load_steps=7 format=3 uid="uid://bt1j304qy5pj5"]
 
 [ext_resource type="PackedScene" uid="uid://ccgmu0qqemiin" path="res://GameOver.tscn" id="1_mmfmb"]
 [ext_resource type="PackedScene" uid="uid://blwr34e3hi8g6" path="res://gui.tscn" id="1_pgw7q"]
 [ext_resource type="Script" path="res://scripts/game_world.gd" id="1_syn2n"]
+[ext_resource type="Script" path="res://scripts/start_screen.gd" id="3_cbtpj"]
+[ext_resource type="Texture2D" uid="uid://dtjy3ocyid45e" path="res://assets/2d_race_cars/misc/sem_all_red.png" id="4_m1ne1"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_r3qpo"]
+bg_color = Color(0.2, 0.2, 0.2, 0.572549)
 
 [node name="main" type="Node2D"]
 
@@ -12,6 +17,39 @@
 visible = false
 
 [node name="GUI" parent="CanvasLayer" instance=ExtResource("1_pgw7q")]
+
+[node name="Start" type="Control" parent="CanvasLayer" node_paths=PackedStringArray("texture_rect")]
+layout_mode = 3
+anchor_right = 0.999
+anchor_bottom = 0.996
+offset_right = 0.919922
+offset_bottom = 0.319946
+script = ExtResource("3_cbtpj")
+texture_rect = NodePath("Lamb/Sprite2D")
+
+[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/Start"]
+layout_mode = 0
+offset_right = 1922.0
+offset_bottom = 1073.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_r3qpo")
+
+[node name="Lamb" type="Control" parent="CanvasLayer/Start"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Sprite2D" type="Sprite2D" parent="CanvasLayer/Start/Lamb"]
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("4_m1ne1")
 
 [node name="World" type="Node2D" parent="."]
 script = ExtResource("1_syn2n")

@@ -1,4 +1,4 @@
-[gd_scene load_steps=32 format=3 uid="uid://b60l60ii2s0og"]
+[gd_scene load_steps=31 format=3 uid="uid://b60l60ii2s0og"]
 
 [ext_resource type="Script" path="res://scripts/grass.gd" id="1_0wcqe"]
 [ext_resource type="Script" path="res://scripts/map1.gd" id="1_tt7ib"]
@@ -9,7 +9,6 @@
 [ext_resource type="Texture2D" uid="uid://msgb7aphy5qp" path="res://assets/Grass Tiles/Grass 001.png" id="5_eg2w6"]
 [ext_resource type="Texture2D" uid="uid://cmk4ivcdif437" path="res://assets/Decor/Start.png" id="5_yf6y5"]
 [ext_resource type="Texture2D" uid="uid://ku21ovv8li2b" path="res://assets/Grass Tiles/Plants 002.png" id="7_u7qsw"]
-[ext_resource type="Texture2D" uid="uid://cnk3fp7w6xlo7" path="res://assets/Decor/Pavilion_01.png" id="9_b6n08"]
 [ext_resource type="Script" path="res://scripts/finish.gd" id="11_hiech"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_d0drd"]
@@ -367,19 +366,6 @@ shape = SubResource("RectangleShape2D_gco36")
 [node name="wall1" type="CollisionShape2D" parent="Walls"]
 position = Vector2(-9.89694, 230.928)
 shape = SubResource("RectangleShape2D_gco36")
-
-[node name="decor" type="Node2D" parent="."]
-position = Vector2(-4.94873, 80.4121)
-rotation = 1.5708
-scale = Vector2(0.05, 0.05)
-
-[node name="pavilion1" type="Sprite2D" parent="decor"]
-show_behind_parent = true
-visibility_layer = 3
-position = Vector2(-5468.04, 131.958)
-rotation = 4.71239
-scale = Vector2(2, 2)
-texture = ExtResource("9_b6n08")
 
 [node name="StartPos" type="Node2D" parent="."]
 position = Vector2(-4.12372, 63.0928)

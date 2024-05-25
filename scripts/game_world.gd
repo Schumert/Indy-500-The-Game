@@ -39,22 +39,23 @@ func _ready():
 		coin_instance.position = Vector2(1500, 500)
 		$CoinTimer.start()
 	
-	if Global.get_mode() == Global.GameModes.RACE:
-		pass
-	else:
-		$Timer.start() #game life-time
+	Global.timer = $Timer
 
 	self.connect("game_over", _on_game_over)
 
-	await get_tree().create_timer(1).timeout
-	Global.change_state(Global.GameState.PLAYING)
+
+	#!!!!!!!!!(its in start_screen.gd now)
+	# await get_tree().create_timer(1).timeout
+	# Global.change_state(Global.GameState.PLAYING)
+
+	Global.start_time = Time.get_unix_time_from_system()
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	match Global.current_state:
 		Global.GameState.START:
-			pass
+			AudioServer.set_bus_volume_db(1, 0) #set back the motor volume to its old value
 		Global.GameState.PLAYING:
-			pass
+			Global.elapsed_time = get_elapsed_time()
 		Global.GameState.PAUSED:
 			pass
 		Global.GameState.GAMEOVER:
@@ -114,3 +115,11 @@ func _on_timer_timeout(): #when the game time is over
 
 func _on_game_over():
 	get_parent().get_node("CanvasLayer/GameOver").visible = true
+	AudioServer.set_bus_volume_db(1, -80)
+
+func get_elapsed_time() -> int:
+	# Güncel zamanı al
+	var current_time = Time.get_unix_time_from_system() - 4 #4 is start wait time
+	# Geçen zamanı hesapla
+	var elapsed_time = current_time - Global.start_time
+	return elapsed_time

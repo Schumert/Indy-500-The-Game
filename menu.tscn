@@ -1339,10 +1339,6 @@ layout_mode = 2
 text = "Play
 "
 
-[node name="SettingsButton" type="Button" parent="MarginContainer2/VBoxContainer"]
-layout_mode = 2
-text = "Settings"
-
 [node name="seperator2" type="Control" parent="MarginContainer2/VBoxContainer"]
 layout_mode = 2
 

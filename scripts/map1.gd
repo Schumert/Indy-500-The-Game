@@ -9,6 +9,9 @@ var player2_instance
 var playerAI
 var playerAI_instance
 
+var path:Path2D
+var path_follow:PathFollow2D
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -36,14 +39,15 @@ func _ready():
 		playerAI_instance = playerAI.instantiate()
 		call_deferred("add_child", playerAI_instance)
 
-	
+	# path = $Path2D
+	# path_follow = $Path2D/PathFollow2D
 
+	AudioManager.play_crowd_music()
 
-# func get_path_direction(pos: Vector2):
+# func get_path_direction(pos):
 # 	var offset = path.curve.get_closest_offset(pos)
-# 	path_follow.progress = offset
-	
-# 	return path_follow.transform.x
+# 	path_follow.global_position = path.curve.sample_baked(offset)
+# 	return path_follow.global_transform.x
 
 func get_closest_coin_direction(pos: Vector2):
 	if Global.coins.is_empty():

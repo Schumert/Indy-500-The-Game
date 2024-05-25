@@ -17,6 +17,11 @@ var traction_fast = 3
 var traction_slow = 7
 @export var car_id : String
 
+var min_pitch = 0.8
+var max_pitch = 1.4
+var min_volume = -20
+var max_volume = 0
+@export var engine_sound: AudioStreamPlayer2D
 
 
 
@@ -62,6 +67,7 @@ func _ready():
 		traction_slow = 1
 		traction_fast = 1
 
+	engine_sound.play()
 
 
 var collision_info = Vector2.ZERO
@@ -86,10 +92,14 @@ func _physics_process(delta):
 			var direction_to_collision = collision.get_position() - position
 			direction_to_collision = -direction_to_collision.normalized()
 			collision_info = direction_to_collision
+			AudioManager.play_crash()
 
 	if Input.is_action_just_pressed("main_menu"):
 		#Global.change_state(Global.GameState.GAMEOVER)
 		get_tree().change_scene_to_file("res://menu.tscn")
+	
+	if Input.is_action_just_pressed("restart"):
+		get_tree().reload_current_scene()
 	
 	
 			
@@ -108,12 +118,15 @@ func to_old_s_angle():
 	if steer_angle != old_s_angle:
 		steer_angle = old_s_angle
 func collect_coin():
+	AudioManager.play_coin()
 	if car_id == "car1":
 		Global.collected_coins["car1"] += 1
 		Global.gui.update_players_info()
 	elif car_id == "car2":
 		Global.collected_coins["car2"] += 1
 		Global.gui.update_players_info()
+	
+	
 
 func finish_lap(car_id):
 	if car_id == "car1":
@@ -122,6 +135,8 @@ func finish_lap(car_id):
 	elif car_id == "car2":
 		Global.finished_laps["car2"] += 1
 		Global.gui.update_players_info()
+	
+	AudioManager.play_lap()
 
 func _pushed_off(opp, delta):
 	if is_pushing_state:
@@ -152,9 +167,9 @@ func get_input():
 	if Input.is_action_pressed("brake"):
 		power = lerpf(power, 0, 0.1)
 		acceleration = transform.x * braking
-
 		increase_steer_angle(2)
 
+	update_engine_sound()
 func get_input2():
 	var turn = Input.get_action_strength("steer_right2") - Input.get_action_strength("steer_left2")
 
@@ -176,6 +191,17 @@ func get_input2():
 		acceleration = transform.x * braking
 
 		increase_steer_angle(2)
+
+	update_engine_sound()
+
+
+func update_engine_sound():
+	var power_ratio = power / engine_power
+	if power_ratio > 0.5:
+		power_ratio = 0.5
+	engine_sound.pitch_scale = lerp(min_pitch, max_pitch, power_ratio)
+	engine_sound.volume_db = lerp(min_volume, max_volume, power_ratio)
+	
 
 
 func steering(delta):

@@ -24,7 +24,10 @@ func _process(delta):
 				elif Global.current_opponent == Global.GameOpponents.AI:
 					$Panel/HBoxContainer2/VBoxContainer/Player1.text = "Player 1: %d / %d laps" % [Global.finished_laps["car1"], Global.max_lap] 
 					$Panel/HBoxContainer2/VBoxContainer/Player2.text = "AI         :%d / %d laps" % [Global.finished_laps["car2"], Global.max_lap]
-
+				else:
+					$Panel/HBoxContainer/VBoxContainer2/WhoWon.text = "\nYou finished in %d seconds" % Global.elapsed_time
+					$Panel/HBoxContainer2/VBoxContainer/Player1.text = "" 
+					$Panel/HBoxContainer2/VBoxContainer/Player2.text = ""
 			elif Global.current_mode == Global.GameModes.COLLECT:
 				if Global.current_opponent == Global.GameOpponents.TWO_PLAYER:
 					if Global.collected_coins["car1"] > Global.collected_coins["car2"]:
@@ -50,10 +53,11 @@ func _process(delta):
 						is_tie = true
 					$Panel/HBoxContainer2/VBoxContainer/Player1.text = "Player 1: %d godots" % Global.collected_coins["car1"]
 					$Panel/HBoxContainer2/VBoxContainer/Player2.text = "AI         : %d godots" % Global.collected_coins["car2"]
-			if not is_tie and not Global.current_opponent == Global.GameOpponents.ALONE:
-				$Panel/HBoxContainer/VBoxContainer2/WhoWon.text = "%s wins!!" % who_wins
-			elif is_tie and not Global.current_opponent == Global.GameOpponents.ALONE:
-				$Panel/HBoxContainer/VBoxContainer2/WhoWon.text = "%s!!" % who_wins
+			if Global.current_opponent != Global.GameOpponents.ALONE:
+				if not is_tie:
+					$Panel/HBoxContainer/VBoxContainer2/WhoWon.text = "%s wins!!" % who_wins
+				elif is_tie:
+					$Panel/HBoxContainer/VBoxContainer2/WhoWon.text = "%s!!" % who_wins
 			is_screen_updated = true
 			
 		
@@ -61,7 +65,9 @@ func _process(delta):
 
 func _on_restart_button_down():
 	get_tree().reload_current_scene()
+	AudioManager.play_click()
 
 
 func _on_menu_button_down():
 	get_tree().change_scene_to_file("res://menu.tscn")
+	AudioManager.play_click()

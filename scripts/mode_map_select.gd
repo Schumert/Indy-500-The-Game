@@ -23,6 +23,13 @@ func _ready():
 	collect_button.connect("button_down", _on_mode_button_pressed.bind(Global.GameModes.COLLECT) )
 	tag_button.connect("button_down", _on_mode_button_pressed.bind(Global.GameModes.TAG) )
 
+	if Global.current_mode == Global.GameModes.RACE:
+		$TimeOption.visible = false
+		$LapOption.visible = true
+	else:
+		$TimeOption.visible = true
+		$LapOption.visible = false
+
 
 func update_map_buttons():
 	var button_container = $PanelContainer/MarginContainer2/VBoxContainer
@@ -56,6 +63,8 @@ func _on_map_button_pressed(map_name):
 	Global.set_map(map_name)
 	map_texture.texture = load("res://assets/ss_for_maps/%s.png" % map_name)
 
+	AudioManager.play_click()
+
 func _on_mode_button_pressed(button_name):
 	Global.set_mode(button_name)
 	if Global.current_mode == Global.GameModes.RACE:
@@ -65,6 +74,7 @@ func _on_mode_button_pressed(button_name):
 		$TimeOption.visible = true
 		$LapOption.visible = false
 	update_map_buttons()
+	AudioManager.play_click()
 
 func clear_children(container):
 	# for child in children:  #This code works as well but gives an error at the same time, weird innit?
@@ -79,12 +89,14 @@ func clear_children(container):
 
 func _on_back_button_down():
 	get_tree().change_scene_to_file("res://menu.tscn")
+	AudioManager.play_click()
 	
 
 
 func _on_continue_button_down():
 	#Global.change_state(Global.GameState.PLAYING)
 	get_tree().change_scene_to_file("res://opponent_select.tscn")
+	AudioManager.play_click()
 	
 	
 
@@ -94,7 +106,11 @@ func _on_option_button_item_selected(index):
 	Global.timer_wait_time = $TimeOption.get_item_text(index).to_int()
 	print("Timer set to: %s" % $TimeOption.get_item_text(index))
 
+	AudioManager.play_click()
+
 
 func _on_lap_option_item_selected(index):
 	Global.max_lap = $LapOption.get_item_text(index).to_int()
 	print("Max lap set to: %s" % $LapOption.get_item_text(index))
+
+	AudioManager.play_click()

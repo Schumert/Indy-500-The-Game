@@ -10,11 +10,9 @@ func _ready():
 	ai_button.connect("button_down", _on_opponent_button_down.bind(Global.GameOpponents.AI))
 
 	if Global.current_mode == Global.GameModes.COLLECT:
-		#ai_button.disabled = true
 		Global.set_opponent(Global.GameOpponents.ALONE)
 	if Global.current_mode == Global.GameModes.RACE:
-		alone_button.disabled = true
-		Global.set_opponent(Global.GameOpponents.TWO_PLAYER)
+		Global.set_opponent(Global.GameOpponents.ALONE)
 	
 	update_text(Global.current_opponent)
 
@@ -26,14 +24,17 @@ func _ready():
 
 func _on_back_button_down():
 	get_tree().change_scene_to_file("res://mode_map_select.tscn")
+	AudioManager.play_click()
 
 
 func _on_continue_button_down():
 	get_tree().change_scene_to_file("res://main.tscn")
+	AudioManager.play_click()
 
 func _on_opponent_button_down(opponent):
 	Global.set_opponent(opponent)
 	update_text(opponent)
+	AudioManager.play_click()
 	
 
 func update_text(opponent):

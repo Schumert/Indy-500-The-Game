@@ -2,7 +2,7 @@ extends Node
 
 
 @onready var play_button = $MarginContainer2/VBoxContainer/PlayButton as Button
-@onready var settings_button = $MarginContainer2/VBoxContainer/SettingsButton as Button
+#@onready var settings_button = $MarginContainer2/VBoxContainer/SettingsButton as Button
 @onready var quit_button = $MarginContainer2/VBoxContainer/QuitButton as Button
 
 var game_select = preload("res://mode_map_select.tscn")
@@ -15,11 +15,15 @@ func _ready():
 	Global.set_mode(Global.GameModes.RACE)
 	#Global.change_state(Global.GameState.PAUSED)
 
+	AudioManager.play_main_menu_music()
+
 	
 
 
 func on_play_pressed() -> void:
 	get_tree().change_scene_to_file("res://mode_map_select.tscn")
+	AudioManager.play_click()
 func on_quit_pressed() -> void:
 	get_tree().quit()
+	AudioManager.play_click()
 

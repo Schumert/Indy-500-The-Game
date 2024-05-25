@@ -35,23 +35,30 @@ func _ready():
 	for i in num_rays:
 		var angle = i * 2 * PI / num_rays
 		ray_directions[i] = Vector2.RIGHT.rotated(angle)
-
+	
 		
 	if Global.active_map == Global.maps[0][1]:
 		max_speed = 400
-		steer_force /= 2
+		steer_force /= 1.5
 	if Global.active_map.contains("icy"):
 		max_speed = 300
 		steer_force /= 2
-
+	
 	if Global.get_mode() == Global.GameModes.COLLECT:
 		look_ahead = 350
-		max_speed = 600
+		max_speed = 300
+		steer_force = 0.01
+		position = Vector2(229, 197)
+	
+	if Global.get_mode() == Global.GameModes.COLLECT and Global.active_map.contains("icy") :
+		look_ahead = 300
+		max_speed = 150
 		steer_force = 0.01
 		position = Vector2(229, 197)
 	
 	max_speed_start = max_speed + 100
 	min_speed = max_speed
+
 
 	
 		
@@ -63,13 +70,19 @@ func _ready():
 	max_speed += 100
 	await get_tree().create_timer(1).timeout
 	max_speed += 100
+
 	
+	
+	
+
 
 
 
 func _process(delta):
 	#Populate context arrays
 	if Global.current_state == Global.GameState.PLAYING:
+		if $Motor.is_playing() == false:
+			$Motor.play()
 		set_interest()
 		set_danger()
 		choose_direction()
@@ -87,7 +100,9 @@ func choose_direction():
 	for i in num_rays:
 		chosen_dir += interest[i] * ray_directions[i]
 	chosen_dir = chosen_dir.normalized()
-
+	
+	if chosen_dir == Vector2.ZERO:
+		pass
 
 func set_interest():
 	if get_parent() and get_parent().has_method("get_closest_coin_direction") and Global.get_mode() == Global.GameModes.COLLECT:
@@ -98,6 +113,12 @@ func set_interest():
 			interest[i] = max(0, d)
 	else:
 		set_default_interest()
+	# elif get_parent() and get_parent().has_method("get_path_direction") and Global.get_mode() == Global.GameModes.RACE:
+	# 	var path_direction = get_parent().get_path_direction(global_position)
+	# 	for i in num_rays:
+	# 		var d = ray_directions[i].rotated(rotation).dot(path_direction)
+	# 		interest[i] = max(0, d)
+	
 
 func set_default_interest():
 	for i in num_rays:
@@ -120,6 +141,7 @@ func set_danger():
 		danger[i] = 1.0 if result else 0.0
 
 func finish_lap():
+	AudioManager.play_lap()
 	Global.finished_laps["car2"] += 1
 	Global.gui.update_players_info()
 
@@ -137,5 +159,7 @@ func finish_lap():
 func collect_coin():
 	Global.collected_coins["car2"] += 1
 	Global.gui.update_players_info()
+
+	AudioManager.play_coin()
 
 
