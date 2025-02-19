@@ -15,6 +15,7 @@ var max_speed_reverse = 2000
 var slip_speed = 500
 var traction_fast = 3
 var traction_slow = 7
+var is_car_broken : bool
 @export var car_id : String
 
 var min_pitch = 0.8
@@ -22,6 +23,10 @@ var max_pitch = 1.4
 var min_volume = -20
 var max_volume = 0
 @export var engine_sound: AudioStreamPlayer2D
+@export var broken_engine_sound: AudioStreamPlayer2D
+
+
+
 
 
 
@@ -66,8 +71,10 @@ func _ready():
 		temp_friction = friction
 		traction_slow = 1
 		traction_fast = 1
-
+	
+	is_car_broken = false
 	engine_sound.play()
+	broken_engine_sound.stop()
 
 
 var collision_info = Vector2.ZERO
@@ -111,6 +118,20 @@ func _physics_process(delta):
 	#print(game_world_ref.friction)
 	#print(steer_angle)
 	#print(power)
+	
+
+func _process(delta):
+	repair_car_from_penalty(delta);
+	
+	if is_car_broken == true:
+		if engine_sound.is_playing():
+			engine_sound.stop();
+			broken_engine_sound.play();
+	else:
+		if broken_engine_sound.is_playing():
+			engine_sound.play();
+			broken_engine_sound.stop();
+
 var old_s_angle = steer_angle
 func increase_steer_angle(value):
 	steer_angle = old_s_angle + value
@@ -128,11 +149,11 @@ func collect_coin():
 	
 	
 
-func finish_lap(car_id):
-	if car_id == "car1":
+func finish_lap(car_id2):
+	if car_id2 == "car1":
 		Global.finished_laps["car1"] += 1
 		Global.gui.update_players_info()
-	elif car_id == "car2":
+	elif car_id2 == "car2":
 		Global.finished_laps["car2"] += 1
 		Global.gui.update_players_info()
 	
@@ -243,9 +264,18 @@ func apply_friction(delta):
 	var friction_force = velocity * friction * delta
 	var drag_force = velocity * velocity.length() * drag * delta
 	acceleration += friction_force + drag_force
-
 	
+var duration = 15.0
+var elapsed_time = 0.0
 
-
-	
+func repair_car_from_penalty(delta):
+	if Global.game_world.penalty_points.has(self.car_id):
+		if Global.game_world.penalty_points[self.car_id] > 0:
+			elapsed_time += delta
+			if elapsed_time >= duration:
+				Global.game_world.penalty_points[self.car_id] -= 1
+				Global.gui.update_penalty_info(true, "PENALTY PENALTY POINT: %d" % Global.game_world.penalty_points[self.car_id]);
+				elapsed_time = 0.0
+		else:
+			elapsed_time = 0.0
 	

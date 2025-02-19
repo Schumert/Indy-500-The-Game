@@ -7,7 +7,7 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hpj8k"]
 size = Vector2(505, 215)
 
-[node name="Car2" type="CharacterBody2D"]
+[node name="Car2" type="CharacterBody2D" node_paths=PackedStringArray("engine_sound")]
 show_behind_parent = true
 top_level = true
 scale = Vector2(0.2, 0.2)
@@ -15,6 +15,7 @@ collision_layer = 16
 collision_mask = 45
 script = ExtResource("1_jvxrh")
 car_id = "car2"
+engine_sound = NodePath("Motor")
 
 [node name="car" type="Sprite2D" parent="."]
 position = Vector2(65, -100)
@@ -30,7 +31,6 @@ position = Vector2(265, 110)
 target_position = Vector2(105, -220)
 
 [node name="Motor" type="AudioStreamPlayer2D" parent="."]
-scale = Vector2(1, 1)
 stream = ExtResource("3_syvtg")
 volume_db = -20.0
 bus = &"Motor"

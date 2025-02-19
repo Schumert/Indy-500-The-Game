@@ -8,7 +8,7 @@ var counter = 1
 
 @export var race_button:Button
 @export var collect_button :Button
-@export var tag_button :Button
+#@export var tag_button :Button
 @export var map_texture:TextureRect
 @export var continue_button:Button
 # Called when the node enters the scene tree for the first time.
@@ -21,7 +21,7 @@ func _ready():
 
 	race_button.connect("button_down", _on_mode_button_pressed.bind(Global.GameModes.RACE) )
 	collect_button.connect("button_down", _on_mode_button_pressed.bind(Global.GameModes.COLLECT) )
-	tag_button.connect("button_down", _on_mode_button_pressed.bind(Global.GameModes.TAG) )
+	#tag_button.connect("button_down", _on_mode_button_pressed.bind(Global.GameModes.TAG) )
 
 	if Global.current_mode == Global.GameModes.RACE:
 		$TimeOption.visible = false

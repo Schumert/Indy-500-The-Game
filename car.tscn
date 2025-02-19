@@ -1,20 +1,22 @@
-[gd_scene load_steps=5 format=3 uid="uid://di0d4ko6gr7oj"]
+[gd_scene load_steps=6 format=3 uid="uid://di0d4ko6gr7oj"]
 
 [ext_resource type="Texture2D" uid="uid://cm0ldaxju34k6" path="res://assets/2d_race_cars/src/pitstop_car_2.svg" id="2_0ka84"]
 [ext_resource type="Script" path="res://scripts/CarMovement.gd" id="2_cacyf"]
 [ext_resource type="AudioStream" uid="uid://cgpll6huljilx" path="res://audio/MotorAudio.mp3" id="3_l5l64"]
+[ext_resource type="AudioStream" uid="uid://bsg172hvmo4yf" path="res://audio/broken_engine.mp3" id="4_udho1"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hpj8k"]
 size = Vector2(505, 215)
 
-[node name="Car" type="CharacterBody2D" node_paths=PackedStringArray("engine_sound")]
+[node name="Car" type="CharacterBody2D" node_paths=PackedStringArray("engine_sound", "broken_engine_sound")]
 top_level = true
 scale = Vector2(0.2, 0.2)
 collision_layer = 2
-collision_mask = 45
+collision_mask = 109
 script = ExtResource("2_cacyf")
 car_id = "car1"
 engine_sound = NodePath("Motor")
+broken_engine_sound = NodePath("BrokenMotor")
 
 [node name="car" type="Sprite2D" parent="."]
 position = Vector2(65, -100)
@@ -32,5 +34,11 @@ target_position = Vector2(105, -220)
 [node name="Motor" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("3_l5l64")
 volume_db = -20.0
+pitch_scale = 0.8
+bus = &"Motor"
+
+[node name="BrokenMotor" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_udho1")
+volume_db = -10.0
 pitch_scale = 0.8
 bus = &"Motor"

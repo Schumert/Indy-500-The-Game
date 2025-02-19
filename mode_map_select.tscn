@@ -1240,7 +1240,7 @@ CheckBox/styles/hover_pressed = SubResource("StyleBoxTexture_3nkfl")
 OptionButton/constants/arrow_margin = 20
 OptionButton/constants/h_separation = 250
 
-[node name="mode_map_select" type="Control" node_paths=PackedStringArray("race_button", "collect_button", "tag_button", "map_texture", "continue_button")]
+[node name="mode_map_select" type="Control" node_paths=PackedStringArray("race_button", "collect_button", "map_texture", "continue_button")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -1250,7 +1250,6 @@ grow_vertical = 2
 script = ExtResource("1_ehlna")
 race_button = NodePath("PanelContainer/MarginContainer/HBoxContainer/RACE")
 collect_button = NodePath("PanelContainer/MarginContainer/HBoxContainer/COLLECT")
-tag_button = NodePath("PanelContainer/MarginContainer/HBoxContainer/TAG")
 map_texture = NodePath("TextureRect")
 continue_button = NodePath("PanelContainer/MarginContainer3/HBoxContainer/Continue")
 
@@ -1384,10 +1383,6 @@ text = "RACE"
 [node name="COLLECT" type="Button" parent="PanelContainer/MarginContainer/HBoxContainer"]
 layout_mode = 2
 text = "COLLECT"
-
-[node name="TAG" type="Button" parent="PanelContainer/MarginContainer/HBoxContainer"]
-layout_mode = 2
-text = "TAG"
 
 [node name="TextureRect" type="TextureRect" parent="."]
 layout_mode = 0

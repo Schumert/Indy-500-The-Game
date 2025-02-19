@@ -7,6 +7,7 @@ extends Node
 var level_instance
 var coin
 var coin_instance
+var penalty_points = {}
 
 var rng
 var coin_delay
@@ -115,6 +116,7 @@ func _on_timer_timeout(): #when the game time is over
 
 func _on_game_over():
 	get_parent().get_node("CanvasLayer/GameOver").visible = true
+	get_parent().get_node("CanvasLayer/GUI").visible = false
 	AudioServer.set_bus_volume_db(1, -80)
 
 func get_elapsed_time() -> int:

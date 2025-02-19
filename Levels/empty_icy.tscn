@@ -1,7 +1,6 @@
-[gd_scene load_steps=24 format=3 uid="uid://85ve5eg6chra"]
+[gd_scene load_steps=23 format=3 uid="uid://85ve5eg6chra"]
 
 [ext_resource type="Script" path="res://scripts/map1.gd" id="1_wgh3r"]
-[ext_resource type="Script" path="res://scripts/grass.gd" id="2_v8nhu"]
 [ext_resource type="Texture2D" uid="uid://3ueveoaf4we2" path="res://assets/whiteonetoone.png" id="3_7aytn"]
 [ext_resource type="Script" path="res://scripts/RaceManager.gd" id="4_62rv5"]
 [ext_resource type="Script" path="res://scripts/checkpoint.gd" id="5_3m3gb"]
@@ -278,7 +277,6 @@ position = Vector2(-2.71429, -229.714)
 rotation = -3.14159
 collision_layer = 64
 collision_mask = 18
-script = ExtResource("2_v8nhu")
 
 [node name="CollisionShape2D4" type="CollisionShape2D" parent="BackgroundGrass"]
 position = Vector2(655.43, -184.355)
@@ -404,8 +402,6 @@ position = Vector2(-305.155, 118.763)
 position = Vector2(275.052, -141.443)
 rotation = 3.14159
 
-[connection signal="body_entered" from="BackgroundGrass" to="BackgroundGrass" method="on_offroad_enter"]
-[connection signal="body_exited" from="BackgroundGrass" to="BackgroundGrass" method="on_offrad_exit"]
 [connection signal="body_entered" from="RaceManager/Checkpoint1" to="RaceManager/Checkpoint1" method="_on_body_entered"]
 [connection signal="body_entered" from="RaceManager/Checkpoint3" to="RaceManager/Checkpoint3" method="_on_body_entered"]
 [connection signal="body_entered" from="RaceManager/Checkpoint2" to="RaceManager/Checkpoint2" method="_on_body_entered"]

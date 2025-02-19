@@ -4,6 +4,7 @@ extends Node
 @export var player2:Label
 @export var timer:Label
 @export var info:Label
+@export var penalty1:Label
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	Global.gui = self
@@ -41,4 +42,12 @@ func update_players_info():
 			player2.text = "Player 2: %d lap / %d" % [Global.finished_laps["car2"], Global.max_lap ]
 		elif Global.current_opponent ==  Global.GameOpponents.AI:
 			player2.text = "AI         : %d lap / %d" % [Global.finished_laps["car2"], Global.max_lap ]
-		
+
+func update_penalty_info(show, message):
+	if show:
+		penalty1.visible = true;
+		penalty1.text = message;
+	else:
+		penalty1.visible = false;
+		penalty1.text = message;
+	

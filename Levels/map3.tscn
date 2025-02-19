@@ -1,10 +1,10 @@
 [gd_scene load_steps=28 format=3 uid="uid://bhxck8vi3r2j3"]
 
 [ext_resource type="Script" path="res://scripts/map1.gd" id="1_2vuh0"]
-[ext_resource type="Script" path="res://scripts/grass.gd" id="2_kjunk"]
 [ext_resource type="Texture2D" uid="uid://3ueveoaf4we2" path="res://assets/whiteonetoone.png" id="3_jo7nd"]
 [ext_resource type="Script" path="res://scripts/RaceManager.gd" id="4_yxhwe"]
 [ext_resource type="Script" path="res://scripts/checkpoint.gd" id="5_7bgmu"]
+[ext_resource type="Script" path="res://scripts/grass_new.gd" id="5_e4lgf"]
 [ext_resource type="Texture2D" uid="uid://cmk4ivcdif437" path="res://assets/Decor/Start.png" id="6_m77cp"]
 [ext_resource type="Texture2D" uid="uid://daebdicdu3gwh" path="res://assets/RacingTilemap.png" id="7_l4qcr"]
 [ext_resource type="Texture2D" uid="uid://msgb7aphy5qp" path="res://assets/Grass Tiles/Grass 001.png" id="8_qa0t2"]
@@ -240,7 +240,6 @@ position = Vector2(-2.71429, -229.714)
 rotation = -3.14159
 collision_layer = 64
 collision_mask = 18
-script = ExtResource("2_kjunk")
 
 [node name="CollisionShape2D4" type="CollisionShape2D" parent="BackgroundGrass"]
 position = Vector2(655.43, -184.355)
@@ -296,7 +295,7 @@ rotation = 3.14159
 scale = Vector2(150, 70)
 collision_layer = 64
 collision_mask = 26
-script = ExtResource("2_kjunk")
+script = ExtResource("5_e4lgf")
 
 [node name="TileMap" type="TileMap" parent="Grass"]
 position = Vector2(0.816494, 0.129606)
@@ -425,10 +424,8 @@ position = Vector2(2.47424, 0.412384)
 scale = Vector2(0.953589, 1.0175)
 polygon = PackedVector2Array(74.3799, 85.1084, 17.7301, 46.607, 18.595, -23.1009, 108.975, -58.3601, 179.031, -58.3601, 200.653, -68.4921, -103.786, -68.0868, -95.1371, -60.3865, -41.0819, -25.5326, -41.2371, 47.8351, -73.0826, 77.0028, -230.059, 81.8662, -230.491, 93.6193, 64.8662, 94.0245)
 
-[connection signal="body_entered" from="BackgroundGrass" to="BackgroundGrass" method="on_offroad_enter"]
-[connection signal="body_exited" from="BackgroundGrass" to="BackgroundGrass" method="on_offrad_exit"]
 [connection signal="body_entered" from="Grass" to="Grass" method="on_offroad_enter"]
-[connection signal="body_exited" from="Grass" to="Grass" method="on_offrad_exit"]
+[connection signal="body_exited" from="Grass" to="Grass" method="on_offroad_exit"]
 [connection signal="body_entered" from="RaceManager/Checkpoint1" to="RaceManager/Checkpoint1" method="_on_body_entered"]
 [connection signal="body_entered" from="RaceManager/Checkpoint2" to="RaceManager/Checkpoint2" method="_on_body_entered"]
 [connection signal="body_entered" from="RaceManager/Checkpoint3" to="RaceManager/Checkpoint3" method="_on_body_entered"]

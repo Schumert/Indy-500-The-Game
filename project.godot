@@ -12,8 +12,8 @@ config_version=5
 
 config/name="Indy-500-The-Game"
 run/main_scene="res://menu.tscn"
-config/features=PackedStringArray("4.1", "GL Compatibility")
-config/icon="res://icon.svg"
+config/features=PackedStringArray("4.2", "GL Compatibility")
+config/icon="res://DALL·E 2024-05-25 08.33.55 - A vibrant logo for a Formula racing game. The design should be fairly simple and minimalistic, featuring a sleek race car, dynamic lines to convey spe.webp"
 
 [autoload]
 
@@ -22,8 +22,8 @@ AudioManager="*res://AudioManager.tscn"
 
 [display]
 
-window/size/viewport_width=1920
-window/size/viewport_height=1080
+window/stretch/mode="viewport"
+window/stretch/aspect="expand"
 window/custom="res://assets/a_theme.tres"
 
 [dotnet]
