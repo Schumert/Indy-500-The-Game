@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://c5t7y5lj8qr6l"]
+[gd_scene load_steps=6 format=3 uid="uid://c5t7y5lj8qr6l"]
 
 [ext_resource type="Script" path="res://scripts/CarMovement.gd" id="1_jvxrh"]
 [ext_resource type="Texture2D" uid="uid://cc1v60g46uquc" path="res://assets/2d_race_cars/src/pitstop_car_11.svg" id="2_s7cv4"]
 [ext_resource type="AudioStream" uid="uid://cgpll6huljilx" path="res://audio/MotorAudio.mp3" id="3_syvtg"]
+[ext_resource type="AudioStream" uid="uid://bsg172hvmo4yf" path="res://audio/broken_engine.mp3" id="4_7ok32"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hpj8k"]
 size = Vector2(505, 215)
@@ -33,4 +34,9 @@ target_position = Vector2(105, -220)
 [node name="Motor" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("3_syvtg")
 volume_db = -20.0
+bus = &"Motor"
+
+[node name="BrokenMotor" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_7ok32")
+volume_db = -10.0
 bus = &"Motor"
