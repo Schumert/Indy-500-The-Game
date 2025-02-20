@@ -2,11 +2,11 @@ extends Node
 
 
 
-# Ceza süresi (saniye)
+# duration of penalty
 const PENALTY_DURATION = 5.0  
 
 var elapsed_time = 0.0
-var duration = 8.0  #duration of reducing penalty counter
+var duration = 8.0  #duration of recovery time -1 penalty point every given second-
 
 func _process(delta):
 	pass
@@ -32,7 +32,7 @@ func on_offroad_exit(body):
 		
 
 
-## 📌 Ceza Puanı Fonksiyonu
+## adding penalty when crashed
 func add_penalty(body):
 	var player_id = body.car_id 
 
@@ -53,7 +53,7 @@ func add_penalty(body):
 		apply_penalty(body)
 
 
-## 📌 Ağır Ceza Uygulama Fonksiyonu (3 Ceza Puanı Alınca)
+##  car is broken
 func apply_penalty(body):
 	print("Oyuncu ", body.car_id, " ağır penaltıya girdi! 🚨")
 	Global.gui.update_penalty_info(true, "PENALTY IS ACTIVE!!!!!");
@@ -73,6 +73,6 @@ func apply_penalty(body):
 	
 	
 
-	print("Oyuncu ", body.car_id, " tekrar normale döndü! 🏁")
+	print("Oyuncu ", body.car_id, " tekrar normale döndü!")
 	Global.gui.update_penalty_info(false, "");
-	Global.game_world.penalty_points[body.car_id] = 0  # Ceza sonrası puanı sıfırla
+	Global.game_world.penalty_points[body.car_id] = 0  # reset the penalty counter

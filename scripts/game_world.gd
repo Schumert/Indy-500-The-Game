@@ -120,8 +120,8 @@ func _on_game_over():
 	AudioServer.set_bus_volume_db(1, -80)
 
 func get_elapsed_time() -> int:
-	# Güncel zamanı al
-	var current_time = Time.get_unix_time_from_system() - 4 #4 is start wait time
-	# Geçen zamanı hesapla
+	# take the current time
+	var current_time = Time.get_unix_time_from_system() - 4 #4 is waiting time before game starts
+	# calculate elapsed time
 	var elapsed_time = current_time - Global.start_time
 	return elapsed_time
