@@ -15,9 +15,9 @@ var path_follow:PathFollow2D
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	Global.start_pos = $StartPos.global_position
-	Global.start_pos2 = $StartPos2.global_position
-	Global.start_rot2 = $StartPos2.rotation
+	Global.start_pos = $Node2D/StartPos.global_position
+	Global.start_pos2 = $Node2D/StartPos2.global_position
+	Global.start_rot2 = $Node2D/StartPos2.rotation
 
 	player = preload("res://car.tscn")
 	player2 = preload("res://car2.tscn")

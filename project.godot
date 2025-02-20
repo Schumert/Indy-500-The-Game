@@ -22,7 +22,7 @@ AudioManager="*res://AudioManager.tscn"
 
 [display]
 
-window/stretch/mode="viewport"
+window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
 window/custom="res://assets/a_theme.tres"
 

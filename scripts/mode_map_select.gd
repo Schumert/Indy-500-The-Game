@@ -11,6 +11,9 @@ var counter = 1
 #@export var tag_button :Button
 @export var map_texture:TextureRect
 @export var continue_button:Button
+@export var button_container:VBoxContainer
+@export var lap_option:OptionButton
+@export var time_option:OptionButton
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	maps = Global.maps[Global.current_mode]
@@ -24,15 +27,14 @@ func _ready():
 	#tag_button.connect("button_down", _on_mode_button_pressed.bind(Global.GameModes.TAG) )
 
 	if Global.current_mode == Global.GameModes.RACE:
-		$TimeOption.visible = false
-		$LapOption.visible = true
+		time_option.visible = false
+		lap_option.visible = true
 	else:
-		$TimeOption.visible = true
-		$LapOption.visible = false
+		time_option.visible = true
+		lap_option.visible = false
 
 
 func update_map_buttons():
-	var button_container = $PanelContainer/MarginContainer2/VBoxContainer
 	clear_children(button_container)
 	maps = Global.maps[Global.current_mode]
 	
@@ -41,7 +43,7 @@ func update_map_buttons():
 		button_instance.text = "%d. map" % counter
 		
 		button_instance.connect("button_down", _on_map_button_pressed.bind(map_name))
-		get_node("PanelContainer/MarginContainer2/VBoxContainer").add_child(button_instance)
+		button_container.add_child(button_instance)
 		if counter == 1:
 			Global.set_map(map_name)
 			map_texture.texture = load("res://assets/ss_for_maps/%s.png" % map_name)
@@ -49,10 +51,10 @@ func update_map_buttons():
 		counter+=1
 	if maps.size() == 0:
 		continue_button.disabled = true
-		$PanelContainer/GameMode.text = "GAME MODE: %s\nIS WORK IN PROGRESS!" % Global.GameModes.keys()[Global.current_mode]
+		$CanvasLayer/GameMode.text = "GAME MODE: %s\nIS WORK IN PROGRESS!" % Global.GameModes.keys()[Global.current_mode]
 	else:
 		continue_button.disabled = false
-		$PanelContainer/GameMode.text = "GAME MODE: %s" % Global.GameModes.keys()[Global.current_mode]
+		$CanvasLayer/GameMode.text = "GAME MODE: %s" % Global.GameModes.keys()[Global.current_mode]
 	counter = 1
 
 	
@@ -68,11 +70,11 @@ func _on_map_button_pressed(map_name):
 func _on_mode_button_pressed(button_name):
 	Global.set_mode(button_name)
 	if Global.current_mode == Global.GameModes.RACE:
-		$TimeOption.visible = false
-		$LapOption.visible = true
+		time_option.visible = false
+		lap_option.visible = true
 	else:
-		$TimeOption.visible = true
-		$LapOption.visible = false
+		time_option.visible = true
+		lap_option.visible = false
 	update_map_buttons()
 	AudioManager.play_click()
 
@@ -103,14 +105,14 @@ func _on_continue_button_down():
 
 
 func _on_option_button_item_selected(index):
-	Global.timer_wait_time = $TimeOption.get_item_text(index).to_int()
-	print("Timer set to: %s" % $TimeOption.get_item_text(index))
+	Global.timer_wait_time = time_option.get_item_text(index).to_int()
+	print("Timer set to: %s" % time_option.get_item_text(index))
 
 	AudioManager.play_click()
 
 
 func _on_lap_option_item_selected(index):
-	Global.max_lap = $LapOption.get_item_text(index).to_int()
-	print("Max lap set to: %s" % $LapOption.get_item_text(index))
+	Global.max_lap = lap_option.get_item_text(index).to_int()
+	print("Max lap set to: %s" % lap_option.get_item_text(index))
 
 	AudioManager.play_click()

@@ -1,9 +1,9 @@
 extends Node
 
 
-@onready var play_button = $MarginContainer2/VBoxContainer/PlayButton as Button
+@export var play_button : Button
 #@onready var settings_button = $MarginContainer2/VBoxContainer/SettingsButton as Button
-@onready var quit_button = $MarginContainer2/VBoxContainer/QuitButton as Button
+@export var quit_button : Button
 
 var game_select = preload("res://mode_map_select.tscn")
 var game_select_instance
