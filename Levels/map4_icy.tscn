@@ -429,6 +429,9 @@ position = Vector2(-305.155, 118.763)
 position = Vector2(275.052, -141.443)
 rotation = 3.14159
 
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(0.59, 0.59)
+
 [connection signal="body_entered" from="RaceManager/Checkpoint1" to="RaceManager/Checkpoint1" method="_on_body_entered"]
 [connection signal="body_entered" from="RaceManager/Checkpoint3" to="RaceManager/Checkpoint3" method="_on_body_entered"]
 [connection signal="body_entered" from="RaceManager/Checkpoint2" to="RaceManager/Checkpoint2" method="_on_body_entered"]

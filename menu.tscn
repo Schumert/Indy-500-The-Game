@@ -1239,7 +1239,6 @@ layout_mode = 2
 text = "Quit Game"
 
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer"]
-anchors_preset = -1
 offset_left = -28.0
 offset_top = -62.0
 offset_right = 625.0

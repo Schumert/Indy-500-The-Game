@@ -42,5 +42,5 @@ func update_text(opponent):
 	var opponent_name = Global.GameOpponents.keys()[opponent]
 	for c in unwanted_chars:
 		opponent_name = opponent_name.replace(c, " ")
-	$PanelContainer2/Opponent.text = "SELECTED: %s" % opponent_name
+	$CanvasLayer/Opponent.text = "SELECTED: %s" % opponent_name
 

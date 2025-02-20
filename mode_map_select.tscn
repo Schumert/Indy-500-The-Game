@@ -1381,19 +1381,20 @@ layout_mode = 2
 text = "COLLECT"
 
 [node name="TimeOption" type="OptionButton" parent="CanvasLayer"]
-visible = false
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -382.61
-offset_top = -92.815
-offset_right = -52.61
-offset_bottom = -16.815
+offset_left = -328.0
+offset_top = -79.65
+offset_right = 2.0
+offset_bottom = -11.65
 grow_horizontal = 0
 grow_vertical = 0
+scale = Vector2(0.7, 0.7)
 theme = ExtResource("10_2jrhv")
+theme_override_font_sizes/font_size = 30
 alignment = 1
 item_count = 4
 selected = 1
@@ -1407,29 +1408,31 @@ popup/item_2/id = 2
 popup/item_3/text = "120"
 popup/item_3/id = 3
 
-[node name="Label" type="Label" parent="CanvasLayer/TimeOption"]
-layout_mode = 0
+[node name="Label2" type="Label" parent="CanvasLayer/TimeOption"]
 offset_left = 44.0
-offset_top = 13.0
-offset_right = 124.0
+offset_top = 19.0
+offset_right = 207.0
 offset_bottom = 67.0
 theme_override_colors/font_color = Color(0.87451, 0.87451, 0.87451, 1)
-theme_override_font_sizes/font_size = 50
-text = "Time:	"
+theme_override_font_sizes/font_size = 30
+text = "Time:"
 
 [node name="LapOption" type="OptionButton" parent="CanvasLayer"]
+visible = false
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -382.61
-offset_top = -92.815
-offset_right = -37.6097
-offset_bottom = -16.815
+offset_left = -328.0
+offset_top = -79.65
+offset_right = 0.000366211
+offset_bottom = -11.65
 grow_horizontal = 0
 grow_vertical = 0
+scale = Vector2(0.7, 0.7)
 theme = SubResource("Theme_x3uqb")
+theme_override_font_sizes/font_size = 30
 alignment = 1
 item_count = 5
 selected = 2
@@ -1446,13 +1449,12 @@ popup/item_4/text = "30"
 popup/item_4/id = 4
 
 [node name="Label" type="Label" parent="CanvasLayer/LapOption"]
-layout_mode = 0
 offset_left = 44.0
-offset_top = 13.0
-offset_right = 124.0
+offset_top = 19.0
+offset_right = 207.0
 offset_bottom = 67.0
 theme_override_colors/font_color = Color(0.87451, 0.87451, 0.87451, 1)
-theme_override_font_sizes/font_size = 50
+theme_override_font_sizes/font_size = 30
 text = "LAP:"
 
 [node name="Node2D" type="Node2D" parent="."]

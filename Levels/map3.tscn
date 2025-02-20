@@ -424,6 +424,9 @@ position = Vector2(2.47424, 0.412384)
 scale = Vector2(0.953589, 1.0175)
 polygon = PackedVector2Array(74.3799, 85.1084, 17.7301, 46.607, 18.595, -23.1009, 108.975, -58.3601, 179.031, -58.3601, 200.653, -68.4921, -103.786, -68.0868, -95.1371, -60.3865, -41.0819, -25.5326, -41.2371, 47.8351, -73.0826, 77.0028, -230.059, 81.8662, -230.491, 93.6193, 64.8662, 94.0245)
 
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(0.59, 0.59)
+
 [connection signal="body_entered" from="Grass" to="Grass" method="on_offroad_enter"]
 [connection signal="body_exited" from="Grass" to="Grass" method="on_offroad_exit"]
 [connection signal="body_entered" from="RaceManager/Checkpoint1" to="RaceManager/Checkpoint1" method="_on_body_entered"]
