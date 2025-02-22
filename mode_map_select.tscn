@@ -1409,6 +1409,7 @@ popup/item_3/text = "120"
 popup/item_3/id = 3
 
 [node name="Label2" type="Label" parent="CanvasLayer/TimeOption"]
+layout_mode = 0
 offset_left = 44.0
 offset_top = 19.0
 offset_right = 207.0
@@ -1449,6 +1450,7 @@ popup/item_4/text = "30"
 popup/item_4/id = 4
 
 [node name="Label" type="Label" parent="CanvasLayer/LapOption"]
+layout_mode = 0
 offset_left = 44.0
 offset_top = 19.0
 offset_right = 207.0

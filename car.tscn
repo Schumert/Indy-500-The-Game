@@ -8,7 +8,7 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hpj8k"]
 size = Vector2(505, 215)
 
-[node name="Car" type="CharacterBody2D" node_paths=PackedStringArray("engine_sound", "broken_engine_sound")]
+[node name="Car" type="CharacterBody2D" node_paths=PackedStringArray("engine_sound", "broken_engine_sound") groups=["Player"]]
 top_level = true
 scale = Vector2(0.2, 0.2)
 collision_layer = 2

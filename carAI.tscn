@@ -1,19 +1,20 @@
 [gd_scene load_steps=5 format=3 uid="uid://dcledlj0irowx"]
 
-[ext_resource type="Script" path="res://scripts/CarMovementAI.gd" id="1_fls06"]
+[ext_resource type="Script" path="res://scripts/CarMovementAIAStar.gd" id="1_ekey4"]
 [ext_resource type="Texture2D" uid="uid://cc1v60g46uquc" path="res://assets/2d_race_cars/src/pitstop_car_11.svg" id="2_bmlqv"]
 [ext_resource type="AudioStream" uid="uid://ctkuhdmw2koiu" path="res://audio/MotorAudioAI.mp3" id="3_skfci"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hpj8k"]
 size = Vector2(505, 215)
 
-[node name="CarAI" type="CharacterBody2D"]
+[node name="CarAI" type="CharacterBody2D" node_paths=PackedStringArray("nav")]
 show_behind_parent = true
 top_level = true
 scale = Vector2(0.2, 0.2)
 collision_layer = 128
 collision_mask = 301
-script = ExtResource("1_fls06")
+script = ExtResource("1_ekey4")
+nav = NodePath("NavigationAgent2D")
 
 [node name="car" type="Sprite2D" parent="."]
 position = Vector2(65, -100)
@@ -29,3 +30,5 @@ volume_db = -30.0
 bus = &"Motor"
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
+path_desired_distance = 500.0
+path_postprocessing = 1

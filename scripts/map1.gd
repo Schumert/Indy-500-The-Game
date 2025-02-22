@@ -37,6 +37,7 @@ func _ready():
 		if playerAI_instance:
 			remove_child(playerAI_instance)
 		playerAI_instance = playerAI.instantiate()
+
 		call_deferred("add_child", playerAI_instance)
 
 	# path = $Path2D

@@ -229,9 +229,9 @@ size = Vector2(355.052, 127.01)
 size = Vector2(87.0103, 81.6495)
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_5eu4m"]
-vertices = PackedVector2Array(-343, -166, 311, -165, 191, -78, -196, -79, 302, 163, 186, 48, -347, 165, -193, 48)
-polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3), PackedInt32Array(2, 1, 4, 5), PackedInt32Array(5, 4, 6, 7), PackedInt32Array(7, 6, 0, 3)])
-outlines = Array[PackedVector2Array]([PackedVector2Array(312.165, 172.784, 322.474, -175.258, -353.402, -177.32, -357.938, 176.495), PackedVector2Array(-183.093, 38.3505, -185.979, -68.866, 181.443, -68.0412, 176.082, 37.5258)])
+vertices = PackedVector2Array(-356, -172, 318, -169, 194, -51, -191, -48, 310, 168, 191, 48, -350, 164, -197, 48)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3), PackedInt32Array(2, 1, 4, 5), PackedInt32Array(5, 4, 6, 7), PackedInt32Array(6, 0, 3, 7)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(320, 179.381, 329.072, -179.381, -367.01, -182.68, -360.412, 173.608), PackedVector2Array(-185.567, 38.3505, -182.268, -37.5258, 183.918, -40.8247, 180.619, 38.3505)])
 source_geometry_group_name = &"navigation_polygon_source_group"
 
 [node name="map1" type="Node2D"]
@@ -428,6 +428,7 @@ texture = ExtResource("11_qmnan")
 zoom = Vector2(0.59, 0.59)
 
 [node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
+visible = false
 navigation_polygon = SubResource("NavigationPolygon_5eu4m")
 
 [connection signal="body_entered" from="Grass" to="Grass" method="on_offroad_enter"]

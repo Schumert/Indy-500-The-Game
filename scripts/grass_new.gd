@@ -5,9 +5,6 @@ extends Node
 # duration of penalty
 const PENALTY_DURATION = 5.0  
 
-var elapsed_time = 0.0
-var duration = 8.0  #duration of recovery time -1 penalty point every given second-
-
 func _process(delta):
 	pass
 		
@@ -59,7 +56,7 @@ func apply_penalty(body):
 	Global.gui.update_penalty_info(true, "PENALTY IS ACTIVE!!!!!");
 
 	body.engine_power = 1000
-	body.power /= 3
+	body.gas /= 3
 	body.is_car_broken = true;
 	
 	

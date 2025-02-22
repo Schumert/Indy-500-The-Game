@@ -6,11 +6,11 @@ func on_offroad_enter(body):
 	if body is CharacterBody2D and (body.collision_layer & (1 << 1) != 0 or body.collision_layer & (1 << 4) != 0 ) :
 		if self.is_in_group("grass"):
 			body.friction = -700
-			body.power /= 3
+			body.gas /= 3
 			AudioManager.play_crash()
 		else:
 			body.friction = -200
-			body.power /= 1.2
+			body.gas /= 1.2
 
 		body.engine_power = 20000
 

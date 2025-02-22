@@ -4,9 +4,9 @@ extends CharacterBody2D
 var steer_angle = 3
 var friction = -55
 var temp_friction = friction
-var acceleration = Vector2.ZERO
+var power = Vector2.ZERO
 var drag = -0.06
-var power = 0
+var gas = 0
 var engine_power = 20000
 var temp_engine_power = engine_power
 var wheel_base = 70
@@ -81,7 +81,7 @@ var collision_info = Vector2.ZERO
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta):
 	if Global.current_state == Global.GameState.PLAYING:
-		acceleration = Vector2.ZERO
+		power = Vector2.ZERO
 		if car_id == "car1":
 			get_input()
 		elif car_id == "car2":
@@ -90,7 +90,7 @@ func _physics_process(delta):
 
 		apply_friction(delta)
 		steering(delta)
-		velocity += acceleration * delta
+		velocity += power * delta
 		move_and_slide()
 	for i in get_slide_collision_count():
 		var collision = get_slide_collision(i)
@@ -117,7 +117,7 @@ func _physics_process(delta):
 	#print(velocity.length())
 	#print(game_world_ref.friction)
 	#print(steer_angle)
-	#print(power)
+	#print(gas)
 	
 
 func _process(delta):
@@ -163,7 +163,7 @@ func _pushed_off(opp, delta):
 	if is_pushing_state:
 			var push_strength = 3000
 			velocity += opp * push_strength * delta
-			power = 0
+			gas = 0
 			await get_tree().create_timer(0.5).timeout
 			is_pushing_state = false
 
@@ -177,17 +177,17 @@ func get_input():
 
 	steer_direction = turn * deg_to_rad(steer_angle)
 	
-	acceleration = transform.x * power
+	power = transform.x * gas
 	if Input.is_action_pressed("accelerate"):
-		power = lerpf(power, engine_power, 0.005)
+		gas = lerpf(gas, engine_power, 0.005)
 		to_old_s_angle()
 	else:
-		power = lerpf(power, 0, 0.05)
+		gas = lerpf(gas, 0, 0.05)
 
 
 	if Input.is_action_pressed("brake"):
-		power = lerpf(power, 0, 0.1)
-		acceleration = transform.x * braking
+		gas = lerpf(gas, 0, 0.1)
+		power = transform.x * braking
 		increase_steer_angle(2)
 
 	update_engine_sound()
@@ -199,17 +199,17 @@ func get_input2():
 
 	steer_direction = turn * deg_to_rad(steer_angle)
 	
-	acceleration = transform.x * power
+	power = transform.x * gas
 	if Input.is_action_pressed("accelerate2"):
-		power = lerpf(power, engine_power, 0.005)
+		gas = lerpf(gas, engine_power, 0.005)
 		to_old_s_angle()
 	else:
-		power = lerpf(power, 0, 0.05)
+		gas = lerpf(gas, 0, 0.05)
 
 
 	if Input.is_action_pressed("brake2"):
-		power = lerpf(power, 0, 0.1)
-		acceleration = transform.x * braking
+		gas = lerpf(gas, 0, 0.1)
+		power = transform.x * braking
 
 		increase_steer_angle(2)
 
@@ -217,11 +217,11 @@ func get_input2():
 
 
 func update_engine_sound():
-	var power_ratio = power / engine_power
-	if power_ratio > 0.5:
-		power_ratio = 0.5
-	engine_sound.pitch_scale = lerp(min_pitch, max_pitch, power_ratio)
-	engine_sound.volume_db = lerp(min_volume, max_volume, power_ratio)
+	var gas_ratio = gas / engine_power
+	if gas_ratio > 0.5:
+		gas_ratio = 0.5
+	engine_sound.pitch_scale = lerp(min_pitch, max_pitch, gas_ratio)
+	engine_sound.volume_db = lerp(min_volume, max_volume, gas_ratio)
 	
 
 
@@ -258,16 +258,17 @@ func steering(delta):
 	rotation = car_heading.angle()
 
 func apply_friction(delta):
-	if  acceleration == Vector2.ZERO and velocity.length() < 50:
+	if  power == Vector2.ZERO and velocity.length() < 50:
 		velocity = Vector2.ZERO
 	
 	var friction_force = velocity * friction * delta
 	var drag_force = velocity * velocity.length() * drag * delta
-	acceleration += friction_force + drag_force
-	
+	power += friction_force + drag_force
+
+
+#duration of recovery time, -1 penalty point every given second-
 var duration = 15.0
 var elapsed_time = 0.0
-
 func repair_car_from_penalty(delta):
 	if Global.game_world.penalty_points.has(self.car_id):
 		if Global.game_world.penalty_points[self.car_id] > 0:
