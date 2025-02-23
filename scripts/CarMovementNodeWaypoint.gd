@@ -14,9 +14,8 @@ var target_transform = null
 
 var gas = 0.0
 var engine_power = 20000.0
-var brake = -250
+var brake = -1000
 @export var turn_number = 0
-var new_turn_number
 
 enum AIMode { FOLLOWPLAYER, FOLLOWCHECKPOINTS}
 var current_mode = AIMode.FOLLOWCHECKPOINTS
@@ -29,7 +28,7 @@ var all_waypoints = []
 
 @export var nav: NavigationAgent2D
 var current_direction: Vector2 = Vector2.ZERO
-var checkpointIndex = 0
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -51,7 +50,6 @@ func _ready():
 
 func _process(delta):
 	# new_turn_number = clamp(turn_number, -1, 1)
-	#print(velocity.length())
 	pass
 	
 
@@ -86,19 +84,18 @@ func _physics_process(delta):
 
 		apply_friction(delta)
 		steering(delta)
+		steer_direction = turn_number * deg_to_rad(steer_angle)
+		
 		
 		velocity += power * delta
-		
-		if (nav.target_position - position).length() > min_distance:
-			gas = lerpf(gas, engine_power, 0.005)
-			actions(turn_number, gas)
-			steer_angle = 4
+		power = transform.x * gas
+		if (nav.target_position - position).length() < min_distance:
+			apply_brake()
 		else:
-			actions(turn_number, brake)
-			gas = lerpf(gas, 0, 0.1)
-			steer_angle = 6
+			apply_throttle()
 
 		move_and_slide()
+		print("arabanin hizi: " + str(velocity.length()))
 	
 		
 
@@ -122,9 +119,14 @@ func follow_waypoints():
 
 		distance_to_waypoint = (nav.target_position - global_position).length()
 		if distance_to_waypoint <= current_waypoint.min_distance_to_reach_waypoint:
+			if current_waypoint.max_speed > 0:
+				engine_power = current_waypoint.max_speed
+			else:
+				engine_power = 20000
+
 			var node_path = "../AllPaths/" + str(current_waypoint.next_waypoint_node[0]).replace("../", "")
 			current_waypoint = get_node(node_path)
-		print(distance_to_waypoint)
+		#print(distance_to_waypoint)
 
 			
 
@@ -139,19 +141,6 @@ func find_closest_waypoint():
 			closest_waypoint = waypoint
 
 	return closest_waypoint
-
-var waypoints_index = 0
-# func _set_new_waypoint():
-# 	if all_waypoints.size() == waypoints_index:
-# 		nav.target_position = all_waypoints[0]
-# 		checkpointIndex = 0
-# 	else:
-# 		nav.target_position = all_waypoints[waypoints_index].global_position
-# 		checkpointIndex+=1
-
-
-
-
 
 
 func turn_toward_target():
@@ -196,11 +185,18 @@ func steering(delta):
 
 	rotation = car_heading.angle()
 
-func actions(turn, gas):
+func apply_throttle():
+	gas = lerpf(gas, engine_power, 0.01)
+	steer_angle = 4
 
-	steer_direction = turn * deg_to_rad(steer_angle)
-	power = transform.x * gas
-
+func apply_brake():
+	gas = lerpf(gas, 0, 0.1)
+	
+	if velocity.length() >= 1000:
+		print("fren yapıyorum")
+		
+		power = transform.x * brake
+	steer_angle = 8
 
 func apply_friction(delta):
 	if power == Vector2.ZERO and velocity.length() < 50:

@@ -437,26 +437,30 @@ navigation_polygon = SubResource("NavigationPolygon_5eu4m")
 [node name="WaypointNode" type="Node2D" parent="AllPaths" groups=["Waypoints"]]
 position = Vector2(253.196, 117.526)
 script = ExtResource("12_ww77d")
-min_distance_to_reach_waypoint = 150
+min_distance_to_reach_waypoint = 250
 next_waypoint_node = [NodePath("../WaypointNode2")]
+max_speed = 20000
 
 [node name="WaypointNode2" type="Node2D" parent="AllPaths" groups=["Waypoints"]]
 position = Vector2(266.392, -106.804)
 script = ExtResource("12_ww77d")
-min_distance_to_reach_waypoint = 250
+min_distance_to_reach_waypoint = 350
 next_waypoint_node = [NodePath("../WaypointNode3")]
+max_speed = 20000
 
 [node name="WaypointNode3" type="Node2D" parent="AllPaths" groups=["Waypoints"]]
 position = Vector2(-278.351, -116.701)
 script = ExtResource("12_ww77d")
-min_distance_to_reach_waypoint = 250
+min_distance_to_reach_waypoint = 500
 next_waypoint_node = [NodePath("../WaypointNode4")]
+max_speed = 20000
 
 [node name="WaypointNode4" type="Node2D" parent="AllPaths" groups=["Waypoints"]]
 position = Vector2(-275.052, 91.5464)
 script = ExtResource("12_ww77d")
-min_distance_to_reach_waypoint = 250
+min_distance_to_reach_waypoint = 350
 next_waypoint_node = [NodePath("../WaypointNode")]
+max_speed = 15000
 
 [connection signal="body_entered" from="Grass" to="Grass" method="on_offroad_enter"]
 [connection signal="body_exited" from="Grass" to="Grass" method="on_offroad_exit"]
