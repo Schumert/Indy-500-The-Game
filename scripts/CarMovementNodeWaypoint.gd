@@ -1,7 +1,6 @@
 extends CharacterBody2D
 
-var speed = 600
-var min_distance = 400  # hedefe bu kadar yaklaşınca dur veya hız kes
+var min_distance = 500  # hedefe bu kadar yaklaşınca dur veya hız kes
 var wheel_base = 70
 var friction = -55
 var steer_angle = 4
@@ -11,10 +10,11 @@ var max_speed_reverse = 200
 var power = Vector2.ZERO
 var drag = -0.06
 var target_transform = null
+var target_speed = 500
 
 var gas = 0.0
 var engine_power = 20000.0
-var brake = -1000
+var brake = -2000
 @export var turn_number = 0
 
 enum AIMode { FOLLOWPLAYER, FOLLOWCHECKPOINTS}
@@ -86,17 +86,23 @@ func _physics_process(delta):
 		steering(delta)
 		steer_direction = turn_number * deg_to_rad(steer_angle)
 		
-		
 		velocity += power * delta
 		power = transform.x * gas
+		
 		if (nav.target_position - position).length() < min_distance:
-			apply_brake()
+			check_angle_before_turning()
+			
+			if velocity.length() >= target_speed:
+				apply_brake()	
 		else:
 			apply_throttle()
+			is_angle_calcd=false
 
 		move_and_slide()
-		print("arabanin hizi: " + str(velocity.length()))
-	
+		#print("arabanin hizi: " + str(velocity.length()))
+		#print(str(brake))
+		#print((nav.target_position - position).length())
+		#print(gas)
 		
 
 func follow_player():
@@ -114,21 +120,20 @@ func follow_waypoints():
 	if current_waypoint == null:
 		current_waypoint = find_closest_waypoint()
 	
+	
 	if current_waypoint != null:
 		nav.target_position = current_waypoint.global_position
-
+		
 		distance_to_waypoint = (nav.target_position - global_position).length()
 		if distance_to_waypoint <= current_waypoint.min_distance_to_reach_waypoint:
-			if current_waypoint.max_speed > 0:
-				engine_power = current_waypoint.max_speed
-			else:
-				engine_power = 20000
-
-			var node_path = "../AllPaths/" + str(current_waypoint.next_waypoint_node[0]).replace("../", "")
-			current_waypoint = get_node(node_path)
-		#print(distance_to_waypoint)
-
+			# if current_waypoint.max_speed > 0:
+			# 	gas = clamp(gas, 0, current_waypoint.max_speed)
 			
+			current_waypoint = get_next_waypoint_node(current_waypoint)
+
+func get_next_waypoint_node(current_waypoint):
+	var node_path = "../AllPaths/" + str(current_waypoint.next_waypoint_node[0]).replace("../", "")
+	return get_node(node_path)
 
 
 var closest_dist = INF
@@ -139,6 +144,8 @@ func find_closest_waypoint():
 		if dist < closest_dist:
 			closest_dist = dist
 			closest_waypoint = waypoint
+			
+
 
 	return closest_waypoint
 
@@ -185,18 +192,36 @@ func steering(delta):
 
 	rotation = car_heading.angle()
 
+var is_angle_calcd = false
+func check_angle_before_turning():
+	if not is_angle_calcd:
+		var target_direction = get_next_waypoint_node(current_waypoint).position - current_waypoint.position
+		target_direction = target_direction.normalized()
+		var car_dir = velocity.normalized() if velocity.length() > 0 else Vector2.ZERO
+		var alignment = car_dir.dot(target_direction)
+		var angle_radians = acos(alignment)
+		var angle_degrees = rad_to_deg(angle_radians)
+		
+		is_angle_calcd = true
+		var old_speed = velocity.length()
+		target_speed = velocity.length() * (alignment + 1.0) / 2.0
+		print("Target Speed is: " + str(target_speed) + " Alignment is: " + str(alignment) + "While speed was: " + str(old_speed))
+		return target_speed
+	
+
 func apply_throttle():
 	gas = lerpf(gas, engine_power, 0.01)
 	steer_angle = 4
 
 func apply_brake():
-	gas = lerpf(gas, 0, 0.1)
+	
 	
 	if velocity.length() >= 1000:
-		print("fren yapıyorum")
-		
+		#print("fren yapıyorum")
+		gas = lerpf(gas, 0, 0.3)
 		power = transform.x * brake
-	steer_angle = 8
+		steer_angle = 8
+	
 
 func apply_friction(delta):
 	if power == Vector2.ZERO and velocity.length() < 50:

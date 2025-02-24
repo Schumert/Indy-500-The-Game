@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://b60l60ii2s0og"]
+[gd_scene load_steps=31 format=3 uid="uid://b60l60ii2s0og"]
 
 [ext_resource type="Script" path="res://scripts/map1.gd" id="1_tt7ib"]
 [ext_resource type="Script" path="res://scripts/RaceManager.gd" id="3_m8sbt"]
@@ -12,6 +12,7 @@
 [ext_resource type="Script" path="res://scripts/finish.gd" id="11_hiech"]
 [ext_resource type="Texture2D" uid="uid://cnk3fp7w6xlo7" path="res://assets/Decor/Pavilion_01.png" id="11_qmnan"]
 [ext_resource type="Script" path="res://scripts/WaypointNode.gd" id="12_ww77d"]
+[ext_resource type="Texture2D" uid="uid://binaomumswc7b" path="res://assets/UI-Pack-0.0.1/iconArrowR0.png" id="13_x0ckm"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_dh0oq"]
 texture = ExtResource("4_j6o2p")
@@ -230,9 +231,9 @@ size = Vector2(355.052, 127.01)
 size = Vector2(87.0103, 81.6495)
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_5eu4m"]
-vertices = PackedVector2Array(-343, -166, 311, -165, 191, -78, -196, -79, 302, 163, 186, 48, -347, 165, -193, 48)
-polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3), PackedInt32Array(2, 1, 4, 5), PackedInt32Array(5, 4, 6, 7), PackedInt32Array(7, 6, 0, 3)])
-outlines = Array[PackedVector2Array]([PackedVector2Array(312.165, 172.784, 322.474, -175.258, -353.402, -177.32, -357.938, 176.495), PackedVector2Array(-183.093, 38.3505, -185.979, -68.866, 181.443, -68.0412, 176.082, 37.5258)])
+vertices = PackedVector2Array(332, -135, 344, 121, 300, 15, 297, 28, 185, -78, -334, -110, -196, -79, -347, 165, -192, 86)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2), PackedInt32Array(3, 2, 1), PackedInt32Array(0, 2, 4), PackedInt32Array(5, 0, 4, 6), PackedInt32Array(3, 1, 7, 8), PackedInt32Array(8, 7, 5, 6)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(355.464, 130.722, 342.268, -146.392, -343.918, -120, -357.938, 176.495), PackedVector2Array(-182.268, 74.6392, -185.979, -68.866, 181.443, -68.0412, 289.485, 18.5567)])
 source_geometry_group_name = &"navigation_polygon_source_group"
 
 [node name="map1" type="Node2D"]
@@ -434,6 +435,29 @@ navigation_polygon = SubResource("NavigationPolygon_5eu4m")
 
 [node name="AllPaths" type="Node2D" parent="."]
 
+[node name="Sprite2D" type="Sprite2D" parent="AllPaths"]
+position = Vector2(253.196, 117.526)
+rotation = -1.5708
+scale = Vector2(0.065, 0.065)
+texture = ExtResource("13_x0ckm")
+
+[node name="Sprite2D2" type="Sprite2D" parent="AllPaths"]
+position = Vector2(266.392, -106.804)
+rotation = -3.14159
+scale = Vector2(0.065, 0.065)
+texture = ExtResource("13_x0ckm")
+
+[node name="Sprite2D3" type="Sprite2D" parent="AllPaths"]
+position = Vector2(-277.938, -116.701)
+rotation = 1.5708
+scale = Vector2(0.065, 0.065)
+texture = ExtResource("13_x0ckm")
+
+[node name="Sprite2D4" type="Sprite2D" parent="AllPaths"]
+position = Vector2(-274.639, 91.134)
+scale = Vector2(0.065, 0.065)
+texture = ExtResource("13_x0ckm")
+
 [node name="WaypointNode" type="Node2D" parent="AllPaths" groups=["Waypoints"]]
 position = Vector2(253.196, 117.526)
 script = ExtResource("12_ww77d")
@@ -446,12 +470,12 @@ position = Vector2(266.392, -106.804)
 script = ExtResource("12_ww77d")
 min_distance_to_reach_waypoint = 350
 next_waypoint_node = [NodePath("../WaypointNode3")]
-max_speed = 20000
+max_speed = 10000
 
 [node name="WaypointNode3" type="Node2D" parent="AllPaths" groups=["Waypoints"]]
 position = Vector2(-278.351, -116.701)
 script = ExtResource("12_ww77d")
-min_distance_to_reach_waypoint = 500
+min_distance_to_reach_waypoint = 300
 next_waypoint_node = [NodePath("../WaypointNode4")]
 max_speed = 20000
 
@@ -460,7 +484,10 @@ position = Vector2(-275.052, 91.5464)
 script = ExtResource("12_ww77d")
 min_distance_to_reach_waypoint = 350
 next_waypoint_node = [NodePath("../WaypointNode")]
-max_speed = 15000
+max_speed = 20000
+
+[node name="WaypointNode5" type="Node2D" parent="AllPaths" groups=["Waypoints"]]
+position = Vector2(-0.824734, 130.722)
 
 [connection signal="body_entered" from="Grass" to="Grass" method="on_offroad_enter"]
 [connection signal="body_exited" from="Grass" to="Grass" method="on_offroad_exit"]
