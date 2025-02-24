@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://bhxck8vi3r2j3"]
+[gd_scene load_steps=29 format=3 uid="uid://bhxck8vi3r2j3"]
 
 [ext_resource type="Script" path="res://scripts/map1.gd" id="1_2vuh0"]
 [ext_resource type="Texture2D" uid="uid://3ueveoaf4we2" path="res://assets/whiteonetoone.png" id="3_jo7nd"]
@@ -10,6 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://msgb7aphy5qp" path="res://assets/Grass Tiles/Grass 001.png" id="8_qa0t2"]
 [ext_resource type="Texture2D" uid="uid://ku21ovv8li2b" path="res://assets/Grass Tiles/Plants 002.png" id="9_o38bs"]
 [ext_resource type="Script" path="res://scripts/finish.gd" id="10_1o7hv"]
+[ext_resource type="Script" path="res://scripts/WaypointNode.gd" id="11_8l5hm"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_d0drd"]
 size = Vector2(1706.86, 544.573)
@@ -429,6 +430,48 @@ disabled = true
 
 [node name="Camera2D" type="Camera2D" parent="."]
 zoom = Vector2(0.59, 0.59)
+
+[node name="AllPaths" type="Node2D" parent="."]
+
+[node name="WaypointNode" type="Node2D" parent="AllPaths" groups=["Waypoints"]]
+position = Vector2(132.371, -129.485)
+script = ExtResource("11_8l5hm")
+min_distance_to_reach_waypoint = 250
+next_waypoint_node = [NodePath("../WaypointNode2")]
+max_speed = 20000
+
+[node name="WaypointNode2" type="Node2D" parent="AllPaths" groups=["Waypoints"]]
+position = Vector2(181.443, 1.23711)
+script = ExtResource("11_8l5hm")
+min_distance_to_reach_waypoint = 200
+next_waypoint_node = [NodePath("../WaypointNode3")]
+max_speed = 10000
+
+[node name="WaypointNode3" type="Node2D" parent="AllPaths" groups=["Waypoints"]]
+position = Vector2(117.526, 129.072)
+script = ExtResource("11_8l5hm")
+min_distance_to_reach_waypoint = 300
+next_waypoint_node = [NodePath("../WaypointNode4")]
+max_speed = 20000
+
+[node name="WaypointNode4" type="Node2D" parent="AllPaths" groups=["Waypoints"]]
+position = Vector2(-299.381, 144.33)
+script = ExtResource("11_8l5hm")
+min_distance_to_reach_waypoint = 350
+next_waypoint_node = [NodePath("../WaypointNode5")]
+max_speed = 20000
+
+[node name="WaypointNode5" type="Node2D" parent="AllPaths" groups=["Waypoints"]]
+position = Vector2(-216.495, 32.9897)
+script = ExtResource("11_8l5hm")
+min_distance_to_reach_waypoint = 150
+next_waypoint_node = [NodePath("../WaypointNode6")]
+
+[node name="WaypointNode6" type="Node2D" parent="AllPaths" groups=["Waypoints"]]
+position = Vector2(-114.639, -131.546)
+script = ExtResource("11_8l5hm")
+min_distance_to_reach_waypoint = 200
+next_waypoint_node = [NodePath("../WaypointNode")]
 
 [connection signal="body_entered" from="Grass" to="Grass" method="on_offroad_enter"]
 [connection signal="body_exited" from="Grass" to="Grass" method="on_offroad_exit"]

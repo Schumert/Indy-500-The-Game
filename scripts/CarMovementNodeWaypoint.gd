@@ -13,11 +13,11 @@ var target_transform = null
 var target_speed = 500
 
 var gas = 0.0
-var engine_power = 20000.0
-var brake = -2000
+var engine_power = 30000.0
+var brake = -1
 @export var turn_number = 0
 
-enum AIMode { FOLLOWPLAYER, FOLLOWCHECKPOINTS}
+enum AIMode { FOLLOWPLAYER, FOLLOWCHECKPOINTS, FOLLOWMOUSEPOSITION}
 var current_mode = AIMode.FOLLOWCHECKPOINTS
 
 var current_waypoint: Object
@@ -28,6 +28,8 @@ var all_waypoints = []
 
 @export var nav: NavigationAgent2D
 var current_direction: Vector2 = Vector2.ZERO
+
+var cursor
 
 
 # Called when the node enters the scene tree for the first time.
@@ -44,13 +46,9 @@ func _ready():
 
 	all_waypoints = get_tree().get_nodes_in_group("Waypoints")
 
+	cursor = preload("res://Levels/cursor.tscn")
 
 
-
-
-func _process(delta):
-	# new_turn_number = clamp(turn_number, -1, 1)
-	pass
 	
 
 
@@ -70,11 +68,7 @@ func _physics_process(delta):
 		# rotation = velocity.angle()
 		# move_and_slide()
 
-		match current_mode:
-			AIMode.FOLLOWPLAYER:
-				follow_player()
-			AIMode.FOLLOWCHECKPOINTS:
-				follow_waypoints()
+		
 				
 		
 		turn_number = turn_toward_target()
@@ -88,22 +82,53 @@ func _physics_process(delta):
 		
 		velocity += power * delta
 		power = transform.x * gas
-		
-		if (nav.target_position - position).length() < min_distance:
-			check_angle_before_turning()
-			
-			if velocity.length() >= target_speed:
-				apply_brake()	
-		else:
-			apply_throttle()
-			is_angle_calcd=false
+
+		match current_mode:
+			AIMode.FOLLOWPLAYER:
+				follow_player()
+				engine_power = 15000
+				if (nav.target_position - position).length() < 500:
+					if velocity.length() >= get_tree().get_first_node_in_group("Player").velocity.length():
+						apply_brake()
+				else:
+					apply_throttle()
+			AIMode.FOLLOWCHECKPOINTS:
+				follow_waypoints()
+				if (nav.target_position - position).length() < min_distance:
+					check_angle_before_turning(500, 1500)
+					
+					if velocity.length() >= target_speed and not velocity.length() <= 300 :
+						apply_brake()	
+				else:
+					apply_throttle()
+					is_angle_calcd=false
+			AIMode.FOLLOWMOUSEPOSITION:
+				follow_mouse_position()
+				Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
+				engine_power = 10000
+				if (nav.target_position - position).length() < 500:
+						apply_brake()
+				else:
+					apply_throttle()
+
+
+
 
 		move_and_slide()
 		#print("arabanin hizi: " + str(velocity.length()))
 		#print(str(brake))
 		#print((nav.target_position - position).length())
 		#print(gas)
-		
+
+var cursor_instance
+func follow_mouse_position():
+	if cursor_instance == null:
+		cursor_instance = cursor.instantiate()
+		get_parent().add_child(cursor_instance)
+	
+	nav.target_position = get_global_mouse_position()
+	cursor_instance.global_position = get_global_mouse_position()
+	
 
 func follow_player():
 	if target_transform == null:
@@ -193,7 +218,7 @@ func steering(delta):
 	rotation = car_heading.angle()
 
 var is_angle_calcd = false
-func check_angle_before_turning():
+func check_angle_before_turning(min_speed, max_speed):
 	if not is_angle_calcd:
 		var target_direction = get_next_waypoint_node(current_waypoint).position - current_waypoint.position
 		target_direction = target_direction.normalized()
@@ -206,6 +231,7 @@ func check_angle_before_turning():
 		var old_speed = velocity.length()
 		target_speed = velocity.length() * (alignment + 1.0) / 2.0
 		print("Target Speed is: " + str(target_speed) + " Alignment is: " + str(alignment) + "While speed was: " + str(old_speed))
+		target_speed = clampf(target_speed, min_speed, max_speed  )
 		return target_speed
 	
 
@@ -214,13 +240,10 @@ func apply_throttle():
 	steer_angle = 4
 
 func apply_brake():
-	
-	
-	if velocity.length() >= 1000:
-		#print("fren yapıyorum")
-		gas = lerpf(gas, 0, 0.3)
-		power = transform.x * brake
-		steer_angle = 8
+	#print("fren yapıyorum")
+	gas = lerpf(gas, 0, 0.1)
+	power = transform.x * brake
+	steer_angle = 8
 	
 
 func apply_friction(delta):

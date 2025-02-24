@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://8ocjgmtwjc6q"]
+
+[ext_resource type="Texture2D" uid="uid://1qoaj2bye1ee" path="res://cursor.png" id="1_6a2um"]
+
+[node name="Node2D" type="Node2D"]
+
+[node name="Cursor" type="Sprite2D" parent="."]
+rotation = -0.349066
+scale = Vector2(0.01, 0.01)
+texture = ExtResource("1_6a2um")
