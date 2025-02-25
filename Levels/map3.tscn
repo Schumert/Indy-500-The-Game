@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://bhxck8vi3r2j3"]
+[gd_scene load_steps=30 format=3 uid="uid://bhxck8vi3r2j3"]
 
 [ext_resource type="Script" path="res://scripts/map1.gd" id="1_2vuh0"]
 [ext_resource type="Texture2D" uid="uid://3ueveoaf4we2" path="res://assets/whiteonetoone.png" id="3_jo7nd"]
@@ -231,6 +231,10 @@ size = Vector2(201.584, 21.1428)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jeupi"]
 size = Vector2(160.876, 7.01029)
 
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_0k5ip"]
+outlines = Array[PackedVector2Array]([PackedVector2Array(345.567, 28.4536, 325.773, -139.794, -202.062, -166.186, -301.031, -96.9072, -254.845, -44.1237, -149.278, -14.433, -182.268, 15.2577, -274.639, 38.3505, -330.722, 94.433, -370.309, 170.309, 325.361, 191.34, 330.309, 59.3814, 174.021, 54.8454, 170.722, 31.7526), PackedVector2Array(-228.454, 91.134, -228.454, 64.7423, -188.866, 64.7423, -139.381, 54.8454, -76.701, -7.83505, -103.093, -73.8144, -126.186, -96.9072, -80, -93.6082, 45.3608, -90.3093, 216.907, -100.206, 233.402, -67.2165, 226.804, -40.8247, 190.516, -24.3299, 108.041, 15.2577, 101.443, 107.629, -218.557, 104.33)])
+source_geometry_group_name = &"navigation_polygon_source_group"
+
 [node name="map3" type="Node2D"]
 position = Vector2(986, 547)
 scale = Vector2(2.425, 2.425)
@@ -438,28 +442,24 @@ position = Vector2(132.371, -129.485)
 script = ExtResource("11_8l5hm")
 min_distance_to_reach_waypoint = 250
 next_waypoint_node = [NodePath("../WaypointNode2")]
-max_speed = 20000
 
 [node name="WaypointNode2" type="Node2D" parent="AllPaths" groups=["Waypoints"]]
 position = Vector2(181.443, 1.23711)
 script = ExtResource("11_8l5hm")
 min_distance_to_reach_waypoint = 200
 next_waypoint_node = [NodePath("../WaypointNode3")]
-max_speed = 10000
 
 [node name="WaypointNode3" type="Node2D" parent="AllPaths" groups=["Waypoints"]]
 position = Vector2(117.526, 129.072)
 script = ExtResource("11_8l5hm")
 min_distance_to_reach_waypoint = 300
 next_waypoint_node = [NodePath("../WaypointNode4")]
-max_speed = 20000
 
 [node name="WaypointNode4" type="Node2D" parent="AllPaths" groups=["Waypoints"]]
 position = Vector2(-299.381, 144.33)
 script = ExtResource("11_8l5hm")
 min_distance_to_reach_waypoint = 350
 next_waypoint_node = [NodePath("../WaypointNode5")]
-max_speed = 20000
 
 [node name="WaypointNode5" type="Node2D" parent="AllPaths" groups=["Waypoints"]]
 position = Vector2(-216.495, 32.9897)
@@ -472,6 +472,11 @@ position = Vector2(-114.639, -131.546)
 script = ExtResource("11_8l5hm")
 min_distance_to_reach_waypoint = 200
 next_waypoint_node = [NodePath("../WaypointNode")]
+
+[node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
+visible = false
+navigation_polygon = SubResource("NavigationPolygon_0k5ip")
+use_edge_connections = false
 
 [connection signal="body_entered" from="Grass" to="Grass" method="on_offroad_enter"]
 [connection signal="body_exited" from="Grass" to="Grass" method="on_offroad_exit"]

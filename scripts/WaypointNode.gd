@@ -4,7 +4,7 @@ class_name WaypointNode
 
 @export var min_distance_to_reach_waypoint = 100
 @export var next_waypoint_node = []
-@export var max_speed = 5000
+@export var is_crash : bool
 
 
 func _ready():

@@ -12,8 +12,9 @@ var drag = -0.06
 var target_transform = null
 var target_speed = 500
 
+
 var gas = 0.0
-var engine_power = 30000.0
+var engine_power = 20000.0
 var brake = -1
 @export var turn_number = 0
 
@@ -30,6 +31,8 @@ var all_waypoints = []
 var current_direction: Vector2 = Vector2.ZERO
 
 var cursor
+
+var rng = RandomNumberGenerator.new()
 
 
 # Called when the node enters the scene tree for the first time.
@@ -95,7 +98,7 @@ func _physics_process(delta):
 			AIMode.FOLLOWCHECKPOINTS:
 				follow_waypoints()
 				if (nav.target_position - position).length() < min_distance:
-					check_angle_before_turning(500, 1500)
+					check_angle_before_turning(400, 2000)
 					
 					if velocity.length() >= target_speed and not velocity.length() <= 300 :
 						apply_brake()	
@@ -143,7 +146,7 @@ func follow_player():
 var distance_to_waypoint
 func follow_waypoints():
 	if current_waypoint == null:
-		current_waypoint = find_closest_waypoint()
+		current_waypoint = get_tree().get_first_node_in_group("Waypoints")
 	
 	
 	if current_waypoint != null:
@@ -151,15 +154,38 @@ func follow_waypoints():
 		
 		distance_to_waypoint = (nav.target_position - global_position).length()
 		if distance_to_waypoint <= current_waypoint.min_distance_to_reach_waypoint:
-			# if current_waypoint.max_speed > 0:
-			# 	gas = clamp(gas, 0, current_waypoint.max_speed)
-			
 			current_waypoint = get_next_waypoint_node(current_waypoint)
 
+var crash_possibility = 0.05
+#gets next waypoint with bad choice probabilities
 func get_next_waypoint_node(current_waypoint):
-	var node_path = "../AllPaths/" + str(current_waypoint.next_waypoint_node[0]).replace("../", "")
+	var chosen_paths = []
+	var chosen_path = null
+	var is_crash = true if randf() <= crash_possibility else false
+
+	if is_crash:
+		
+		for waypoint in current_waypoint.next_waypoint_node:
+			if get_node(get_waypoint_node(waypoint)).is_crash:
+				chosen_paths.append(waypoint)
+				print("AI yanlış yola girdi!!!! Girdiği yol: " + str(get_node(get_waypoint_node(waypoint)).name))
+		
+		
+	if chosen_paths.is_empty():
+			for waypoint in current_waypoint.next_waypoint_node:
+				if not get_node(get_waypoint_node(waypoint)).is_crash:
+					chosen_paths.append(waypoint)
+
+	chosen_path = chosen_paths[rng.randf_range(0, chosen_paths.size())]
+
+
+	var node_path = get_waypoint_node(chosen_path)
+	get_node(node_path).min_distance_to_reach_waypoint = rng.randf_range(225, 600)
 	return get_node(node_path)
 
+
+func get_waypoint_node(waypoint): #smh
+	return "../AllPaths/" + str(waypoint).replace("../", "")
 
 var closest_dist = INF
 func find_closest_waypoint():
@@ -177,6 +203,7 @@ func find_closest_waypoint():
 
 func turn_toward_target():
 	var vectorToTarget = nav.target_position - position
+	#var vectorToTarget = nav.get_next_path_position() - position
 	vectorToTarget = vectorToTarget.normalized()
 
 	var angle_to_target = transform.x.angle_to(vectorToTarget)
@@ -217,6 +244,7 @@ func steering(delta):
 
 	rotation = car_heading.angle()
 
+#returns the speed that need to be decreased to while turning, higher the angle the slower.
 var is_angle_calcd = false
 func check_angle_before_turning(min_speed, max_speed):
 	if not is_angle_calcd:
@@ -229,21 +257,21 @@ func check_angle_before_turning(min_speed, max_speed):
 		
 		is_angle_calcd = true
 		var old_speed = velocity.length()
-		target_speed = velocity.length() * (alignment + 1.0) / 2.0
-		print("Target Speed is: " + str(target_speed) + " Alignment is: " + str(alignment) + "While speed was: " + str(old_speed))
+		target_speed = velocity.length() * (alignment + 2) / 2.0
+		#print("Target Speed is: " + str(target_speed) + " Alignment is: " + str(alignment) + "While speed was: " + str(old_speed))
 		target_speed = clampf(target_speed, min_speed, max_speed  )
 		return target_speed
 	
 
 func apply_throttle():
 	gas = lerpf(gas, engine_power, 0.01)
-	steer_angle = 4
+	steer_angle = 6
 
 func apply_brake():
 	#print("fren yapıyorum")
 	gas = lerpf(gas, 0, 0.1)
-	power = transform.x * brake
-	steer_angle = 8
+	 #power = transform.x * brake
+	steer_angle = 10
 	
 
 func apply_friction(delta):
