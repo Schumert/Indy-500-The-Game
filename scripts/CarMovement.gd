@@ -73,7 +73,7 @@ func _ready():
 		traction_fast = 1
 	
 	is_car_broken = false
-	engine_sound.play()
+	#engine_sound.play()
 	broken_engine_sound.stop()
 
 

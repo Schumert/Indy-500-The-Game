@@ -3,8 +3,9 @@ class_name WaypointNode
 
 
 @export var min_distance_to_reach_waypoint = 100
-@export var next_waypoint_node = []
+@export var next_waypoint_node : Array[NodePath]
 @export var is_crash : bool
+@export var is_random_min_distance_allowed: bool
 
 
 func _ready():

@@ -1,5 +1,6 @@
 extends CharacterBody2D
 
+
 var speed = 600
 var min_distance = 400  # hedefe bu kadar yaklaşınca dur veya hız kes
 var wheel_base = 70

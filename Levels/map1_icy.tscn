@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://b65jls36s7id0"]
+[gd_scene load_steps=28 format=3 uid="uid://b65jls36s7id0"]
 
 [ext_resource type="Script" path="res://scripts/map1.gd" id="1_ripsk"]
 [ext_resource type="Texture2D" uid="uid://3ueveoaf4we2" path="res://assets/whiteonetoone.png" id="3_6b6ph"]
@@ -10,6 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://msgb7aphy5qp" path="res://assets/Grass Tiles/Grass 001.png" id="8_prsgh"]
 [ext_resource type="Texture2D" uid="uid://ku21ovv8li2b" path="res://assets/Grass Tiles/Plants 002.png" id="9_timdm"]
 [ext_resource type="Texture2D" uid="uid://cnk3fp7w6xlo7" path="res://assets/Decor/Pavilion_01.png" id="10_pcm4v"]
+[ext_resource type="Script" path="res://scripts/WaypointNode.gd" id="11_06xhj"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_d0drd"]
 size = Vector2(1706.86, 544.573)
@@ -190,12 +191,6 @@ size = Vector2(183.676, 83.548)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_gco36"]
 size = Vector2(804.742, 21.7857)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_2gexe"]
-size = Vector2(355.052, 127.01)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_gxno0"]
-size = Vector2(87.0103, 81.6495)
 
 [node name="map1" type="Node2D"]
 position = Vector2(986, 547)
@@ -392,26 +387,95 @@ position = Vector2(-4.12372, 63.0928)
 [node name="StartPos2" type="Node2D" parent="."]
 position = Vector2(-3.29898, 101.031)
 
-[node name="ObstacleForAI" type="Node2D" parent="."]
-
-[node name="StaticBody2D" type="StaticBody2D" parent="ObstacleForAI"]
-collision_layer = 256
-collision_mask = 128
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="ObstacleForAI/StaticBody2D"]
-position = Vector2(4.3299, -0.824738)
-shape = SubResource("RectangleShape2D_2gexe")
-
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="ObstacleForAI/StaticBody2D"]
-position = Vector2(-8.45361, 167.01)
-shape = SubResource("RectangleShape2D_gxno0")
-
-[node name="CollisionShape2D3" type="CollisionShape2D" parent="ObstacleForAI/StaticBody2D"]
-position = Vector2(-10.7216, -172.784)
-shape = SubResource("RectangleShape2D_gxno0")
-
 [node name="Camera2D" type="Camera2D" parent="."]
 zoom = Vector2(0.59, 0.59)
+
+[node name="AllPaths" type="Node2D" parent="."]
+
+[node name="WaypointNode1-1" type="Node2D" parent="AllPaths" groups=["Waypoints"]]
+position = Vector2(253.196, 117.526)
+script = ExtResource("11_06xhj")
+min_distance_to_reach_waypoint = 250
+next_waypoint_node = [NodePath("../WaypointNode2-1")]
+is_random_min_distance_allowed = true
+
+[node name="WaypointNode1-2" type="Node2D" parent="AllPaths" groups=["Waypoints"]]
+position = Vector2(137.732, 44.9484)
+script = ExtResource("11_06xhj")
+min_distance_to_reach_waypoint = 250
+next_waypoint_node = [NodePath("../WaypointNode2-2")]
+is_crash = true
+is_random_min_distance_allowed = true
+
+[node name="WaypointNode2-1" type="Node2D" parent="AllPaths" groups=["Waypoints"]]
+position = Vector2(266.392, -106.804)
+script = ExtResource("11_06xhj")
+min_distance_to_reach_waypoint = 350
+next_waypoint_node = [NodePath("../WaypointNode3-1"), NodePath("../WaypointNode3-2")]
+is_random_min_distance_allowed = true
+
+[node name="WaypointNode2-2" type="Node2D" parent="AllPaths" groups=["Waypoints"]]
+position = Vector2(187.216, -106.804)
+script = ExtResource("11_06xhj")
+min_distance_to_reach_waypoint = 350
+next_waypoint_node = [NodePath("../WaypointNode3-1"), NodePath("../WaypointNode3-2")]
+is_random_min_distance_allowed = true
+
+[node name="WaypointNode3-1" type="Node2D" parent="AllPaths" groups=["Waypoints"]]
+position = Vector2(-10.7217, -156.289)
+script = ExtResource("11_06xhj")
+min_distance_to_reach_waypoint = 250
+next_waypoint_node = [NodePath("../WaypointNode4-1"), NodePath("../WaypointNode4-2")]
+is_crash = true
+is_random_min_distance_allowed = true
+
+[node name="WaypointNode3-2" type="Node2D" parent="AllPaths" groups=["Waypoints"]]
+position = Vector2(-10.7217, -83.7113)
+script = ExtResource("11_06xhj")
+min_distance_to_reach_waypoint = 225
+next_waypoint_node = [NodePath("../WaypointNode4-1"), NodePath("../WaypointNode4-2")]
+
+[node name="WaypointNode4-1" type="Node2D" parent="AllPaths" groups=["Waypoints"]]
+position = Vector2(-277.938, -116.701)
+script = ExtResource("11_06xhj")
+min_distance_to_reach_waypoint = 250
+next_waypoint_node = [NodePath("../WaypointNode5-1")]
+is_random_min_distance_allowed = true
+
+[node name="WaypointNode4-2" type="Node2D" parent="AllPaths" groups=["Waypoints"]]
+position = Vector2(-149.278, -34.2268)
+script = ExtResource("11_06xhj")
+min_distance_to_reach_waypoint = 250
+next_waypoint_node = [NodePath("../WaypointNode5-2")]
+is_crash = true
+is_random_min_distance_allowed = true
+
+[node name="WaypointNode5-1" type="Node2D" parent="AllPaths" groups=["Waypoints"]]
+position = Vector2(-274.639, 117.526)
+script = ExtResource("11_06xhj")
+min_distance_to_reach_waypoint = 250
+next_waypoint_node = [NodePath("../WaypointNode6-1"), NodePath("../WaypointNode6-2")]
+is_random_min_distance_allowed = true
+
+[node name="WaypointNode5-2" type="Node2D" parent="AllPaths" groups=["Waypoints"]]
+position = Vector2(-195.464, 91.134)
+script = ExtResource("11_06xhj")
+min_distance_to_reach_waypoint = 250
+next_waypoint_node = [NodePath("../WaypointNode6-1"), NodePath("../WaypointNode6-2")]
+is_random_min_distance_allowed = true
+
+[node name="WaypointNode6-1" type="Node2D" parent="AllPaths" groups=["Waypoints"]]
+position = Vector2(-0.824749, 77.9381)
+script = ExtResource("11_06xhj")
+min_distance_to_reach_waypoint = 225
+next_waypoint_node = [NodePath("../WaypointNode1-1"), NodePath("../WaypointNode1-2")]
+
+[node name="WaypointNode6-2" type="Node2D" parent="AllPaths" groups=["Waypoints"]]
+position = Vector2(-4.12371, 167.01)
+script = ExtResource("11_06xhj")
+min_distance_to_reach_waypoint = 150
+next_waypoint_node = [NodePath("../WaypointNode1-1")]
+is_crash = true
 
 [connection signal="body_entered" from="RaceManager/Checkpoint1" to="RaceManager/Checkpoint1" method="_on_body_entered"]
 [connection signal="body_entered" from="RaceManager/Checkpoint3" to="RaceManager/Checkpoint3" method="_on_body_entered"]

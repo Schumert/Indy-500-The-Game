@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://dcledlj0irowx"]
+[gd_scene load_steps=6 format=3 uid="uid://dcledlj0irowx"]
 
 [ext_resource type="Script" path="res://scripts/CarMovementNodeWaypoint.gd" id="1_75pro"]
 [ext_resource type="Texture2D" uid="uid://cc1v60g46uquc" path="res://assets/2d_race_cars/src/pitstop_car_11.svg" id="2_bmlqv"]
 [ext_resource type="AudioStream" uid="uid://ctkuhdmw2koiu" path="res://audio/MotorAudioAI.mp3" id="3_skfci"]
+[ext_resource type="AudioStream" uid="uid://bsg172hvmo4yf" path="res://audio/broken_engine.mp3" id="4_i5627"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hpj8k"]
 size = Vector2(505, 215)
@@ -14,6 +15,7 @@ scale = Vector2(0.2, 0.2)
 collision_layer = 128
 collision_mask = 301
 script = ExtResource("1_75pro")
+car_id = "carAI"
 nav = NodePath("NavigationAgent2D")
 
 [node name="car" type="Sprite2D" parent="."]
@@ -26,9 +28,15 @@ shape = SubResource("RectangleShape2D_hpj8k")
 
 [node name="Motor" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("3_skfci")
-volume_db = -30.0
+volume_db = -25.0
 bus = &"Motor"
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
 path_desired_distance = 500.0
 path_postprocessing = 1
+
+[node name="BrokenMotor" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_i5627")
+volume_db = -25.0
+pitch_scale = 0.8
+bus = &"Motor"

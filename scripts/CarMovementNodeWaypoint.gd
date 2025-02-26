@@ -1,8 +1,12 @@
 extends CharacterBody2D
 
+
+@export var car_id : String
+@export var min_speed_before_turning = 700
 var min_distance = 500  # hedefe bu kadar yaklaşınca dur veya hız kes
 var wheel_base = 70
 var friction = -55
+var temp_friction = friction
 var steer_angle = 4
 var steer_direction
 var traction = 3
@@ -15,8 +19,10 @@ var target_speed = 500
 
 var gas = 0.0
 var engine_power = 20000.0
+var temp_engine_power = engine_power
 var brake = -1
 @export var turn_number = 0
+var is_car_broken = false
 
 enum AIMode { FOLLOWPLAYER, FOLLOWCHECKPOINTS, FOLLOWMOUSEPOSITION}
 var current_mode = AIMode.FOLLOWCHECKPOINTS
@@ -50,6 +56,7 @@ func _ready():
 	all_waypoints = get_tree().get_nodes_in_group("Waypoints")
 
 	cursor = preload("res://Levels/cursor.tscn")
+	$Motor.play()
 
 
 	
@@ -57,13 +64,21 @@ func _ready():
 
 
 
-
+func _process(delta):
+	if Global.current_state == Global.GameState.PLAYING:
+		if is_car_broken == true:
+			if $Motor.is_playing():
+				$Motor.stop();
+				$BrokenMotor.play();
+		else:
+			if $BrokenMotor.is_playing():
+				$Motor.play();
+				$BrokenMotor.stop();	
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta):
 	if Global.current_state == Global.GameState.PLAYING:
 		# if not nav.target_position: _set_new_target()
-		
 		
 		
 		
@@ -98,7 +113,7 @@ func _physics_process(delta):
 			AIMode.FOLLOWCHECKPOINTS:
 				follow_waypoints()
 				if (nav.target_position - position).length() < min_distance:
-					check_angle_before_turning(400, 2000)
+					check_angle_before_turning(min_speed_before_turning, 2000)
 					
 					if velocity.length() >= target_speed and not velocity.length() <= 300 :
 						apply_brake()	
@@ -160,9 +175,11 @@ var crash_possibility = 0.05
 #gets next waypoint with bad choice probabilities
 func get_next_waypoint_node(current_waypoint):
 	var chosen_paths = []
-	var chosen_path = null
-	var is_crash = true if randf() <= crash_possibility else false
+	var chosen_path = null 
+	var is_crash = true if randf() <= crash_possibility else false #there is a bad road choice with a probability of crash_possiblity
 
+
+	#find the bad waypoint and add it to the chosen paths
 	if is_crash:
 		
 		for waypoint in current_waypoint.next_waypoint_node:
@@ -170,17 +187,22 @@ func get_next_waypoint_node(current_waypoint):
 				chosen_paths.append(waypoint)
 				print("AI yanlış yola girdi!!!! Girdiği yol: " + str(get_node(get_waypoint_node(waypoint)).name))
 		
-		
+	#If no road found anyhow, do the same thing again but for the good waypoints.
 	if chosen_paths.is_empty():
 			for waypoint in current_waypoint.next_waypoint_node:
 				if not get_node(get_waypoint_node(waypoint)).is_crash:
 					chosen_paths.append(waypoint)
 
+	#take a path amongst paths randomly.
 	chosen_path = chosen_paths[rng.randf_range(0, chosen_paths.size())]
 
 
 	var node_path = get_waypoint_node(chosen_path)
-	get_node(node_path).min_distance_to_reach_waypoint = rng.randf_range(225, 600)
+
+	#set the min distance to reach waypoint randomly between given numbers. That increases AI car's variation of road progress
+	if get_node(node_path).is_random_min_distance_allowed:
+		get_node(node_path).min_distance_to_reach_waypoint = rng.randf_range(225, 600)
+
 	return get_node(node_path)
 
 

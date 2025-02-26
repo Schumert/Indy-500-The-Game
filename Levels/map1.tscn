@@ -463,6 +463,7 @@ position = Vector2(253.196, 117.526)
 script = ExtResource("12_ww77d")
 min_distance_to_reach_waypoint = 250
 next_waypoint_node = [NodePath("../WaypointNode2-1")]
+is_random_min_distance_allowed = true
 
 [node name="WaypointNode1-2" type="Node2D" parent="AllPaths" groups=["Waypoints"]]
 position = Vector2(137.732, 44.9484)
@@ -470,18 +471,21 @@ script = ExtResource("12_ww77d")
 min_distance_to_reach_waypoint = 250
 next_waypoint_node = [NodePath("../WaypointNode2-2")]
 is_crash = true
+is_random_min_distance_allowed = true
 
 [node name="WaypointNode2-1" type="Node2D" parent="AllPaths" groups=["Waypoints"]]
 position = Vector2(266.392, -106.804)
 script = ExtResource("12_ww77d")
 min_distance_to_reach_waypoint = 350
 next_waypoint_node = [NodePath("../WaypointNode3-1"), NodePath("../WaypointNode3-2")]
+is_random_min_distance_allowed = true
 
 [node name="WaypointNode2-2" type="Node2D" parent="AllPaths" groups=["Waypoints"]]
 position = Vector2(187.216, -106.804)
 script = ExtResource("12_ww77d")
 min_distance_to_reach_waypoint = 350
 next_waypoint_node = [NodePath("../WaypointNode3-1"), NodePath("../WaypointNode3-2")]
+is_random_min_distance_allowed = true
 
 [node name="WaypointNode3-1" type="Node2D" parent="AllPaths" groups=["Waypoints"]]
 position = Vector2(-10.7217, -156.289)
@@ -489,11 +493,12 @@ script = ExtResource("12_ww77d")
 min_distance_to_reach_waypoint = 250
 next_waypoint_node = [NodePath("../WaypointNode4-1"), NodePath("../WaypointNode4-2")]
 is_crash = true
+is_random_min_distance_allowed = true
 
 [node name="WaypointNode3-2" type="Node2D" parent="AllPaths" groups=["Waypoints"]]
 position = Vector2(-10.7217, -83.7113)
 script = ExtResource("12_ww77d")
-min_distance_to_reach_waypoint = 250
+min_distance_to_reach_waypoint = 225
 next_waypoint_node = [NodePath("../WaypointNode4-1"), NodePath("../WaypointNode4-2")]
 
 [node name="WaypointNode4-1" type="Node2D" parent="AllPaths" groups=["Waypoints"]]
@@ -501,6 +506,7 @@ position = Vector2(-277.938, -116.701)
 script = ExtResource("12_ww77d")
 min_distance_to_reach_waypoint = 250
 next_waypoint_node = [NodePath("../WaypointNode5-1")]
+is_random_min_distance_allowed = true
 
 [node name="WaypointNode4-2" type="Node2D" parent="AllPaths" groups=["Waypoints"]]
 position = Vector2(-149.278, -34.2268)
@@ -508,23 +514,26 @@ script = ExtResource("12_ww77d")
 min_distance_to_reach_waypoint = 250
 next_waypoint_node = [NodePath("../WaypointNode5-2")]
 is_crash = true
+is_random_min_distance_allowed = true
 
 [node name="WaypointNode5-1" type="Node2D" parent="AllPaths" groups=["Waypoints"]]
 position = Vector2(-274.639, 117.526)
 script = ExtResource("12_ww77d")
 min_distance_to_reach_waypoint = 250
 next_waypoint_node = [NodePath("../WaypointNode6-1"), NodePath("../WaypointNode6-2")]
+is_random_min_distance_allowed = true
 
 [node name="WaypointNode5-2" type="Node2D" parent="AllPaths" groups=["Waypoints"]]
 position = Vector2(-195.464, 91.134)
 script = ExtResource("12_ww77d")
 min_distance_to_reach_waypoint = 250
 next_waypoint_node = [NodePath("../WaypointNode6-1"), NodePath("../WaypointNode6-2")]
+is_random_min_distance_allowed = true
 
 [node name="WaypointNode6-1" type="Node2D" parent="AllPaths" groups=["Waypoints"]]
-position = Vector2(-0.824749, 84.5361)
+position = Vector2(-0.824749, 77.9381)
 script = ExtResource("12_ww77d")
-min_distance_to_reach_waypoint = 150
+min_distance_to_reach_waypoint = 225
 next_waypoint_node = [NodePath("../WaypointNode1-1"), NodePath("../WaypointNode1-2")]
 
 [node name="WaypointNode6-2" type="Node2D" parent="AllPaths" groups=["Waypoints"]]
