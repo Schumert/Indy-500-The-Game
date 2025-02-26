@@ -92,14 +92,14 @@ func _physics_process(delta):
 		steering(delta)
 		velocity += power * delta
 		move_and_slide()
-	for i in get_slide_collision_count():
-		var collision = get_slide_collision(i)
-		if collision.get_collider().is_in_group("wall") and raycast.is_colliding():
-			is_pushing_state = true
-			var direction_to_collision = collision.get_position() - position
-			direction_to_collision = -direction_to_collision.normalized()
-			collision_info = direction_to_collision
-			AudioManager.play_crash()
+	# for i in get_slide_collision_count():
+	# 	var collision = get_slide_collision(i)
+	# 	if collision.get_collider().is_in_group("wall") and raycast.is_colliding():
+	# 		is_pushing_state = true
+	# 		var direction_to_collision = collision.get_position() - position
+	# 		direction_to_collision = -direction_to_collision.normalized()
+	# 		collision_info = direction_to_collision
+	# 		AudioManager.play_crash()
 
 	if Input.is_action_just_pressed("main_menu"):
 		#Global.change_state(Global.GameState.GAMEOVER)
@@ -111,7 +111,7 @@ func _physics_process(delta):
 	
 			
 			
-	_pushed_off(collision_info, delta)
+	# _pushed_off(collision_info, delta)
 
 	
 	#print(velocity.length())
