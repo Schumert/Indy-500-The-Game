@@ -3,7 +3,8 @@ extends CharacterBody2D
 
 @export var car_id : String
 @export var min_speed_before_turning = 700
-var min_distance = 500  # hedefe bu kadar yaklaşınca dur veya hız kes
+var min_distance = 500  # hedefe bu kadar yaklaşınca dur veya hız kes (waypoint)
+@export var min_distance_coin = 250
 var wheel_base = 70
 var friction = -55
 var temp_friction = friction
@@ -21,16 +22,20 @@ var max_min_distance_to_waypoint = 600
 var gas = 0.0
 var engine_power = 30000.0
 var temp_engine_power = engine_power
-var brake = -1
+var brake = -1000
+var is_going_back = false
 @export var turn_number = 0
 var is_car_broken = false
 
-enum AIMode { FOLLOWPLAYER, FOLLOWCHECKPOINTS, FOLLOWMOUSEPOSITION}
-var current_mode = AIMode.FOLLOWCHECKPOINTS
+enum AIMode { FOLLOWPLAYER, FOLLOWCHECKPOINTS, FOLLOWMOUSEPOSITION, FOLLOWCOINS}
+var current_mode = AIMode.FOLLOWCOINS
 
 var current_waypoint: Object
 var chosen_waypoint : Object
 var all_waypoints = []
+
+enum AIState { PURSUIT, OBSTACLE_AVOIDANCE, RECOVERY }
+var current_state = AIState.PURSUIT
 
 
 
@@ -60,6 +65,18 @@ func _ready():
 	cursor = preload("res://Levels/cursor.tscn")
 	$Motor.play()
 
+	if Global.active_map.contains("icy"):
+		friction = -20
+		temp_friction = friction
+		traction = 1
+		engine_power = 15000
+		temp_engine_power = engine_power
+	
+	if Global.get_mode() == Global.GameModes.COLLECT:
+		position = Vector2(229, 197)
+		current_mode = AIMode.FOLLOWCOINS
+	elif Global.get_mode() == Global.GameModes.RACE:
+		current_mode = AIMode.FOLLOWCHECKPOINTS
 
 	
 
@@ -76,7 +93,7 @@ func _process(delta):
 		else:
 			if $BrokenMotor.is_playing():
 				$Motor.play();
-				$BrokenMotor.stop();	
+				$BrokenMotor.stop();
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta):
@@ -102,27 +119,70 @@ func _physics_process(delta):
 		steer_direction = turn_number * deg_to_rad(steer_angle)
 		
 		velocity += power * delta
-		power = transform.x * gas
+		if not is_going_back:
+			power = transform.x * gas
+		else:
+			power = transform.x * brake
 
 		match current_mode:
 			AIMode.FOLLOWPLAYER:
-				follow_player()
+				match current_state:
+					AIState.PURSUIT:
+						if obstacle_detected():
+							current_state = AIState.OBSTACLE_AVOIDANCE
+						elif target_is_behind():
+							current_state = AIState.RECOVERY
+						else:
+							follow_player()
+							if (nav.target_position - position).length() < 500:
+								if velocity.length() >= get_tree().get_first_node_in_group("Player").velocity.length():
+									apply_brake()
+							else:
+								apply_throttle()
+					AIState.OBSTACLE_AVOIDANCE:
+						if not obstacle_detected():
+							current_state = AIState.PURSUIT
+						else:
+							avoid_obstacle(delta)
+					AIState.RECOVERY:
+						if is_aligned_with_target():
+							current_state = AIState.PURSUIT
+							print("car is aligned")
+							is_going_back = false
+						else:
+							is_going_back = true
+
+
+						
 				engine_power = 15000
-				if (nav.target_position - position).length() < 500:
-					if velocity.length() >= get_tree().get_first_node_in_group("Player").velocity.length():
-						apply_brake()
-				else:
-					apply_throttle()
+				
 			AIMode.FOLLOWCHECKPOINTS:
-				follow_waypoints()
-				if (nav.target_position - position).length() < min_distance:
-					check_angle_before_turning(min_speed_before_turning, 2000)
-					
-					if velocity.length() >= target_speed and not velocity.length() <= 300 :
-						apply_brake()	
-				else:
-					apply_throttle()
-					is_angle_calcd=false
+				match current_state:
+					AIState.PURSUIT:
+						if obstacle_detected():
+							current_state = AIState.OBSTACLE_AVOIDANCE
+						elif target_is_behind():
+							current_state = AIState.RECOVERY
+						else:
+							follow_waypoints()
+							if (nav.target_position - position).length() < 500:
+								if velocity.length() >= target_speed and velocity.length() >= 300:
+									apply_brake()
+							else:
+								apply_throttle()
+					AIState.OBSTACLE_AVOIDANCE:
+						if not obstacle_detected():
+							current_state = AIState.PURSUIT
+						else:
+							avoid_obstacle(delta)
+					AIState.RECOVERY:
+						if is_aligned_with_target():
+							current_state = AIState.PURSUIT
+							is_going_back = false
+						else:
+							is_going_back = true
+
+
 			AIMode.FOLLOWMOUSEPOSITION:
 				follow_mouse_position()
 				Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
@@ -131,6 +191,43 @@ func _physics_process(delta):
 						apply_brake()
 				else:
 					apply_throttle()
+			AIMode.FOLLOWCOINS:
+				engine_power = 20000
+				follow_coins()
+				match current_state:
+					AIState.PURSUIT:
+						if obstacle_detected():
+							current_state = AIState.OBSTACLE_AVOIDANCE
+							print("AISTATE is OBSTACLE AVIODANCE")
+						elif is_stuck_turning() or target_is_behind():
+							current_state = AIState.RECOVERY
+						elif is_stuck():
+							pass
+						else:
+							
+							if (nav.target_position - position).length() < 500:
+								if gas >= 5000:
+									apply_brake()
+								else:
+									apply_throttle()
+							else:
+								apply_throttle()
+					AIState.OBSTACLE_AVOIDANCE:
+						if not obstacle_detected():
+							current_state = AIState.PURSUIT
+							print("AISTATE is PURSUIT")
+						else:
+							avoid_obstacle(delta)
+					AIState.RECOVERY:
+						if is_aligned_with_target():
+							print("AISTATE is PURSUIT")
+							is_going_back = false
+							print("car is aligned")
+							current_state = AIState.PURSUIT
+						elif velocity.length() >= 100:
+							apply_brake()	
+						else:
+							is_going_back = true
 
 
 
@@ -140,6 +237,77 @@ func _physics_process(delta):
 		#print(str(brake))
 		#print((nav.target_position - position).length())
 		#print(gas)
+
+
+
+#KENDIME NOT: BU FONKSIYONLARI SONRA GÜZEL BİR YERE TAŞI
+func obstacle_detected():
+	return false
+
+
+var previous_angle: float = 0.0
+var cumulative_angle: float = 0.0
+var tracking_started: bool = false
+func is_stuck_turning():
+	var current_angle = (global_position - nav.target_position).angle()
+	
+	if not tracking_started:
+		previous_angle = current_angle
+		tracking_started = true
+
+	var angle_diff = current_angle - previous_angle
+
+	if angle_diff > PI:
+		angle_diff -= TAU
+	elif angle_diff < -PI:
+		angle_diff += TAU
+
+	cumulative_angle += angle_diff
+	previous_angle = current_angle
+
+	if abs(cumulative_angle) >= TAU:
+		print("360 derece dönme algılandı!")
+		cumulative_angle = 0.0
+		tracking_started = false
+		return true
+	else:
+		return false
+
+
+func is_stuck():
+	return false
+	
+
+
+
+func target_is_behind():
+	return false
+
+func avoid_obstacle(delta):
+	pass
+
+func is_aligned_with_target(threshold: float = 0.4):
+	var car_dir = Vector2(cos(rotation), sin(rotation)).normalized()
+	var target_direction = (nav.target_position- global_position).normalized()
+
+	var angle_diff = car_dir.angle_to(target_direction)
+
+	#print("Align degeri bu: " + str(angle_diff))
+
+	return abs(angle_diff) < threshold
+
+	
+
+
+
+
+
+
+func follow_coins():
+	nav.target_position = get_parent().get_closest_coin(position).position
+
+
+
 
 var cursor_instance
 func follow_mouse_position():
@@ -234,15 +402,18 @@ func find_closest_waypoint():
 
 
 func turn_toward_target():
-	var vectorToTarget = nav.target_position - position
+	var vectorToTarget
+	vectorToTarget = (nav.target_position - position).normalized()
 	#var vectorToTarget = nav.get_next_path_position() - position
-	vectorToTarget = vectorToTarget.normalized()
-
 	var angle_to_target = transform.x.angle_to(vectorToTarget)
-
 	var steer_amount = angle_to_target
-	steer_amount = clamp(steer_amount, -1, 1)
-	#print(rad_to_deg(angle_to_target))
+	
+	if not is_going_back:
+		steer_amount = clamp(steer_amount, -1, 1)
+		#print(rad_to_deg(angle_to_target))
+	else:
+		steer_amount = -1 * clamp(steer_amount, -1, 1)
+		
 	return steer_amount
 
 
@@ -271,6 +442,7 @@ func steering(delta):
 	var d = car_heading.dot(velocity.normalized())
 	if d > 0:	
 		velocity = lerp(velocity, car_heading * velocity.length(), traction * delta)
+	#car is going backwards
 	if d < 0:
 		velocity = -car_heading * min(velocity.length(), max_speed_reverse)
 

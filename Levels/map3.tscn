@@ -416,7 +416,7 @@ zoom = Vector2(0.59, 0.59)
 position = Vector2(253.196, -136.495)
 script = ExtResource("11_8l5hm")
 min_distance_to_reach_waypoint = 250
-next_waypoint_node = [NodePath("../WaypointNode2-1")]
+next_waypoint_node = Array[NodePath]([NodePath("../WaypointNode2-1")])
 is_random_min_distance_allowed = true
 random_max_limit_min_distace_to_reach_waypoint = 400
 
@@ -424,7 +424,7 @@ random_max_limit_min_distace_to_reach_waypoint = 400
 position = Vector2(183.918, -63.9175)
 script = ExtResource("11_8l5hm")
 min_distance_to_reach_waypoint = 200
-next_waypoint_node = [NodePath("../WaypointNode3-1"), NodePath("../WaypointNode3-2")]
+next_waypoint_node = Array[NodePath]([NodePath("../WaypointNode3-1"), NodePath("../WaypointNode3-2")])
 is_crash = true
 is_random_min_distance_allowed = true
 random_max_limit_min_distace_to_reach_waypoint = 400
@@ -433,13 +433,13 @@ random_max_limit_min_distace_to_reach_waypoint = 400
 position = Vector2(200.412, -172.784)
 script = ExtResource("11_8l5hm")
 min_distance_to_reach_waypoint = 200
-next_waypoint_node = [NodePath("../WaypointNode2-2")]
+next_waypoint_node = Array[NodePath]([NodePath("../WaypointNode2-2")])
 
 [node name="WaypointNode2-1" type="Node2D" parent="AllPaths" groups=["Waypoints"]]
 position = Vector2(253.196, -67.2165)
 script = ExtResource("11_8l5hm")
 min_distance_to_reach_waypoint = 225
-next_waypoint_node = [NodePath("../WaypointNode3-1"), NodePath("../WaypointNode3-2"), NodePath("../WaypointNode3-3")]
+next_waypoint_node = Array[NodePath]([NodePath("../WaypointNode3-1"), NodePath("../WaypointNode3-2"), NodePath("../WaypointNode3-3")])
 is_random_min_distance_allowed = true
 random_max_limit_min_distace_to_reach_waypoint = 400
 
@@ -447,13 +447,13 @@ random_max_limit_min_distace_to_reach_waypoint = 400
 position = Vector2(207.01, -67.2165)
 script = ExtResource("11_8l5hm")
 min_distance_to_reach_waypoint = 200
-next_waypoint_node = [NodePath("../WaypointNode3-1"), NodePath("../WaypointNode3-2"), NodePath("../WaypointNode3-3")]
+next_waypoint_node = Array[NodePath]([NodePath("../WaypointNode3-1"), NodePath("../WaypointNode3-2"), NodePath("../WaypointNode3-3")])
 
 [node name="WaypointNode3-1" type="Node2D" parent="AllPaths" groups=["Waypoints"]]
 position = Vector2(121.237, -1.23711)
 script = ExtResource("11_8l5hm")
 min_distance_to_reach_waypoint = 225
-next_waypoint_node = [NodePath("../WaypointNode4-1"), NodePath("../WaypointNode4-3")]
+next_waypoint_node = Array[NodePath]([NodePath("../WaypointNode4-1"), NodePath("../WaypointNode4-3")])
 is_random_min_distance_allowed = true
 random_max_limit_min_distace_to_reach_waypoint = 300
 
@@ -461,7 +461,7 @@ random_max_limit_min_distace_to_reach_waypoint = 300
 position = Vector2(207.01, 41.6495)
 script = ExtResource("11_8l5hm")
 min_distance_to_reach_waypoint = 250
-next_waypoint_node = [NodePath("../WaypointNode4-1"), NodePath("../WaypointNode4-3")]
+next_waypoint_node = Array[NodePath]([NodePath("../WaypointNode4-1"), NodePath("../WaypointNode4-3")])
 is_crash = true
 is_random_min_distance_allowed = true
 
@@ -469,7 +469,7 @@ is_random_min_distance_allowed = true
 position = Vector2(279.588, 41.6495)
 script = ExtResource("11_8l5hm")
 min_distance_to_reach_waypoint = 250
-next_waypoint_node = [NodePath("../WaypointNode4-1"), NodePath("../WaypointNode4-2")]
+next_waypoint_node = Array[NodePath]([NodePath("../WaypointNode4-1"), NodePath("../WaypointNode4-2")])
 is_crash = true
 is_random_min_distance_allowed = true
 
@@ -477,7 +477,7 @@ is_random_min_distance_allowed = true
 position = Vector2(94.8453, 137.32)
 script = ExtResource("11_8l5hm")
 min_distance_to_reach_waypoint = 225
-next_waypoint_node = [NodePath("../WaypointNode5-1")]
+next_waypoint_node = Array[NodePath]([NodePath("../WaypointNode5-1")])
 is_random_min_distance_allowed = true
 random_max_limit_min_distace_to_reach_waypoint = 300
 
@@ -485,14 +485,14 @@ random_max_limit_min_distace_to_reach_waypoint = 300
 position = Vector2(253.196, 117.526)
 script = ExtResource("11_8l5hm")
 min_distance_to_reach_waypoint = 250
-next_waypoint_node = [NodePath("../WaypointNode5-1")]
+next_waypoint_node = Array[NodePath]([NodePath("../WaypointNode5-1")])
 is_random_min_distance_allowed = true
 
 [node name="WaypointNode4-3" type="Node2D" parent="AllPaths" groups=["Waypoints"]]
 position = Vector2(35.4639, 87.8351)
 script = ExtResource("11_8l5hm")
 min_distance_to_reach_waypoint = 250
-next_waypoint_node = [NodePath("../WaypointNode5-1")]
+next_waypoint_node = Array[NodePath]([NodePath("../WaypointNode5-1")])
 is_crash = true
 is_random_min_distance_allowed = true
 
@@ -500,7 +500,7 @@ is_random_min_distance_allowed = true
 position = Vector2(-116.289, 143.918)
 script = ExtResource("11_8l5hm")
 min_distance_to_reach_waypoint = 250
-next_waypoint_node = [NodePath("../WaypointNode6-1"), NodePath("../WaypointNode6-2"), NodePath("../WaypointNode6-3")]
+next_waypoint_node = Array[NodePath]([NodePath("../WaypointNode6-1"), NodePath("../WaypointNode6-2"), NodePath("../WaypointNode6-3")])
 is_random_min_distance_allowed = true
 random_max_limit_min_distace_to_reach_waypoint = 300
 
@@ -508,7 +508,7 @@ random_max_limit_min_distace_to_reach_waypoint = 300
 position = Vector2(-317.526, 91.134)
 script = ExtResource("11_8l5hm")
 min_distance_to_reach_waypoint = 300
-next_waypoint_node = [NodePath("../WaypointNode7-1"), NodePath("../WaypointNode7-2")]
+next_waypoint_node = Array[NodePath]([NodePath("../WaypointNode7-1"), NodePath("../WaypointNode7-2")])
 is_random_min_distance_allowed = true
 random_max_limit_min_distace_to_reach_waypoint = 350
 
@@ -516,7 +516,7 @@ random_max_limit_min_distace_to_reach_waypoint = 350
 position = Vector2(-205.361, 91.134)
 script = ExtResource("11_8l5hm")
 min_distance_to_reach_waypoint = 200
-next_waypoint_node = [NodePath("../WaypointNode7-1")]
+next_waypoint_node = Array[NodePath]([NodePath("../WaypointNode7-1")])
 is_crash = true
 is_random_min_distance_allowed = true
 random_max_limit_min_distace_to_reach_waypoint = 250
@@ -525,13 +525,13 @@ random_max_limit_min_distace_to_reach_waypoint = 250
 position = Vector2(-228.454, 170.309)
 script = ExtResource("11_8l5hm")
 min_distance_to_reach_waypoint = 200
-next_waypoint_node = [NodePath("../WaypointNode7-3")]
+next_waypoint_node = Array[NodePath]([NodePath("../WaypointNode7-3")])
 
 [node name="WaypointNode7-1" type="Node2D" parent="AllPaths" groups=["Waypoints"]]
 position = Vector2(-116.289, 15.2577)
 script = ExtResource("11_8l5hm")
 min_distance_to_reach_waypoint = 200
-next_waypoint_node = [NodePath("../WaypointNode8-2")]
+next_waypoint_node = Array[NodePath]([NodePath("../WaypointNode8-2")])
 is_random_min_distance_allowed = true
 random_max_limit_min_distace_to_reach_waypoint = 300
 
@@ -539,13 +539,13 @@ random_max_limit_min_distace_to_reach_waypoint = 300
 position = Vector2(-228.454, 91.134)
 script = ExtResource("11_8l5hm")
 min_distance_to_reach_waypoint = 200
-next_waypoint_node = [NodePath("../WaypointNode7-1")]
+next_waypoint_node = Array[NodePath]([NodePath("../WaypointNode7-1")])
 
 [node name="WaypointNode7-2" type="Node2D" parent="AllPaths" groups=["Waypoints"]]
 position = Vector2(-235.052, -106.804)
 script = ExtResource("11_8l5hm")
 min_distance_to_reach_waypoint = 250
-next_waypoint_node = [NodePath("../WaypointNode8-1")]
+next_waypoint_node = Array[NodePath]([NodePath("../WaypointNode8-1")])
 is_crash = true
 is_random_min_distance_allowed = true
 random_max_limit_min_distace_to_reach_waypoint = 400
@@ -554,13 +554,13 @@ random_max_limit_min_distace_to_reach_waypoint = 400
 position = Vector2(-10.7216, -146.392)
 script = ExtResource("11_8l5hm")
 min_distance_to_reach_waypoint = 400
-next_waypoint_node = [NodePath("../WaypointNode1-1"), NodePath("../WaypointNode1-2"), NodePath("../WaypointNode1-3")]
+next_waypoint_node = Array[NodePath]([NodePath("../WaypointNode1-1"), NodePath("../WaypointNode1-2"), NodePath("../WaypointNode1-3")])
 
 [node name="WaypointNode8-2" type="Node2D" parent="AllPaths" groups=["Waypoints"]]
 position = Vector2(-142.68, -93.6082)
 script = ExtResource("11_8l5hm")
 min_distance_to_reach_waypoint = 200
-next_waypoint_node = [NodePath("../WaypointNode8-1")]
+next_waypoint_node = Array[NodePath]([NodePath("../WaypointNode8-1")])
 is_random_min_distance_allowed = true
 random_max_limit_min_distace_to_reach_waypoint = 250
 
