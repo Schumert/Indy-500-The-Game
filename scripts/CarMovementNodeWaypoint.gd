@@ -54,6 +54,8 @@ var danger = []
 var raycast_front
 var raycast_back
 
+var stuck_cooldown
+
 
 
 
@@ -111,6 +113,8 @@ func _ready():
 	raycast_back = $RayCastBack
 	raycast_back.enabled = true
 
+	stuck_cooldown = $StuckCooldown
+
 
 
 
@@ -140,6 +144,8 @@ func _process(delta):
 		# 	print("Colliding: " + str(raycast_front.get_collider().name))
 		# if raycast_back.is_colliding():
 		# 	print("Colliding: " + str(raycast_back.get_collider().name))
+
+
 
 
 
@@ -239,9 +245,12 @@ func _physics_process(delta):
 			AIMode.FOLLOWCOINS:
 				engine_power = 20000
 				follow_coins()
-				if is_stuck(delta):
-							print("TAKILDIM LAN!")
-							change_state(AIState.RECOVER_FROM_STUCK)
+				if is_stuck(delta) and not is_stuck_cooldown:
+						print("TAKILDIM LAN!")
+						is_stuck_cooldown = true
+						stuck_cooldown.start()
+						change_state(AIState.RECOVER_FROM_STUCK)
+						
 				match current_state:
 					AIState.PURSUIT:
 						turn_number = turn_toward_target(nav.target_position)
@@ -249,6 +258,9 @@ func _physics_process(delta):
 
 
 						if obstacle_detected(true):
+							change_state(AIState.OBSTACLE_AVOIDANCE)
+
+						if obstacle_detected(false):
 							change_state(AIState.OBSTACLE_AVOIDANCE)
 							#print("AISTATE is OBSTACLE AVIODANCE")
 						# elif is_ALIGN_WITH_TARGET():
@@ -278,23 +290,18 @@ func _physics_process(delta):
 							change_state(AIState.PURSUIT)
 
 					AIState.RECOVER_FROM_STUCK:
-						if is_going_back:
-							if obstacle_detected(false):
+						#if the obstacle is in front of the car
+						if obstacle_detected(false):
 								is_going_back = false
-								var dir = transform.x.normalized()
-								turn_number = turn_toward_target(position + dir * 20)
-								print("geriye giderken takıldım")
-							else:
-								change_state(AIState.ALIGN_WITH_TARGET)
-
-						else:
-							if obstacle_detected(true):
+								turn_number = 0
+								apply_throttle()
+						elif  obstacle_detected(true):
 								is_going_back = true
-								var dir = -transform.x.normalized()
-								turn_number = turn_toward_target(position + dir * 20)
-							else:
-								change_state(AIState.ALIGN_WITH_TARGET)
-
+								turn_number = 0
+								apply_throttle()
+						else:
+							change_state(AIState.PURSUIT)
+							print("Stuck modundan pursuite geçtim")
 						
 
 					AIState.ALIGN_WITH_TARGET:
@@ -340,6 +347,17 @@ func obstacle_detected(is_front):
 		else:
 			return false
 
+# var time = 0.0
+# func is_enough_time_passed(target_time, delta):
+	
+
+# 	if time <= target_time:
+# 		time += delta
+# 	else:
+# 		time = 0.0
+	
+# 	return time >= target_time
+
 
 
 # var previous_angle: float = 0.0
@@ -371,12 +389,12 @@ func obstacle_detected(is_front):
 # 		return false
 
 
-#FONKSIYON YAZILACAK
+
 var last_position = Vector2.ZERO
 var STUCK_TIME = 0.0
 var MIN_MOVEMENT_THRESHOLD = 5.0
-var STUCK_TIME_THRESHOLD = 2.0
-
+var STUCK_TIME_THRESHOLD = 4.0
+var is_stuck_cooldown = false
 
 func is_stuck(delta):
 	var distance_moved = global_position.distance_to(last_position)
@@ -526,6 +544,7 @@ func turn_toward_target(target_position):
 
 
 
+
 func steering(delta):
 	
 	var front_wheel = position + transform.x * wheel_base / 2
@@ -601,10 +620,17 @@ func is_danger_front_or_back():
 
 
 # func _draw():
+
+# 	var front_wheel = position + transform.x * wheel_base / 2
+# 	var back_wheel = position - transform.x * wheel_base / 2
+
+
 # 	var from = position
-# 	var direction = transform.x.rotated(rotation)
+# 	var direction = back_wheel.direction_to(front_wheel)
 # 	var to = direction * look_ahead
 # 	draw_line(from, to, Color(1,0,0), 3)
+
+
 
 	
 
@@ -652,3 +678,7 @@ func repair_car_from_penalty(delta):
 				elapsed_time = 0.0
 		else:
 			elapsed_time = 0.0
+
+
+func _on_stuck_cooldown_timeout():
+	is_stuck_cooldown = false
