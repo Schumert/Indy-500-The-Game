@@ -40,3 +40,11 @@ stream = ExtResource("4_i5627")
 volume_db = -25.0
 pitch_scale = 0.8
 bus = &"Motor"
+
+[node name="RayCastFront" type="RayCast2D" parent="."]
+target_position = Vector2(400, 5)
+collision_mask = 257
+
+[node name="RayCastBack" type="RayCast2D" parent="."]
+target_position = Vector2(-500, 0)
+collision_mask = 257

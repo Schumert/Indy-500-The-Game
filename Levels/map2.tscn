@@ -375,7 +375,7 @@ texture = ExtResource("9_01nfq")
 polygon = PackedVector2Array(-5.56006, 5.2832, 277.997, -58.7529, 350.276, 154.703, 239.077, 208.066, -155.679, 213.402, -328.037, 154.701, -361.396, -21.3997, -283.556, -176.155, -22.2393, -213.509, 189.039, -170.817, 277.997, -64.0894)
 
 [node name="Walls" type="StaticBody2D" parent="." groups=["wall"]]
-collision_mask = 2
+collision_mask = 146
 
 [node name="wall2" type="CollisionShape2D" parent="Walls"]
 position = Vector2(-5.77322, -240.412)
@@ -405,11 +405,11 @@ rotation = 3.14159
 
 [node name="ObstacleForAI" type="Node2D" parent="."]
 
-[node name="StaticBody2D" type="StaticBody2D" parent="ObstacleForAI"]
+[node name="Rock" type="StaticBody2D" parent="ObstacleForAI"]
 collision_layer = 256
 collision_mask = 128
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="ObstacleForAI/StaticBody2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ObstacleForAI/Rock"]
 position = Vector2(0.824738, -10.5155)
 scale = Vector2(1.38024, -0.746742)
 shape = SubResource("RectangleShape2D_a7tso")
