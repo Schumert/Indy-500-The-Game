@@ -13,11 +13,17 @@ var path:Path2D
 var path_follow:PathFollow2D
 
 
+
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	Global.start_pos = $StartPos.global_position
 	Global.start_pos2 = $StartPos2.global_position
 	Global.start_rot2 = $StartPos2.rotation
+	Global.up_limit = get_node("UpLimit").position
+	Global.left_limit = get_node("LeftLimit").position
+	Global.right_limit = -1 * get_node("LeftLimit").position
+	Global.down_limit = -1 * get_node("UpLimit").position
 
 	player = preload("res://car.tscn")
 	player2 = preload("res://car2.tscn")
@@ -110,3 +116,19 @@ func get_closest_coin(pos: Vector2):
 
 
 
+
+
+
+func _on_down_area_entered(area:Area2D):
+	pass
+
+
+func _on_right_area_entered(area:Area2D):
+	pass # Replace with function body.
+
+
+func _on_left_area_entered(area:Area2D):
+	pass # Replace with function body.
+
+func _on_up_area_entered(area:Area2D):
+	pass # Replace with function body.

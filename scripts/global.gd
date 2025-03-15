@@ -19,6 +19,7 @@ var player_ai
 var gui
 var start_pos:Vector2
 var start_pos2:Vector2
+
 var start_rot2
 var game_world
 var active_map = "map1"
@@ -26,6 +27,12 @@ var timer_wait_time:=60
 var max_lap:=20
 var timer_node:Timer
 var game_over_screen:Control
+
+
+var up_limit
+var left_limit
+var right_limit
+var down_limit
 
 var player1
 var player2

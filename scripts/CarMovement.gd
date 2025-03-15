@@ -92,6 +92,9 @@ func _physics_process(delta):
 		steering(delta)
 		velocity += power * delta
 		move_and_slide()
+		screen_warp()
+		#print("Oyuncunun position'ı" + str(position))
+		#print("Offset eklenmiş limit position'ı: " + str( (Global.right_limit * 2.425) + map_offset))
 	# for i in get_slide_collision_count():
 	# 	var collision = get_slide_collision(i)
 	# 	if collision.get_collider().is_in_group("wall") and raycast.is_colliding():
@@ -109,6 +112,8 @@ func _physics_process(delta):
 		get_tree().reload_current_scene()
 	
 	
+	
+	
 			
 			
 	# _pushed_off(collision_info, delta)
@@ -118,6 +123,8 @@ func _physics_process(delta):
 	#print(game_world_ref.friction)
 	#print(steer_angle)
 	#print(gas)
+
+	
 	
 
 func _process(delta):
@@ -280,3 +287,24 @@ func repair_car_from_penalty(delta):
 		else:
 			elapsed_time = 0.0
 	
+
+
+
+@onready var screen_size = get_viewport().size
+@onready var map_offset = Vector2(986, 547)
+
+func screen_warp():
+	if position.x > (Global.right_limit.x * 2.425) + map_offset.x:
+		position.x = (Global.left_limit.x * 2.425) + map_offset.x
+		print("sağdan sola geçti")
+		#print(str(global_position.x) + ">" + str(right_limit.x) )
+	elif position.x < (Global.left_limit.x * 2.425) + map_offset.x:
+		position.x = (Global.right_limit.x * 2.425) + map_offset.x
+		print("soldan sağa geçti")
+	
+	if position.y > (Global.down_limit.y * 2.425) + map_offset.y:
+		position.y = (Global.up_limit.y * 2.425) + map_offset.y
+		print("aşağıdan yukarıya çıktı")
+	elif position.y < (Global.up_limit.y * 2.425) + map_offset.y:
+		position.y = (Global.down_limit.y * 2.425) + map_offset.y
+		print("yukarıdan aşağıya indi")

@@ -43,16 +43,17 @@ var current_state = AIState.PURSUIT
 var previous_state = current_state
 
 
-#variables of controlling around from dangers
-var look_ahead = 20
-var num_rays = 100
-#context array
-var ray_directions = []
-var interest = []
-var danger = []
+
 
 var raycast_front
 var raycast_back
+var is_target_around_obstacle_set = false
+var distance_made = 0
+var distance
+var direction
+var collider_position
+var obstacle_target_position
+var distance_to_reach_target
 
 var stuck_cooldown
 
@@ -100,12 +101,8 @@ func _ready():
 
 	last_position = global_position
 
-	interest.resize(num_rays)
-	danger.resize(num_rays)
-	ray_directions.resize(num_rays)
-	for i in num_rays:
-		var angle = i * 2 * PI / num_rays
-		ray_directions[i] = Vector2.RIGHT.rotated(angle)
+
+
 
 	raycast_front = $RayCastFront
 	raycast_front.enabled = true
@@ -145,6 +142,8 @@ func _process(delta):
 		# if raycast_back.is_colliding():
 		# 	print("Colliding: " + str(raycast_back.get_collider().name))
 
+		#print(turn_number)
+
 
 
 
@@ -172,6 +171,7 @@ func _physics_process(delta):
 		apply_friction(delta)
 		steering(delta)
 		steer_direction = turn_number * deg_to_rad(steer_angle)
+		screen_warp()
 		
 		velocity += power * delta
 		if not is_going_back:
@@ -183,58 +183,30 @@ func _physics_process(delta):
 			AIMode.FOLLOWPLAYER:
 				match current_state:
 					AIState.PURSUIT:
-						if obstacle_detected(true):
-							current_state = AIState.OBSTACLE_AVOIDANCE
-						else:
+							turn_number = turn_toward_target(nav.target_position)
 							follow_player()
 							if (nav.target_position - position).length() < 500:
 								if velocity.length() >= get_tree().get_first_node_in_group("Player").velocity.length():
 									apply_brake()
 							else:
 								apply_throttle()
-					AIState.OBSTACLE_AVOIDANCE:
-						if not obstacle_detected(true):
-							current_state = AIState.PURSUIT
-						else:
-							pass
-					AIState.RECOVER_FROM_STUCK:
-						if is_aligned_with_target():
-							current_state = AIState.PURSUIT
-							print("car is aligned")
-							is_going_back = false
-						else:
-							is_going_back = true
-
-
-						
 				engine_power = 15000
 				
 			AIMode.FOLLOWCHECKPOINTS:
 				match current_state:
 					AIState.PURSUIT:
-						if obstacle_detected(true):
-							current_state = AIState.OBSTACLE_AVOIDANCE
-						else:
+							turn_number = turn_toward_target(nav.target_position)
 							follow_waypoints()
 							if (nav.target_position - position).length() < 500:
-								if velocity.length() >= target_speed and velocity.length() >= 300:
+								if velocity.length() >= target_speed and velocity.length() >= 800:
 									apply_brake()
 							else:
 								apply_throttle()
-					AIState.OBSTACLE_AVOIDANCE:
-						if not obstacle_detected(true):
-							current_state = AIState.PURSUIT
-						else:
-							pass
-					AIState.RECOVER_FROM_STUCK:
-						if is_aligned_with_target():
-							current_state = AIState.PURSUIT
-							is_going_back = false
-						else:
-							is_going_back = true
+
 
 
 			AIMode.FOLLOWMOUSEPOSITION:
+				turn_number = turn_toward_target(nav.target_position)
 				follow_mouse_position()
 				Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
 				engine_power = 10000
@@ -245,63 +217,80 @@ func _physics_process(delta):
 			AIMode.FOLLOWCOINS:
 				engine_power = 20000
 				follow_coins()
-				if is_stuck(delta) and not is_stuck_cooldown:
+				if is_stuck(delta):
 						print("TAKILDIM LAN!")
-						is_stuck_cooldown = true
 						stuck_cooldown.start()
-						change_state(AIState.RECOVER_FROM_STUCK)
+						position = Global.start_pos2
+						gas = 0
+						change_state(AIState.PURSUIT)
+
+				if obstacle_detected(true):
+						if not is_target_around_obstacle_set:
+								collider_position = raycast_front.get_collision_point()
+								direction = collider_position - global_position
+
+								var perp_vec = Vector2(-direction.y, direction.x)
+								var perp_vec_normalized = perp_vec.normalized()
+								distance = 200.0
+								var offset = perp_vec_normalized * distance
+
+								obstacle_target_position = collider_position + offset
+
+								nav.target_position = obstacle_target_position
+								turn_number = turn_toward_target(nav.target_position)
+								
+								is_target_around_obstacle_set = true
+								distance_to_reach_target = global_position.distance_to(collider_position)
+						change_state(AIState.OBSTACLE_AVOIDANCE)
+							
 						
 				match current_state:
 					AIState.PURSUIT:
 						turn_number = turn_toward_target(nav.target_position)
 						
+						var car_dir = velocity.normalized()
+						var target_direction = (nav.target_position - global_position).normalized()
+						var alignment = car_dir.dot(target_direction)
+						if alignment <= 0.5:
+							if velocity.length() >= 750:
+								apply_brake()
+							elif (nav.target_position - position).length() <= 500:
+								change_state(AIState.ALIGN_WITH_TARGET)
 
-
-						if obstacle_detected(true):
-							change_state(AIState.OBSTACLE_AVOIDANCE)
-
-						if obstacle_detected(false):
-							change_state(AIState.OBSTACLE_AVOIDANCE)
-							#print("AISTATE is OBSTACLE AVIODANCE")
-						# elif is_ALIGN_WITH_TARGET():
-						# 	current_state = AIState.RECOVERY
-						else:
+						
 							
-							if (nav.target_position - position).length() < 500:
+						if (nav.target_position - position).length() < 500:
 
-								#if degree between car and the target is higher than 90, car will go to recovery state
-								var car_dir = velocity.normalized()
-								var target_direction = (nav.target_position - global_position).normalized()
-								var alignment = car_dir.dot(target_direction)
-								if alignment <= 0:
-									change_state(AIState.ALIGN_WITH_TARGET)
+							#if degree between car and the target is higher than 90, the car will be aligned with the target
+							
+							# if alignment <= 0:
+							# 	change_state(AIState.ALIGN_WITH_TARGET)
 								
-								if gas >= brake_until_of_gas:
-									apply_brake()
-								else:
-									apply_throttle()
+							if gas >= brake_until_of_gas:
+								apply_brake()
 							else:
 								apply_throttle()
+						else:
+								apply_throttle()
 					AIState.OBSTACLE_AVOIDANCE:
-						if obstacle_detected(true):
-							pass
-							#make AI go around the obstacle until no obstacle on the way
-						else:
-							change_state(AIState.PURSUIT)
+							#print("ENGEL TESPIT ETTIM")
+							var distance_to_target = (obstacle_target_position - global_position).length()
+							turn_number = turn_toward_target(obstacle_target_position)
 
-					AIState.RECOVER_FROM_STUCK:
-						#if the obstacle is in front of the car
-						if obstacle_detected(false):
+							if gas >= 1000:
+									apply_brake()
+							else:
+									apply_throttle()
+							
+							if distance_to_target <=  distance_to_reach_target / 2:
+								is_target_around_obstacle_set = false
 								is_going_back = false
-								turn_number = 0
-								apply_throttle()
-						elif  obstacle_detected(true):
-								is_going_back = true
-								turn_number = 0
-								apply_throttle()
-						else:
-							change_state(AIState.PURSUIT)
-							print("Stuck modundan pursuite geçtim")
+								change_state(AIState.PURSUIT)
+
+
+
+
+						
 						
 
 					AIState.ALIGN_WITH_TARGET:
@@ -315,6 +304,7 @@ func _physics_process(delta):
 							apply_brake()
 						else:
 							is_going_back = true
+							
 
 
 
@@ -393,7 +383,7 @@ func obstacle_detected(is_front):
 var last_position = Vector2.ZERO
 var STUCK_TIME = 0.0
 var MIN_MOVEMENT_THRESHOLD = 5.0
-var STUCK_TIME_THRESHOLD = 4.0
+var STUCK_TIME_THRESHOLD = 5.0
 var is_stuck_cooldown = false
 
 func is_stuck(delta):
@@ -596,27 +586,6 @@ func check_angle_before_turning(min_speed, max_speed):
 		return 1000
 
 
-func is_danger_front_or_back():
-	var space_state = get_world_2d().direct_space_state
-
-	var from = global_position + Vector2(350, 0)
-	var direction = Vector2.RIGHT.rotated(global_rotation)
-	var to = direction * look_ahead
-	
-
-	var query = PhysicsRayQueryParameters2D.new()
-	query.from = from
-	query.to = to
-	query.exclude = [self, Global.player]
-
-	var result = space_state.intersect_ray(query)
-
-	queue_redraw()
-	if result:
-		print("Çarptığı obje: ", result.collider.name)
-		print("Çarpışma noktası: ", result.position)
-
-	#return 1.0 if result else 0.0
 
 
 # func _draw():
@@ -682,3 +651,24 @@ func repair_car_from_penalty(delta):
 
 func _on_stuck_cooldown_timeout():
 	is_stuck_cooldown = false
+
+
+
+@onready var screen_size = get_viewport().size
+@onready var map_offset = Vector2(986, 547)
+
+func screen_warp():
+	if position.x > (Global.right_limit.x * 2.425) + map_offset.x:
+		position.x = (Global.left_limit.x * 2.425) + map_offset.x
+		print("sağdan sola geçti")
+		#print(str(global_position.x) + ">" + str(right_limit.x) )
+	elif position.x < (Global.left_limit.x * 2.425) + map_offset.x:
+		position.x = (Global.right_limit.x * 2.425) + map_offset.x
+		print("soldan sağa geçti")
+	
+	if position.y > (Global.down_limit.y * 2.425) + map_offset.y:
+		position.y = (Global.up_limit.y * 2.425) + map_offset.y
+		print("aşağıdan yukarıya çıktı")
+	elif position.y < (Global.up_limit.y * 2.425) + map_offset.y:
+		position.y = (Global.down_limit.y * 2.425) + map_offset.y
+		print("yukarıdan aşağıya indi")

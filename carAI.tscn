@@ -42,13 +42,13 @@ pitch_scale = 0.8
 bus = &"Motor"
 
 [node name="RayCastFront" type="RayCast2D" parent="."]
-position = Vector2(5.00001, 110)
-target_position = Vector2(600, -235)
-collision_mask = 257
+position = Vector2(260, 175)
+target_position = Vector2(1000, -320)
+collision_mask = 256
 
 [node name="RayCastBack" type="RayCast2D" parent="."]
-position = Vector2(-5.00002, 110)
-target_position = Vector2(-600, -225)
+position = Vector2(-220, 5.00002)
+target_position = Vector2(-600, 0)
 collision_mask = 257
 
 [node name="StuckCooldown" type="Timer" parent="."]
