@@ -25,26 +25,15 @@ func _ready():
 	Global.right_limit = -1 * get_node("LeftLimit").position
 	Global.down_limit = -1 * get_node("UpLimit").position
 
-	player = preload("res://car.tscn")
-	player2 = preload("res://car2.tscn")
-	playerAI = preload("res://carAI.tscn")
+	Global.set_difficulty(Global.current_difficulty)
 
-	if player_instance:
-		remove_child(player_instance)
-	player_instance = player.instantiate()
-	call_deferred("add_child", player_instance)
+
+	call_deferred("add_child", Global.player_instance)
 
 	if Global.current_opponent == Global.GameOpponents.TWO_PLAYER:
-		if player2_instance:
-			remove_child(player2_instance)
-		player2_instance = player2.instantiate()
-		call_deferred("add_child", player2_instance)
+		call_deferred("add_child", Global.player2_instance)
 	elif Global.current_opponent == Global.GameOpponents.AI:
-		if playerAI_instance:
-			remove_child(playerAI_instance)
-		playerAI_instance = playerAI.instantiate()
-
-		call_deferred("add_child", playerAI_instance)
+		call_deferred("add_child", Global.player_ai_instance)
 
 	# path = $Path2D
 	# path_follow = $Path2D/PathFollow2D
@@ -110,25 +99,3 @@ func get_closest_coin(pos: Vector2):
 
 		
 
-
-
-
-
-
-
-
-
-
-func _on_down_area_entered(area:Area2D):
-	pass
-
-
-func _on_right_area_entered(area:Area2D):
-	pass # Replace with function body.
-
-
-func _on_left_area_entered(area:Area2D):
-	pass # Replace with function body.
-
-func _on_up_area_entered(area:Area2D):
-	pass # Replace with function body.

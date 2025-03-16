@@ -10,11 +10,18 @@ var current_mode
 enum GameOpponents { ALONE, TWO_PLAYER, AI}
 var current_opponent
 
+enum Difficulty {EASY, NORMAL, HARD}
+var current_difficulty
+
 @onready var maps = { GameModes.RACE : ["map1", "map3","map1_icy", "map3_icy"], GameModes.COLLECT: ["map2","map5", "map4","empty_icy", "map4_icy"], GameModes.TAG: []}
 
 
 var player
+var player_instance
+var player2
+var player2_instance
 var player_ai
+var player_ai_instance
 
 var gui
 var start_pos:Vector2
@@ -34,8 +41,7 @@ var left_limit
 var right_limit
 var down_limit
 
-var player1
-var player2
+
 
 var collected_coins = {"car1" : 0, "car2": 0}
 var finished_laps = {"car1" : 0, "car2": 0}
@@ -49,6 +55,14 @@ var elapsed_time = 0
 var timer
 
 var is_muted := false
+
+func _ready():
+	player_ai = preload("res://carAI.tscn")
+	player = preload("res://car.tscn")
+	player2 = preload("res://car2.tscn")
+
+
+	
 
 func _input(event):
 	if event.is_action_pressed("mute"):
@@ -101,6 +115,69 @@ func set_opponent(opponent):
 			print("Current opponent is a real person.")
 		GameOpponents.AI:
 			print("Current opponent is an AI.")
+
+func set_difficulty(difficulty):
+	player_ai = preload("res://carAI.tscn")
+	player = preload("res://car.tscn")
+	player2 = preload("res://car2.tscn")
+	player_instance = player.instantiate()
+	player2_instance = player2.instantiate()
+	player_ai_instance = player_ai.instantiate()
+	current_difficulty = difficulty
+	match current_difficulty:
+		Difficulty.EASY:
+			print("Current difficulty is easy")
+			player_ai_instance.engine_power_penalty = 1000
+			player_ai_instance.engine_power = 15000.0
+			player_ai_instance.temp_engine_power = 15000.0
+			player_ai_instance.brake = -1500
+			player_ai_instance.crash_possibility = 0.20
+			player_ai_instance.duration = 15.0
+			player_ai_instance.steer_angle_modifier = 1.5
+			player_ai_instance.brake_to = 3000
+			player_ai_instance.temp_brake_to = 3000
+			player_ai_instance.min_distance_to_brake = 500
+		Difficulty.NORMAL:
+			print("Current difficulty is normal")
+			player_ai_instance.engine_power_penalty = 2000
+			player_ai_instance.engine_power = 25000.0
+			player_ai_instance.temp_engine_power = 30000.0
+			player_ai_instance.brake = -2000
+			player_ai_instance.crash_possibility = 0.05
+			player_ai_instance.duration = 10.0
+			player_ai_instance.steer_angle_modifier = 1.7
+			player_ai_instance.brake_to = 5000
+			player_ai_instance.temp_brake_to = 5000
+			player_ai_instance.min_distance_to_brake = 500
+
+			if active_map.contains("icy"):
+				player_ai_instance.min_distance_to_brake = 500
+				player_ai_instance.brake_to = 1000
+				player_ai_instance.temp_brake_to = player_ai_instance.brake_to
+				player_ai_instance.steer_angle_modifier = 2.0
+				player_ai_instance.duration = 5.0
+
+
+		Difficulty.HARD:
+			print("Current difficulty is hard")
+			player_ai_instance.engine_power_penalty = 4000
+			player_ai_instance.engine_power = 45000.0
+			player_ai_instance.temp_engine_power = 45000.0
+			player_ai_instance.brake = -2000
+			player_ai_instance.crash_possibility = 0.02
+			player_ai_instance.duration = 5.0
+			player_ai_instance.steer_angle_modifier = 2.0
+			player_ai_instance.brake_to = 5000
+			player_ai_instance.temp_brake_to = 5000
+			player_ai_instance.min_distance_to_brake = 500
+
+			if active_map.contains("icy"):
+				player_ai_instance.min_distance_to_brake = 500
+				player_ai_instance.brake_to = 1000
+				player_ai_instance.temp_brake_to = player_ai_instance.brake_to
+				player_ai_instance.steer_angle_modifier = 2.0
+				player_ai_instance.duration = 3.0
+
 
 
 func add_checkpoint(player, checkpoint_id):

@@ -28,7 +28,7 @@ func _on_back_button_down():
 
 
 func _on_continue_button_down():
-	get_tree().change_scene_to_file("res://main.tscn")
+	get_tree().change_scene_to_file("res://difficulty_select.tscn")
 	AudioManager.play_click()
 
 func _on_opponent_button_down(opponent):

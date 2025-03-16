@@ -55,7 +55,7 @@ func apply_penalty(body):
 	print("Oyuncu ", body.car_id, " ağır penaltıya girdi! 🚨")
 	Global.gui.update_penalty_info(true, "PENALTY IS ACTIVE!!!!!");
 
-	body.engine_power = 1000
+	body.engine_power = body.engine_power_penalty #player penalty is 1000
 	body.gas /= 3
 	body.is_car_broken = true;
 	

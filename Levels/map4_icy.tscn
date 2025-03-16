@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://b3f18l16nvof3"]
+[gd_scene load_steps=27 format=3 uid="uid://b3f18l16nvof3"]
 
 [ext_resource type="Script" path="res://scripts/map1.gd" id="1_byjod"]
 [ext_resource type="Texture2D" uid="uid://3ueveoaf4we2" path="res://assets/whiteonetoone.png" id="3_jl614"]
@@ -248,6 +248,84 @@ sources/1 = SubResource("TileSetAtlasSource_1dc6h")
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2fqpw"]
 size = Vector2(36.7016, 37.5259)
 
+[sub_resource type="GDScript" id="GDScript_3yiy3"]
+script/source = "extends Node
+
+
+
+# duration of penalty
+const PENALTY_DURATION = 5.0  
+
+func _process(delta):
+	pass
+		
+
+func on_offroad_enter(body):
+	if body is CharacterBody2D and (body.collision_layer & (1 << 1) != 0 or body.collision_layer & (1 << 4) != 0 or body.collision_layer & (1 << 7) != 0):  
+		if self.is_in_group(\"grass\"):
+			# Ceza puanını artır
+			add_penalty(body)
+			AudioManager.play_crash()
+			if Global.game_world.penalty_points.get(body.car_id, 0) < 3:
+				body.friction = -300
+				body.engine_power /= 3
+				
+
+func on_offroad_exit(body):
+	if body is CharacterBody2D and (body.collision_layer & (1 << 1) != 0 or body.collision_layer & (1 << 4) != 0  or body.collision_layer & (1 << 7) != 0):
+		if Global.game_world.penalty_points.get(body.car_id, 0) < 3:
+			body.friction = body.temp_friction
+			body.engine_power = body.temp_engine_power
+			
+		
+
+
+## adding penalty when crashed
+func add_penalty(body):
+	var player_id = body.car_id 
+
+	# Eğer oyuncunun ceza puanı yoksa, başlat
+	if not Global.game_world.penalty_points.has(player_id):
+		Global.game_world.penalty_points[player_id] = 0
+		Global.gui.update_penalty_info(true, \"PENALTY POINT: 0\");
+
+	# Ceza puanını artır
+	Global.game_world.penalty_points[player_id] += 1
+	print(\"Oyuncu \", player_id, \" ceza puanı: \", Global.game_world.penalty_points[player_id])
+	var message = \"Player\" + \" penalty point: \" + str(Global.game_world.penalty_points[player_id])
+
+	Global.gui.update_penalty_info(true, message);
+
+	# Eğer ceza puanı 3'e ulaştıysa, ağır ceza uygula
+	if Global.game_world.penalty_points[player_id] >= 3:
+		apply_penalty(body)
+
+
+##  car is broken
+func apply_penalty(body):
+	print(\"Oyuncu \", body.car_id, \" ağır penaltıya girdi! 🚨\")
+	Global.gui.update_penalty_info(true, \"PENALTY IS ACTIVE!!!!!\");
+
+	body.engine_power = 1000
+	body.gas /= 3
+	body.is_car_broken = true;
+	
+	
+
+	# back to normal
+	await get_tree().create_timer(PENALTY_DURATION).timeout
+
+	body.engine_power = body.temp_engine_power
+	body.is_car_broken = false;
+	
+	
+	
+
+	print(\"Oyuncu \", body.car_id, \" tekrar normale döndü!\")
+	Global.gui.update_penalty_info(false, \"\");
+	Global.game_world.penalty_points[body.car_id] = 0  # reset the penalty counter
+"
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_et32c"]
 size = Vector2(2448.64, 24.8352)
 
@@ -357,7 +435,7 @@ texture = ExtResource("3_jl614")
 rotation = 3.14159
 scale = Vector2(150, 70)
 collision_layer = 64
-collision_mask = 26
+collision_mask = 154
 script = ExtResource("6_68bpq")
 
 [node name="TileMap" type="TileMap" parent="Grass"]
@@ -404,25 +482,32 @@ rotation = 3.14159
 scale = Vector2(0.00666667, 0.0142857)
 shape = SubResource("RectangleShape2D_2fqpw")
 
-[node name="UpEdge" type="CollisionShape2D" parent="Grass"]
+[node name="Grass2" type="Area2D" parent="." groups=["grass"]]
+rotation = 3.14159
+scale = Vector2(150, 70)
+collision_layer = 64
+collision_mask = 26
+script = SubResource("GDScript_3yiy3")
+
+[node name="UpEdge" type="CollisionShape2D" parent="Grass2"]
 position = Vector2(0.027488, 3.22238)
 rotation = 3.14159
 scale = Vector2(0.00220952, 0.0119374)
 shape = SubResource("RectangleShape2D_et32c")
 
-[node name="DownEdge" type="CollisionShape2D" parent="Grass"]
+[node name="DownEdge" type="CollisionShape2D" parent="Grass2"]
 position = Vector2(0.027495, -2.99853)
 rotation = 3.14159
 scale = Vector2(0.00220952, 0.0119374)
 shape = SubResource("RectangleShape2D_et32c")
 
-[node name="LeftEdge" type="CollisionShape2D" parent="Grass"]
+[node name="LeftEdge" type="CollisionShape2D" parent="Grass2"]
 position = Vector2(2.81776, 0.182636)
 rotation = 1.5708
 scale = Vector2(0.00220952, 0.0119374)
 shape = SubResource("RectangleShape2D_h1rwx")
 
-[node name="RightEdge" type="CollisionShape2D" parent="Grass"]
+[node name="RightEdge" type="CollisionShape2D" parent="Grass2"]
 position = Vector2(-2.63368, 0.159043)
 rotation = 1.5708
 scale = Vector2(0.00220952, 0.0119374)
@@ -458,3 +543,5 @@ texture = ExtResource("10_6f2bh")
 [connection signal="body_entered" from="RaceManager/FinishLine" to="RaceManager/FinishLine" method="_on_body_entered"]
 [connection signal="body_entered" from="Grass" to="Grass" method="on_offroad_enter"]
 [connection signal="body_exited" from="Grass" to="Grass" method="on_offroad_exit"]
+[connection signal="body_entered" from="Grass2" to="Grass2" method="on_offroad_enter"]
+[connection signal="body_exited" from="Grass2" to="Grass2" method="on_offroad_exit"]

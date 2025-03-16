@@ -217,7 +217,7 @@ tile_size = Vector2i(32, 32)
 sources/0 = SubResource("TileSetAtlasSource_4hswy")
 sources/3 = SubResource("TileSetAtlasSource_63vk5")
 
-[sub_resource type="GDScript" id="GDScript_rqf6q"]
+[sub_resource type="GDScript" id="GDScript_jlnnq"]
 script/source = "extends Node
 
 
@@ -434,7 +434,7 @@ rotation = 3.14159
 scale = Vector2(150, 70)
 collision_layer = 64
 collision_mask = 154
-script = SubResource("GDScript_rqf6q")
+script = SubResource("GDScript_jlnnq")
 
 [node name="UpEdge" type="CollisionShape2D" parent="Grass"]
 position = Vector2(0.027488, 3.22238)

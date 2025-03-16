@@ -8,14 +8,16 @@ var min_distance = 500  # hedefe bu kadar yaklaşınca dur veya hız kes (waypoi
 var wheel_base = 70
 var friction = -55
 var temp_friction = friction
-var steer_angle = 4
+var steer_angle = 6
+var base_steer_angle = steer_angle
+var steer_angle_modifier = 1.7
 var steer_direction
 var traction = 3
 var max_speed_reverse = 200
 var power = Vector2.ZERO
 var drag = -0.06
-var target_transform = null
-var target_speed = 500
+var target_transform = null  #when the mode is follow_player, this is the player's position
+var target_speed = 500 #not in using
 var max_min_distance_to_waypoint = 600
 @export var stop_the_car:bool = false
 @export var always_reverse:bool = false
@@ -25,11 +27,18 @@ var gas = 0.0
 var engine_power = 30000.0
 var temp_engine_power = engine_power
 var brake = -2000
-var brake_until_of_gas = 5000
-var temp_brake_until_of_gas = brake_until_of_gas
+var brake_to = 5000 #type of gas
+var temp_brake_to = brake_to
 var is_going_back = false
 @export var turn_number = 0
 var is_car_broken = false
+var engine_power_penalty = 1000
+var min_distance_to_brake = 500
+
+var crash_possibility = 0.05
+#duration of repair time, -1 penalty point every given second-
+var duration = 15.0
+var elapsed_time = 0.0
 
 enum AIMode { FOLLOWPLAYER, FOLLOWCHECKPOINTS, FOLLOWMOUSEPOSITION, FOLLOWCOINS}
 var current_mode = AIMode.FOLLOWCOINS
@@ -89,7 +98,7 @@ func _ready():
 		friction = -20
 		temp_friction = friction
 		traction = 1
-		engine_power = 15000
+		engine_power = engine_power / 2
 		temp_engine_power = engine_power
 	
 	if Global.get_mode() == Global.GameModes.COLLECT:
@@ -97,6 +106,7 @@ func _ready():
 		current_mode = AIMode.FOLLOWCOINS
 	elif Global.get_mode() == Global.GameModes.RACE:
 		current_mode = AIMode.FOLLOWCHECKPOINTS
+		
 
 
 	last_position = global_position
@@ -111,6 +121,20 @@ func _ready():
 	raycast_back.enabled = true
 
 	stuck_cooldown = $StuckCooldown
+
+	match current_mode:
+		AIMode.FOLLOWPLAYER:
+			engine_power = engine_power / 2
+			temp_engine_power = engine_power
+		AIMode.FOLLOWMOUSEPOSITION:
+			engine_power = engine_power / 3
+			temp_engine_power = engine_power
+		AIMode.FOLLOWCOINS:
+			engine_power = engine_power / 2
+			temp_engine_power = engine_power
+		AIMode.FOLLOWCHECKPOINTS:
+			pass
+			
 
 
 
@@ -135,6 +159,7 @@ func _process(delta):
 		if always_reverse:
 			is_going_back = true
 
+		print(engine_power)
 
 		#is_danger_front_or_back()
 		# if raycast_front.is_colliding():
@@ -185,20 +210,20 @@ func _physics_process(delta):
 					AIState.PURSUIT:
 							turn_number = turn_toward_target(nav.target_position)
 							follow_player()
-							if (nav.target_position - position).length() < 500:
+							if (nav.target_position - position).length() < min_distance_to_brake:
 								if velocity.length() >= get_tree().get_first_node_in_group("Player").velocity.length():
 									apply_brake()
 							else:
 								apply_throttle()
-				engine_power = 15000
+				
 				
 			AIMode.FOLLOWCHECKPOINTS:
 				match current_state:
 					AIState.PURSUIT:
 							turn_number = turn_toward_target(nav.target_position)
 							follow_waypoints()
-							if (nav.target_position - position).length() < 500:
-								if velocity.length() >= target_speed and velocity.length() >= 800:
+							if (nav.target_position - position).length() < min_distance_to_brake:
+								if velocity.length() >= 800:
 									apply_brake()
 							else:
 								apply_throttle()
@@ -209,13 +234,13 @@ func _physics_process(delta):
 				turn_number = turn_toward_target(nav.target_position)
 				follow_mouse_position()
 				Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
-				engine_power = 10000
-				if (nav.target_position - position).length() < 500:
+				
+				if (nav.target_position - position).length() < min_distance_to_brake:
 						apply_brake()
 				else:
 					apply_throttle()
 			AIMode.FOLLOWCOINS:
-				engine_power = 20000
+				
 				follow_coins()
 				if is_stuck(delta):
 						print("TAKILDIM LAN!")
@@ -223,25 +248,25 @@ func _physics_process(delta):
 						position = Global.start_pos2
 						gas = 0
 						change_state(AIState.PURSUIT)
+				#not working properly so not in use
+				# if obstacle_detected(true):
+				# 		if not is_target_around_obstacle_set:
+				# 				collider_position = raycast_front.get_collision_point()
+				# 				direction = collider_position - global_position
 
-				if obstacle_detected(true):
-						if not is_target_around_obstacle_set:
-								collider_position = raycast_front.get_collision_point()
-								direction = collider_position - global_position
+				# 				var perp_vec = Vector2(-direction.y, direction.x)
+				# 				var perp_vec_normalized = perp_vec.normalized()
+				# 				distance = 150.0
+				# 				var offset = perp_vec_normalized * distance
 
-								var perp_vec = Vector2(-direction.y, direction.x)
-								var perp_vec_normalized = perp_vec.normalized()
-								distance = 200.0
-								var offset = perp_vec_normalized * distance
+				# 				obstacle_target_position = collider_position + offset
 
-								obstacle_target_position = collider_position + offset
-
-								nav.target_position = obstacle_target_position
-								turn_number = turn_toward_target(nav.target_position)
+				# 				nav.target_position = obstacle_target_position
+				# 				turn_number = turn_toward_target(nav.target_position)
 								
-								is_target_around_obstacle_set = true
-								distance_to_reach_target = global_position.distance_to(collider_position)
-						change_state(AIState.OBSTACLE_AVOIDANCE)
+				# 				is_target_around_obstacle_set = true
+				# 				distance_to_reach_target = global_position.distance_to(collider_position)
+				# 		change_state(AIState.OBSTACLE_AVOIDANCE)
 							
 						
 				match current_state:
@@ -251,7 +276,7 @@ func _physics_process(delta):
 						var car_dir = velocity.normalized()
 						var target_direction = (nav.target_position - global_position).normalized()
 						var alignment = car_dir.dot(target_direction)
-						if alignment <= 0.5:
+						if alignment <= 0:
 							if velocity.length() >= 750:
 								apply_brake()
 							elif (nav.target_position - position).length() <= 500:
@@ -259,14 +284,14 @@ func _physics_process(delta):
 
 						
 							
-						if (nav.target_position - position).length() < 500:
-
+						if (nav.target_position - position).length() < min_distance_to_brake:
+							steer_angle = base_steer_angle * steer_angle_modifier
 							#if degree between car and the target is higher than 90, the car will be aligned with the target
 							
 							# if alignment <= 0:
 							# 	change_state(AIState.ALIGN_WITH_TARGET)
 								
-							if gas >= brake_until_of_gas:
+							if gas >= brake_to:
 								apply_brake()
 							else:
 								apply_throttle()
@@ -282,20 +307,14 @@ func _physics_process(delta):
 							else:
 									apply_throttle()
 							
-							if distance_to_target <=  distance_to_reach_target / 2:
+							if distance_to_target <=  distance_to_reach_target / 1.5:
 								is_target_around_obstacle_set = false
 								is_going_back = false
 								change_state(AIState.PURSUIT)
 
-
-
-
-						
-						
-
 					AIState.ALIGN_WITH_TARGET:
 						turn_number = turn_toward_target(nav.target_position)
-						if is_aligned_with_target():
+						if (is_aligned_with_target()) or (nav.target_position - position).length() >= 300:
 							#print("AISTATE is PURSUIT")
 							is_going_back = false
 							#print("car is aligned")
@@ -382,7 +401,7 @@ func obstacle_detected(is_front):
 
 var last_position = Vector2.ZERO
 var STUCK_TIME = 0.0
-var MIN_MOVEMENT_THRESHOLD = 5.0
+var MIN_MOVEMENT_THRESHOLD = 3.0
 var STUCK_TIME_THRESHOLD = 5.0
 var is_stuck_cooldown = false
 
@@ -458,7 +477,7 @@ func follow_waypoints():
 			get_next_waypoint_node(current_waypoint)
 			current_waypoint = chosen_waypoint
 
-var crash_possibility = 0.05
+
 #gets next waypoint with bad choice probabilities
 func get_next_waypoint_node(current_waypoint):
 	var chosen_paths = []
@@ -525,6 +544,10 @@ func turn_toward_target(target_position):
 	
 	if not is_going_back:
 		steer_amount = clamp(steer_amount, -1, 1)
+		if steer_amount >= 0 and steer_amount <= 0.1:
+			steer_amount = 0.1
+		elif steer_amount < 0 and steer_amount >= -0.1:
+			steer_amount = -0.1
 		#print(rad_to_deg(angle_to_target))
 	else:
 		steer_amount = -1 * clamp(steer_amount, -1, 1)
@@ -566,6 +589,7 @@ func steering(delta):
 
 #returns the speed that need to be decreased to while turning, higher the angle the slower.
 var is_angle_calcd = false
+#not in use
 func check_angle_before_turning(min_speed, max_speed):
 	if not is_angle_calcd and chosen_waypoint != null:
 		# var target_direction = get_next_waypoint_node(current_waypoint).position - current_waypoint.position
@@ -605,13 +629,13 @@ func check_angle_before_turning(min_speed, max_speed):
 
 func apply_throttle():
 	gas = lerpf(gas, engine_power, 0.01)
-	steer_angle = 6
+	steer_angle = base_steer_angle
 
 func apply_brake():
 	#print("fren yapıyorum")
 	gas = lerpf(gas, 0, 0.1)
 	 #power = transform.x * brake
-	steer_angle = 10
+	steer_angle = base_steer_angle * steer_angle_modifier
 	
 
 func apply_friction(delta):
@@ -634,9 +658,7 @@ func collect_coin():
 
 	AudioManager.play_coin()
 
-#duration of recovery time, -1 penalty point every given second-
-var duration = 15.0
-var elapsed_time = 0.0
+
 func repair_car_from_penalty(delta):
 	if Global.game_world.penalty_points.has(self.car_id):
 		if Global.game_world.penalty_points[self.car_id] > 0:
@@ -660,15 +682,15 @@ func _on_stuck_cooldown_timeout():
 func screen_warp():
 	if position.x > (Global.right_limit.x * 2.425) + map_offset.x:
 		position.x = (Global.left_limit.x * 2.425) + map_offset.x
-		print("sağdan sola geçti")
+		#print("sağdan sola geçti")
 		#print(str(global_position.x) + ">" + str(right_limit.x) )
 	elif position.x < (Global.left_limit.x * 2.425) + map_offset.x:
 		position.x = (Global.right_limit.x * 2.425) + map_offset.x
-		print("soldan sağa geçti")
+		#print("soldan sağa geçti")
 	
 	if position.y > (Global.down_limit.y * 2.425) + map_offset.y:
 		position.y = (Global.up_limit.y * 2.425) + map_offset.y
-		print("aşağıdan yukarıya çıktı")
+		#print("aşağıdan yukarıya çıktı")
 	elif position.y < (Global.up_limit.y * 2.425) + map_offset.y:
 		position.y = (Global.down_limit.y * 2.425) + map_offset.y
-		print("yukarıdan aşağıya indi")
+		#print("yukarıdan aşağıya indi")

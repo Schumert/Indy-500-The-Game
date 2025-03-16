@@ -1,18 +1,18 @@
-[gd_scene load_steps=23 format=3 uid="uid://cnes5qui0714d"]
+[gd_scene load_steps=23 format=3 uid="uid://bkd12k488b45r"]
 
-[ext_resource type="Script" path="res://scripts/opponent_select.gd" id="1_ki4xg"]
-[ext_resource type="Texture2D" uid="uid://daebdicdu3gwh" path="res://assets/RacingTilemap.png" id="2_mwrus"]
-[ext_resource type="Texture2D" uid="uid://msgb7aphy5qp" path="res://assets/Grass Tiles/Grass 001.png" id="3_vbfhb"]
-[ext_resource type="Texture2D" uid="uid://ku21ovv8li2b" path="res://assets/Grass Tiles/Plants 002.png" id="4_00ksb"]
-[ext_resource type="Texture2D" uid="uid://cuvd5jyhkqmak" path="res://assets/Grass Tiles/Example.png" id="5_74ci0"]
-[ext_resource type="Texture2D" uid="uid://3ueveoaf4we2" path="res://assets/whiteonetoone.png" id="6_t8t03"]
-[ext_resource type="Texture2D" uid="uid://wf4360f0xhej" path="res://assets/Decor/Tree_01.png" id="7_23pti"]
-[ext_resource type="Texture2D" uid="uid://hjjxvw7xk0b3" path="res://assets/Decor/Pavilion_02.png" id="8_2ox8b"]
-[ext_resource type="Theme" uid="uid://wd8u5alu5158" path="res://assets/main_men_theme.tres" id="9_3hfy6"]
-[ext_resource type="Theme" uid="uid://bdv0de8d46cgr" path="res://assets/opponent_select_theme.tres" id="11_vcbi2"]
+[ext_resource type="Script" path="res://scripts/difficulty_select.gd" id="1_74isx"]
+[ext_resource type="Texture2D" uid="uid://daebdicdu3gwh" path="res://assets/RacingTilemap.png" id="2_lvg8u"]
+[ext_resource type="Texture2D" uid="uid://msgb7aphy5qp" path="res://assets/Grass Tiles/Grass 001.png" id="3_efggx"]
+[ext_resource type="Texture2D" uid="uid://ku21ovv8li2b" path="res://assets/Grass Tiles/Plants 002.png" id="4_dl442"]
+[ext_resource type="Texture2D" uid="uid://cuvd5jyhkqmak" path="res://assets/Grass Tiles/Example.png" id="5_21byf"]
+[ext_resource type="Texture2D" uid="uid://3ueveoaf4we2" path="res://assets/whiteonetoone.png" id="6_xcwmx"]
+[ext_resource type="Texture2D" uid="uid://wf4360f0xhej" path="res://assets/Decor/Tree_01.png" id="7_tomfv"]
+[ext_resource type="Texture2D" uid="uid://hjjxvw7xk0b3" path="res://assets/Decor/Pavilion_02.png" id="8_3utim"]
+[ext_resource type="Theme" uid="uid://wd8u5alu5158" path="res://assets/main_men_theme.tres" id="9_0yfl2"]
+[ext_resource type="Theme" uid="uid://bdv0de8d46cgr" path="res://assets/opponent_select_theme.tres" id="10_a3tyd"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_exs1s"]
-texture = ExtResource("2_mwrus")
+texture = ExtResource("2_lvg8u")
 texture_region_size = Vector2i(32, 32)
 0:0/0 = 0
 0:1/0 = 0
@@ -800,7 +800,7 @@ texture_region_size = Vector2i(32, 32)
 27:27/0 = 0
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_7vj2q"]
-texture = ExtResource("3_vbfhb")
+texture = ExtResource("3_efggx")
 texture_region_size = Vector2i(32, 32)
 0:0/0 = 0
 1:0/0 = 0
@@ -868,7 +868,7 @@ texture_region_size = Vector2i(32, 32)
 7:7/0 = 0
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_fv75w"]
-texture = ExtResource("4_00ksb")
+texture = ExtResource("4_dl442")
 texture_region_size = Vector2i(32, 32)
 0:0/0 = 0
 1:0/0 = 0
@@ -936,7 +936,7 @@ texture_region_size = Vector2i(32, 32)
 7:7/0 = 0
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_by2u6"]
-texture = ExtResource("5_74ci0")
+texture = ExtResource("5_21byf")
 texture_region_size = Vector2i(32, 32)
 0:0/0 = 0
 1:0/0 = 0
@@ -1028,7 +1028,7 @@ sources/2 = SubResource("TileSetAtlasSource_fv75w")
 sources/3 = SubResource("TileSetAtlasSource_by2u6")
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_8unop"]
-texture = ExtResource("5_74ci0")
+texture = ExtResource("5_21byf")
 texture_region_size = Vector2i(32, 32)
 0:0/0 = 0
 1:0/0 = 0
@@ -1117,7 +1117,7 @@ tile_size = Vector2i(32, 32)
 sources/0 = SubResource("TileSetAtlasSource_8unop")
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_h6l70"]
-texture = ExtResource("3_vbfhb")
+texture = ExtResource("3_efggx")
 texture_region_size = Vector2i(32, 32)
 0:0/0 = 0
 1:0/0 = 0
@@ -1199,17 +1199,17 @@ content_margin_left = 494.0
 texture_margin_left = 615.0
 texture_margin_bottom = 900.0
 
-[node name="opponent_select" type="Control" node_paths=PackedStringArray("alone_button", "two_player_button", "ai_button")]
+[node name="difficulty_select" type="Control" node_paths=PackedStringArray("easy_button", "normal_button", "hard_button")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_ki4xg")
-alone_button = NodePath("CanvasLayer/MarginContainer/GridContainer/ALONE")
-two_player_button = NodePath("CanvasLayer/MarginContainer/GridContainer/TWO_PLAYER")
-ai_button = NodePath("CanvasLayer/MarginContainer/GridContainer/AI")
+script = ExtResource("1_74isx")
+easy_button = NodePath("CanvasLayer/MarginContainer/GridContainer/EASY")
+normal_button = NodePath("CanvasLayer/MarginContainer/GridContainer/NORMAL")
+hard_button = NodePath("CanvasLayer/MarginContainer/GridContainer/HARD")
 
 [node name="Node2D" type="Node2D" parent="."]
 position = Vector2(238, 346)
@@ -1235,7 +1235,7 @@ layer_0/tile_data = PackedInt32Array(262177, 196608, 4)
 modulate = Color(0.607843, 0.596078, 0.564706, 1)
 position = Vector2(209, 241)
 scale = Vector2(1694, 162)
-texture = ExtResource("6_t8t03")
+texture = ExtResource("6_xcwmx")
 
 [node name="Road2" type="Sprite2D" parent="Node2D"]
 modulate = Color(0.607843, 0.596078, 0.564706, 1)
@@ -1248,29 +1248,29 @@ texture = SubResource("CompressedTexture2D_e7r3c")
 [node name="Sprite2D" type="Sprite2D" parent="Node2D/decors"]
 position = Vector2(182, 498)
 scale = Vector2(0.35, 0.35)
-texture = ExtResource("7_23pti")
+texture = ExtResource("7_tomfv")
 
 [node name="Sprite2D3" type="Sprite2D" parent="Node2D/decors"]
 position = Vector2(632, 498)
 scale = Vector2(0.35, 0.35)
-texture = ExtResource("7_23pti")
+texture = ExtResource("7_tomfv")
 
 [node name="Sprite2D4" type="Sprite2D" parent="Node2D/decors"]
 position = Vector2(-227, 498)
 scale = Vector2(0.35, 0.35)
-texture = ExtResource("7_23pti")
+texture = ExtResource("7_tomfv")
 
 [node name="Sprite2D2" type="Sprite2D" parent="Node2D/decors"]
 position = Vector2(1519, 422)
 rotation = 1.5708
 scale = Vector2(0.3, 0.3)
-texture = ExtResource("8_2ox8b")
+texture = ExtResource("8_3utim")
 
 [node name="Sprite2D5" type="Sprite2D" parent="Node2D/decors"]
 position = Vector2(1519, 2)
 rotation = 1.5708
 scale = Vector2(0.3, 0.3)
-texture = ExtResource("8_2ox8b")
+texture = ExtResource("8_3utim")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -1295,7 +1295,7 @@ offset_right = 86.0
 grow_horizontal = 2
 grow_vertical = 0
 size_flags_horizontal = 4
-theme = ExtResource("9_3hfy6")
+theme = ExtResource("9_0yfl2")
 theme_override_constants/margin_bottom = 30
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/MarginContainer3"]
@@ -1308,9 +1308,9 @@ text = "BACK"
 
 [node name="Continue" type="Button" parent="CanvasLayer/MarginContainer3/HBoxContainer"]
 layout_mode = 2
-text = "CONTINUE"
+text = "GO!"
 
-[node name="PickOpponent" type="Label" parent="CanvasLayer"]
+[node name="PickDifficulty" type="Label" parent="CanvasLayer"]
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
@@ -1318,13 +1318,13 @@ offset_left = -576.0
 offset_right = 576.0
 offset_bottom = 976.0
 grow_horizontal = 2
-theme = ExtResource("9_3hfy6")
+theme = ExtResource("9_0yfl2")
 theme_override_font_sizes/font_size = 75
 theme_override_styles/normal = SubResource("StyleBoxTexture_6e6bv")
-text = "SELECT YOUR OPPONENT"
+text = "SELECT THE DIFFICULTY"
 horizontal_alignment = 1
 
-[node name="Opponent" type="Label" parent="CanvasLayer"]
+[node name="Difficulty" type="Label" parent="CanvasLayer"]
 anchors_preset = -1
 anchor_left = 0.5
 anchor_top = 0.232
@@ -1338,9 +1338,9 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
 size_flags_vertical = 0
-theme = ExtResource("9_3hfy6")
+theme = ExtResource("9_0yfl2")
 theme_override_font_sizes/font_size = 60
-text = "SELECTED: ALONE"
+text = "SELECTED: NORMAL"
 horizontal_alignment = 1
 
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer"]
@@ -1356,7 +1356,7 @@ offset_bottom = 131.5
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_vertical = 4
-theme = ExtResource("11_vcbi2")
+theme = ExtResource("10_a3tyd")
 
 [node name="GridContainer" type="GridContainer" parent="CanvasLayer/MarginContainer"]
 layout_mode = 2
@@ -1364,22 +1364,23 @@ size_flags_horizontal = 4
 size_flags_vertical = 8
 columns = 3
 
-[node name="ALONE" type="Button" parent="CanvasLayer/MarginContainer/GridContainer"]
+[node name="EASY" type="Button" parent="CanvasLayer/MarginContainer/GridContainer"]
 layout_mode = 2
 text = "
 
-ALONE   
+peasant
 
 
 "
 
-[node name="TWO_PLAYER" type="Button" parent="CanvasLayer/MarginContainer/GridContainer"]
+[node name="NORMAL" type="Button" parent="CanvasLayer/MarginContainer/GridContainer"]
 layout_mode = 2
-text = " TWO PLAYER "
+text = " Normal "
 
-[node name="AI" type="Button" parent="CanvasLayer/MarginContainer/GridContainer"]
+[node name="HARD" type="Button" parent="CanvasLayer/MarginContainer/GridContainer"]
 layout_mode = 2
-text = "   AI   "
+text = "max 
+   verstappen   "
 
 [connection signal="button_down" from="CanvasLayer/MarginContainer3/HBoxContainer/Back" to="." method="_on_back_button_down"]
 [connection signal="button_down" from="CanvasLayer/MarginContainer3/HBoxContainer/Continue" to="." method="_on_continue_button_down"]

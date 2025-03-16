@@ -8,6 +8,7 @@ var finish_lap_sound = preload("res://audio/finishLap.wav")
 var coin_sound = preload("res://audio/pickupCoin.wav")
 var start_red_sound = preload("res://audio/start_red.wav")
 var start_green_sound = preload("res://audio/start_green.wav")
+var maxverstappen = preload("res://audio/MaxVerstappen.mp3")
 func _ready():
 	pass # Replace with function body.
 
@@ -19,6 +20,20 @@ func play_music(music:AudioStream, volume = 0.0):
 	$Music.stream = music
 	$Music.volume_db = volume
 	$Music.play()
+
+func play_max():
+	$MaxVerstappen.play()
+	$Music.stop()
+
+func stop_max():
+	$MaxVerstappen.stop()
+	if not $Music.is_playing():
+		$Music.play()
+	
+func play_easy():
+	$Easy.play()
+	$Music.stop()
+	
 
 
 func play_main_menu_music():
@@ -63,3 +78,13 @@ func play_start_green(volume = 0.0):
 
 
 
+
+
+func _on_max_verstappen_finished():
+	if not $Music.is_playing():
+		$Music.play()
+
+
+func _on_easy_finished():
+	if not $Music.is_playing():
+		$Music.play()

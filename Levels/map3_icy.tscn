@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://daafuhoc5ygwc"]
+[gd_scene load_steps=28 format=3 uid="uid://daafuhoc5ygwc"]
 
 [ext_resource type="Script" path="res://scripts/map1.gd" id="1_xcpkq"]
 [ext_resource type="Texture2D" uid="uid://3ueveoaf4we2" path="res://assets/whiteonetoone.png" id="3_myu00"]
@@ -171,10 +171,88 @@ size = Vector2(21.2076, 86.4355)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_w2mix"]
 size = Vector2(22.975, 86.0206)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_u6v0k"]
+[sub_resource type="GDScript" id="GDScript_7xp48"]
+script/source = "extends Node
+
+
+
+# duration of penalty
+const PENALTY_DURATION = 5.0  
+
+func _process(delta):
+	pass
+		
+
+func on_offroad_enter(body):
+	if body is CharacterBody2D and (body.collision_layer & (1 << 1) != 0 or body.collision_layer & (1 << 4) != 0 or body.collision_layer & (1 << 7) != 0):  
+		if self.is_in_group(\"grass\"):
+			# Ceza puanını artır
+			add_penalty(body)
+			AudioManager.play_crash()
+			if Global.game_world.penalty_points.get(body.car_id, 0) < 3:
+				body.friction = -300
+				body.engine_power /= 3
+				
+
+func on_offroad_exit(body):
+	if body is CharacterBody2D and (body.collision_layer & (1 << 1) != 0 or body.collision_layer & (1 << 4) != 0  or body.collision_layer & (1 << 7) != 0):
+		if Global.game_world.penalty_points.get(body.car_id, 0) < 3:
+			body.friction = body.temp_friction
+			body.engine_power = body.temp_engine_power
+			
+		
+
+
+## adding penalty when crashed
+func add_penalty(body):
+	var player_id = body.car_id 
+
+	# Eğer oyuncunun ceza puanı yoksa, başlat
+	if not Global.game_world.penalty_points.has(player_id):
+		Global.game_world.penalty_points[player_id] = 0
+		Global.gui.update_penalty_info(true, \"PENALTY POINT: 0\");
+
+	# Ceza puanını artır
+	Global.game_world.penalty_points[player_id] += 1
+	print(\"Oyuncu \", player_id, \" ceza puanı: \", Global.game_world.penalty_points[player_id])
+	var message = \"Player\" + \" penalty point: \" + str(Global.game_world.penalty_points[player_id])
+
+	Global.gui.update_penalty_info(true, message);
+
+	# Eğer ceza puanı 3'e ulaştıysa, ağır ceza uygula
+	if Global.game_world.penalty_points[player_id] >= 3:
+		apply_penalty(body)
+
+
+##  car is broken
+func apply_penalty(body):
+	print(\"Oyuncu \", body.car_id, \" ağır penaltıya girdi! 🚨\")
+	Global.gui.update_penalty_info(true, \"PENALTY IS ACTIVE!!!!!\");
+
+	body.engine_power = 1000
+	body.gas /= 3
+	body.is_car_broken = true;
+	
+	
+
+	# back to normal
+	await get_tree().create_timer(PENALTY_DURATION).timeout
+
+	body.engine_power = body.temp_engine_power
+	body.is_car_broken = false;
+	
+	
+	
+
+	print(\"Oyuncu \", body.car_id, \" tekrar normale döndü!\")
+	Global.gui.update_penalty_info(false, \"\");
+	Global.game_world.penalty_points[body.car_id] = 0  # reset the penalty counter
+"
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_52e4h"]
 size = Vector2(2448.64, 24.8352)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_bykyh"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cd2ol"]
 size = Vector2(2751.52, 21.6294)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_bxss8"]
@@ -274,29 +352,36 @@ shape = SubResource("RectangleShape2D_w2mix")
 position = Vector2(-0.0769761, -4.76837e-07)
 polygon = PackedVector2Array(-0.0109966, 0.00589108, 0.00549793, 0.412371, -0.0577323, 0.412371, -0.0549834, 0.547864, -0.115464, 0.547864, -0.115464, 0.677466, -0.175946, 0.677466, -0.175946, 0.836523, -0.228179, 0.836523, -0.22818, 0.93667, -1.16289, 0.936665, -1.16014, 0.960229, 0.703779, 0.96024, 0.703779, 0.913112, 0.456356, 0.91311, 0.459106, 0.807072, 0.395875, 0.807072, 0.398625, 0.689251, 0.338144, 0.689251, 0.340893, 0.565539, 0.277663, 0.559648, 0.280412, 0.441828, 0.217182, 0.441828, 0.22543, -0.789395, 0.285912, -0.789395, 0.288661, -0.918997, 0.349142, -0.918997, 0.349142, -1.05449, 0.398627, -1.05449, 0.398627, -1.17231, 0.464606, -1.17231, 0.464606, -1.29013, 1.50378, -1.27245, 1.50378, -1.31369, -0.398624, -1.32548, -0.398624, -1.26068, -0.228177, -1.26068, -0.225428, -1.15464, -0.173194, -1.15464, -0.170445, -1.04271, -0.12371, -1.04271, -0.120961, -0.918999, -0.0659781, -0.918999, -0.0632293, -0.789396, -0.00274801, -0.789396)
 
-[node name="UpEdge" type="CollisionShape2D" parent="Grass"]
+[node name="Grass2" type="Area2D" parent="." groups=["grass"]]
+rotation = 3.14159
+scale = Vector2(150, 70)
+collision_layer = 64
+collision_mask = 26
+script = SubResource("GDScript_7xp48")
+
+[node name="UpEdge" type="CollisionShape2D" parent="Grass2"]
 position = Vector2(0.027488, 3.22238)
 rotation = 3.14159
 scale = Vector2(0.00220952, 0.0119374)
-shape = SubResource("RectangleShape2D_u6v0k")
+shape = SubResource("RectangleShape2D_52e4h")
 
-[node name="DownEdge" type="CollisionShape2D" parent="Grass"]
+[node name="DownEdge" type="CollisionShape2D" parent="Grass2"]
 position = Vector2(0.027495, -2.99853)
 rotation = 3.14159
 scale = Vector2(0.00220952, 0.0119374)
-shape = SubResource("RectangleShape2D_u6v0k")
+shape = SubResource("RectangleShape2D_52e4h")
 
-[node name="LeftEdge" type="CollisionShape2D" parent="Grass"]
+[node name="LeftEdge" type="CollisionShape2D" parent="Grass2"]
 position = Vector2(2.81776, 0.182636)
 rotation = 1.5708
 scale = Vector2(0.00220952, 0.0119374)
-shape = SubResource("RectangleShape2D_bykyh")
+shape = SubResource("RectangleShape2D_cd2ol")
 
-[node name="RightEdge" type="CollisionShape2D" parent="Grass"]
+[node name="RightEdge" type="CollisionShape2D" parent="Grass2"]
 position = Vector2(-2.63368, 0.159043)
 rotation = 1.5708
 scale = Vector2(0.00220952, 0.0119374)
-shape = SubResource("RectangleShape2D_bykyh")
+shape = SubResource("RectangleShape2D_cd2ol")
 
 [node name="StartPos" type="Node2D" parent="."]
 position = Vector2(-67.2165, -148.041)
@@ -533,6 +618,8 @@ texture = ExtResource("11_mly8x")
 
 [connection signal="body_entered" from="Grass" to="Grass" method="on_offroad_enter"]
 [connection signal="body_exited" from="Grass" to="Grass" method="on_offroad_exit"]
+[connection signal="body_entered" from="Grass2" to="Grass2" method="on_offroad_enter"]
+[connection signal="body_exited" from="Grass2" to="Grass2" method="on_offroad_exit"]
 [connection signal="body_entered" from="RaceManager/Checkpoint1" to="RaceManager/Checkpoint1" method="_on_body_entered"]
 [connection signal="body_entered" from="RaceManager/Checkpoint2" to="RaceManager/Checkpoint2" method="_on_body_entered"]
 [connection signal="body_entered" from="RaceManager/Checkpoint3" to="RaceManager/Checkpoint3" method="_on_body_entered"]

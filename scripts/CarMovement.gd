@@ -16,6 +16,7 @@ var slip_speed = 500
 var traction_fast = 3
 var traction_slow = 7
 var is_car_broken : bool
+var engine_power_penalty = 1000
 @export var car_id : String
 
 var min_pitch = 0.8
@@ -57,7 +58,7 @@ func _ready():
 	Global.player_checkpoints[car_id] = []
 	Global.gui.update_players_info()
 	if car_id == "car1":
-		Global.player1 = self
+		Global.player = self
 		position = Global.start_pos
 	elif car_id =="car2":
 		position = Global.start_pos2
@@ -73,7 +74,7 @@ func _ready():
 		traction_fast = 1
 	
 	is_car_broken = false
-	#engine_sound.play()
+	engine_sound.play()
 	broken_engine_sound.stop()
 
 
@@ -109,6 +110,7 @@ func _physics_process(delta):
 		get_tree().change_scene_to_file("res://menu.tscn")
 	
 	if Input.is_action_just_pressed("restart"):
+		
 		get_tree().reload_current_scene()
 	
 	
